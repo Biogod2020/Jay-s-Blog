@@ -4,6 +4,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://jay-s-blog.github.io',
+  site: 'https://biogod2020.github.io',
+  base: '/Jay-s-Blog',
   integrations: [tailwind(), sitemap()],
 });
