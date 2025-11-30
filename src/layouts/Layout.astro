@@ -1,0 +1,64 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+	image?: string;
+}
+
+const { title, description = "Jay's Blog - AI Powered", image = "/placeholder-social.jpg" } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<!-- Import Global CSS -->
+		<link rel="stylesheet" href="/src/styles/global.css" />
+
+		<!-- Canonical URL -->
+		<link rel="canonical" href={canonicalURL} />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL(image, Astro.url)} />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+		<title>{title}</title>
+	</head>
+	<body class="bg-gray-50 text-gray-900 antialiased">
+		<header class="bg-white shadow-sm sticky top-0 z-50">
+			<nav class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+				<a href="/" class="text-xl font-bold text-indigo-600">Jay's Blog</a>
+				<div class="space-x-4">
+					<a href="/" class="hover:text-indigo-600 transition">Home</a>
+					<a href="/blog" class="hover:text-indigo-600 transition">Blog</a>
+				</div>
+			</nav>
+		</header>
+		
+		<main class="max-w-4xl mx-auto px-4 py-8 min-h-[80vh]">
+			<slot />
+		</main>
+
+		<footer class="bg-white border-t mt-12">
+			<div class="max-w-4xl mx-auto px-4 py-6 text-center text-gray-500 text-sm">
+				&copy; {new Date().getFullYear()} Jay's Blog. Powered by Astro & AI.
+			</div>
+		</footer>
+	</body>
+</html>

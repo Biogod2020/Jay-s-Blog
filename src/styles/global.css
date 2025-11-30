@@ -1,0 +1,19 @@
+/* Global Custom Styles */
+
+/* Example: Custom font or reset overrides */
+body {
+  font-feature-settings: "cv11", "ss01";
+}
+
+/* Example: Styling for AI-generated HTML content that might not have Tailwind classes */
+.prose pre {
+  background-color: #1e293b;
+  border-radius: 0.5rem;
+}
+
+/* Custom utility class example */
+.text-gradient {
+  background: linear-gradient(to right, #4f46e5, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
