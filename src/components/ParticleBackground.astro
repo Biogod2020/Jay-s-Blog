@@ -1,0 +1,126 @@
+<div id="particles-container" class="fixed inset-0 -z-20 pointer-events-none">
+  <canvas id="particles-canvas"></canvas>
+</div>
+
+<script>
+  class ParticleNetwork {
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    particles: Array<{x: number, y: number, vx: number, vy: number, size: number}>;
+    width: number;
+    height: number;
+    color: string;
+    connectionDistance: number;
+
+    constructor() {
+      this.canvas = document.getElementById('particles-canvas') as HTMLCanvasElement;
+      this.ctx = this.canvas.getContext('2d')!;
+      this.particles = [];
+      this.width = window.innerWidth;
+      this.height = window.innerHeight;
+      this.connectionDistance = 150;
+      
+      // Determine color based on theme (initial check)
+      this.updateColor();
+
+      this.init();
+      this.animate();
+      
+      window.addEventListener('resize', () => this.resize());
+      
+      // Listen for theme changes
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === 'class') {
+            this.updateColor();
+          }
+        });
+      });
+      observer.observe(document.documentElement, { attributes: true });
+    }
+
+    updateColor() {
+      const isDark = document.documentElement.classList.contains('dark');
+      // Indigo-500 with low opacity for light mode, Indigo-400 for dark mode
+      this.color = isDark ? 'rgba(129, 140, 248, 0.15)' : 'rgba(99, 102, 241, 0.1)';
+    }
+
+    resize() {
+      this.width = window.innerWidth;
+      this.height = window.innerHeight;
+      this.canvas.width = this.width;
+      this.canvas.height = this.height;
+      this.initParticles();
+    }
+
+    init() {
+      this.resize();
+    }
+
+    initParticles() {
+      this.particles = [];
+      // Responsive particle count
+      const particleCount = Math.min(Math.floor(this.width * this.height / 15000), 100);
+      
+      for (let i = 0; i < particleCount; i++) {
+        this.particles.push({
+          x: Math.random() * this.width,
+          y: Math.random() * this.height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          size: Math.random() * 2 + 1
+        });
+      }
+    }
+
+    animate() {
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      
+      // Update and draw particles
+      this.particles.forEach((p, index) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Bounce off edges
+        if (p.x < 0 || p.x > this.width) p.vx *= -1;
+        if (p.y < 0 || p.y > this.height) p.vy *= -1;
+
+        this.ctx.beginPath();
+        this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        this.ctx.fillStyle = this.color;
+        this.ctx.fill();
+
+        // Draw connections
+        for (let j = index + 1; j < this.particles.length; j++) {
+          const p2 = this.particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < this.connectionDistance) {
+            this.ctx.beginPath();
+            this.ctx.strokeStyle = this.color;
+            this.ctx.lineWidth = 1 - distance / this.connectionDistance;
+            this.ctx.moveTo(p.x, p.y);
+            this.ctx.lineTo(p2.x, p2.y);
+            this.ctx.stroke();
+          }
+        }
+      });
+
+      requestAnimationFrame(() => this.animate());
+    }
+  }
+
+  // Initialize when DOM is ready
+  document.addEventListener('astro:page-load', () => {
+    new ParticleNetwork();
+  });
+  
+  // Fallback for initial load if View Transitions aren't used or fail
+  if (document.readyState === 'complete') {
+    new ParticleNetwork();
+  } else {
+    document.addEventListener('DOMContentLoaded', () => new ParticleNetwork());
+  }
+</script>

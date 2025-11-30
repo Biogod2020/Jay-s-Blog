@@ -17,7 +17,7 @@ const posts = (await getCollection('blog')).sort(
 			
 			<div class="space-y-8">
 				{posts.map((post) => (
-					<article class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-8 border border-gray-100 dark:border-gray-700 group">
+					<article class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 md:p-8 border border-gray-100 dark:border-gray-700 group">
 						<div class="flex flex-col gap-4">
 							<div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
 								<time datetime={post.data.pubDate.toISOString()}>

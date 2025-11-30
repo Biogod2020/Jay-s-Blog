@@ -1,5 +1,6 @@
 ---
 import ThemeToggle from '../components/ThemeToggle.astro';
+import ParticleBackground from '../components/ParticleBackground.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -55,8 +56,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 			}
 		</script>
 	</head>
-	<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-300">
-		<header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50 transition-colors duration-300">
+	<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-300 relative">
+		<ParticleBackground />
+		<header class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-colors duration-300">
 			<nav class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
 				<a href="/" class="text-xl font-bold text-indigo-600 dark:text-indigo-400">Jiahao's Blog</a>
 				<div class="flex items-center space-x-4">
