@@ -26,6 +26,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 		<!-- Mermaid JS -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+		<script is:inline>
+			document.addEventListener('DOMContentLoaded', () => {
+				// @ts-ignore
+				if (window.mermaid) {
+					// @ts-ignore
+					mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+				}
+			});
+		</script>
 		<!-- Google Fonts -->
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 
