@@ -8,7 +8,7 @@ interface Props {
 	image?: string;
 }
 
-const { title, description = "Jay's Blog - AI Powered", image = "/placeholder-social.jpg" } = Astro.props;
+const { title, description = "Jiahao's Blog - AI & Algorithms", image = "/social-image.svg" } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -58,10 +58,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 	<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-300">
 		<header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50 transition-colors duration-300">
 			<nav class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-				<a href={import.meta.env.BASE_URL} class="text-xl font-bold text-indigo-600 dark:text-indigo-400">Jay's Blog</a>
+				<a href="/" class="text-xl font-bold text-indigo-600 dark:text-indigo-400">Jiahao's Blog</a>
 				<div class="flex items-center space-x-4">
-					<a href={import.meta.env.BASE_URL} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Home</a>
-					<a href={`${import.meta.env.BASE_URL}/blog`} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Blog</a>
+					<a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Home</a>
+					<a href="/blog" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Blog</a>
 					<ThemeToggle />
 				</div>
 			</nav>
@@ -73,7 +73,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 		<footer class="bg-white dark:bg-gray-800 border-t dark:border-gray-700 mt-12 transition-colors duration-300">
 			<div class="max-w-4xl mx-auto px-4 py-6 text-center text-gray-500 dark:text-gray-400 text-sm">
-				&copy; {new Date().getFullYear()} Jay's Blog. Powered by Astro & AI.
+				&copy; {new Date().getFullYear()} Jiahao's Blog. Powered by Astro & AI.
 			</div>
 		</footer>
 	</body>
