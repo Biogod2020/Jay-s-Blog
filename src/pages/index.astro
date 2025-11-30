@@ -22,7 +22,7 @@ const posts = (await getCollection('blog')).sort(
 		<div class="grid gap-8 md:grid-cols-2">
 			{posts.map((post) => (
 				<article class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition border border-gray-100">
-					<a href={`${import.meta.env.BASE_URL}blog/${post.slug}`}>
+					<a href={`${import.meta.env.BASE_URL}/blog/${post.slug}`}>
 						<h3 class="text-xl font-bold mb-2 text-gray-900 group-hover:text-indigo-600">
 							{post.data.title}
 						</h3>
