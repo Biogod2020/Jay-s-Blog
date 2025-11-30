@@ -997,29 +997,7 @@ style Dry_Lab fill:#f3e8ff,stroke:#a855f7
 </textarea>
 </div>
 <div class="p-4 bg-white dark:bg-gray-800 flex items-center justify-center overflow-auto" id="mermaid-output">
-<!-- Graph renders here -->
-<pre class="mermaid">
-graph TD
-subgraph Wet_Lab ["🧪 湿实验室：样本制备"]
-A[样本采集] --&gt; B[裂解细胞]
-B --&gt; C[RNA 提取]
-C --&gt; D{"质控：RIN &gt; 7 ?"}
-D -- 否 --&gt; E[丢弃样本]
-D -- 是 --&gt; F[建库]
-F --&gt; G["测序 (Illumina)"]
-end
-
-subgraph Dry_Lab ["💻 干实验室：生信分析"]
-G --&gt; H["原始序列 (FASTQ)"]
-H --&gt; I["质量评估 (FastQC)"]
-I --&gt; J["比对 (STAR/HISAT2)"]
-J --&gt; K[计数矩阵]
-K --&gt; L["差异表达 (DESeq2)"]
-end
-
-style Wet_Lab fill:#e0f2fe,stroke:#3b82f6
-style Dry_Lab fill:#f3e8ff,stroke:#a855f7
-</pre>
+    <div class="text-sm text-slate-400">Graph will render here...</div>
 </div>
 </div>
 </div>
@@ -1029,15 +1007,12 @@ style Dry_Lab fill:#f3e8ff,stroke:#a855f7
 document.addEventListener('DOMContentLoaded', () => {
     const initMermaid = () => {
         if (window.mermaid) {
-            mermaid.initialize({ 
-                startOnLoad: false, 
+            mermaid.initialize({
+                startOnLoad: false,
                 theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
                 securityLevel: 'loose'
             });
-            // Render initial diagrams
-            mermaid.run({
-                querySelector: '.mermaid'
-            });
+            renderMermaid();
             
             // Re-init on theme change
             const observer = new MutationObserver((mutations) => {
@@ -1045,6 +1020,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (mutation.attributeName === 'class') {
                         const isDark = document.documentElement.classList.contains('dark');
                         mermaid.initialize({ theme: isDark ? 'dark' : 'default', securityLevel: 'loose' });
+                        renderMermaid();
                     }
                 });
             });
