@@ -998,28 +998,28 @@ style Dry_Lab fill:#f3e8ff,stroke:#a855f7
 </div>
 <div class="p-4 bg-white dark:bg-gray-800 flex items-center justify-center overflow-auto" id="mermaid-output">
 <!-- Graph renders here -->
-<div class="mermaid">
+<pre class="mermaid">
 graph TD
 subgraph Wet_Lab ["🧪 湿实验室：样本制备"]
-A[样本采集] --> B[裂解细胞]
-B --> C[RNA 提取]
-C --> D{"质控：RIN > 7 ?"}
-D -- 否 --> E[丢弃样本]
-D -- 是 --> F[建库]
-F --> G["测序 (Illumina)"]
+A[样本采集] --&gt; B[裂解细胞]
+B --&gt; C[RNA 提取]
+C --&gt; D{"质控：RIN &gt; 7 ?"}
+D -- 否 --&gt; E[丢弃样本]
+D -- 是 --&gt; F[建库]
+F --&gt; G["测序 (Illumina)"]
 end
 
 subgraph Dry_Lab ["💻 干实验室：生信分析"]
-G --> H["原始序列 (FASTQ)"]
-H --> I["质量评估 (FastQC)"]
-I --> J["比对 (STAR/HISAT2)"]
-J --> K[计数矩阵]
-K --> L["差异表达 (DESeq2)"]
+G --&gt; H["原始序列 (FASTQ)"]
+H --&gt; I["质量评估 (FastQC)"]
+I --&gt; J["比对 (STAR/HISAT2)"]
+J --&gt; K[计数矩阵]
+K --&gt; L["差异表达 (DESeq2)"]
 end
 
 style Wet_Lab fill:#e0f2fe,stroke:#3b82f6
 style Dry_Lab fill:#f3e8ff,stroke:#a855f7
-</div>
+</pre>
 </div>
 </div>
 </div>
@@ -1029,16 +1029,22 @@ style Dry_Lab fill:#f3e8ff,stroke:#a855f7
 document.addEventListener('DOMContentLoaded', () => {
     const initMermaid = () => {
         if (window.mermaid) {
-            mermaid.initialize({ startOnLoad: true, theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default' });
+            mermaid.initialize({ 
+                startOnLoad: false, 
+                theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
+                securityLevel: 'loose'
+            });
+            // Render initial diagrams
+            mermaid.run({
+                querySelector: '.mermaid'
+            });
             
             // Re-init on theme change
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
                     if (mutation.attributeName === 'class') {
                         const isDark = document.documentElement.classList.contains('dark');
-                        mermaid.initialize({ theme: isDark ? 'dark' : 'default' });
-                        // Rerender existing diagrams if possible or reload page (complex)
-                        // For now just init for new ones
+                        mermaid.initialize({ theme: isDark ? 'dark' : 'default', securityLevel: 'loose' });
                     }
                 });
             });
@@ -1051,24 +1057,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function renderMermaid() {
-async function renderMermaid() {
-const input = document.getElementById('mermaid-input').value;
-const output = document.getElementById('mermaid-output');
+    const input = document.getElementById('mermaid-input').value;
+    const output = document.getElementById('mermaid-output');
 
-try {
-output.innerHTML = '<div class="mermaid">' + input + '</div>';
-// Remove the old attribute to force re-render if needed, though run() handles selectors.
-// Mermaid 10+ uses run() which is async.
-output.querySelector('.mermaid').removeAttribute('data-processed'); // Safety
-if (window.mermaid && mermaid.run) {
-await mermaid.run({
-nodes: output.querySelectorAll('.mermaid')
-});
-}
-} catch (error) {
-output.innerHTML = '<div class="text-red-500 text-xs p-4">Syntax Error: ' + error.message + '</div>';
-console.error(error);
-}
+    try {
+        // Clear previous content and create fresh container
+        const id = 'mermaid-' + Date.now();
+        output.innerHTML = '<div class="mermaid" id="' + id + '">' + input + '</div>';
+        
+        if (window.mermaid && mermaid.run) {
+            await mermaid.run({
+                nodes: [document.getElementById(id)]
+            });
+        }
+    } catch (error) {
+        output.innerHTML = '<div class="text-red-500 text-xs p-4">Syntax Error: ' + error.message + '</div>';
+        console.error(error);
+    }
 }
 </script>
 
