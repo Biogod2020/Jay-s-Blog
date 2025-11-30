@@ -7,4 +7,7 @@ export default defineConfig({
   site: 'https://biogod2020.github.io',
   base: '/Jay-s-Blog',
   integrations: [tailwind(), sitemap()],
+  markdown: {
+    smartypants: false,
+  },
 });

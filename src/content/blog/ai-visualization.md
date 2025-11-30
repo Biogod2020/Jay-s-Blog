@@ -998,28 +998,28 @@ style Dry_Lab fill:#f3e8ff,stroke:#a855f7
 </div>
 <div class="p-4 bg-white dark:bg-gray-800 flex items-center justify-center overflow-auto" id="mermaid-output">
 <!-- Graph renders here -->
-<pre class="mermaid">
+<div class="mermaid">
 graph TD
 subgraph Wet_Lab ["🧪 湿实验室：样本制备"]
-A[样本采集] --&gt; B[裂解细胞]
-B --&gt; C[RNA 提取]
-C --&gt; D{"质控：RIN &gt; 7 ?"}
-D -- 否 --&gt; E[丢弃样本]
-D -- 是 --&gt; F[建库]
-F --&gt; G["测序 (Illumina)"]
+A[样本采集] --> B[裂解细胞]
+B --> C[RNA 提取]
+C --> D{"质控：RIN > 7 ?"}
+D -- 否 --> E[丢弃样本]
+D -- 是 --> F[建库]
+F --> G["测序 (Illumina)"]
 end
 
 subgraph Dry_Lab ["💻 干实验室：生信分析"]
-G --&gt; H["原始序列 (FASTQ)"]
-H --&gt; I["质量评估 (FastQC)"]
-I --&gt; J["比对 (STAR/HISAT2)"]
-J --&gt; K[计数矩阵]
-K --&gt; L["差异表达 (DESeq2)"]
+G --> H["原始序列 (FASTQ)"]
+H --> I["质量评估 (FastQC)"]
+I --> J["比对 (STAR/HISAT2)"]
+J --> K[计数矩阵]
+K --> L["差异表达 (DESeq2)"]
 end
 
 style Wet_Lab fill:#e0f2fe,stroke:#3b82f6
 style Dry_Lab fill:#f3e8ff,stroke:#a855f7
-</pre>
+</div>
 </div>
 </div>
 </div>
