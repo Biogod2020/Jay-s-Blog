@@ -9,31 +9,31 @@ const posts = (await getCollection('blog')).sort(
 
 <Layout title="Jay's Blog - Home">
 	<section class="text-center py-12">
-		<h1 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4">
-			Welcome to <span class="text-indigo-600">Jay's Blog</span>
+		<h1 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl mb-4">
+			Welcome to <span class="text-indigo-600 dark:text-indigo-400">Jay's Blog</span>
 		</h1>
-		<p class="text-lg text-gray-600 max-w-2xl mx-auto">
+		<p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
 			Exploring the frontier of technology with AI-assisted content.
 		</p>
 	</section>
 
 	<section class="mt-12">
-		<h2 class="text-2xl font-bold mb-6">Latest Posts</h2>
+		<h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Latest Posts</h2>
 		<div class="grid gap-8 md:grid-cols-2">
 			{posts.map((post) => (
-				<article class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition border border-gray-100">
+				<article class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition border border-gray-100 dark:border-gray-700">
 					<a href={`${import.meta.env.BASE_URL}/blog/${post.slug}`}>
-						<h3 class="text-xl font-bold mb-2 text-gray-900 group-hover:text-indigo-600">
+						<h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
 							{post.data.title}
 						</h3>
-						<p class="text-gray-500 text-sm mb-3">
+						<p class="text-gray-500 dark:text-gray-400 text-sm mb-3">
 							{post.data.pubDate.toLocaleDateString('en-us', {
 								year: 'numeric',
 								month: 'short',
 								day: 'numeric',
 							})}
 						</p>
-						<p class="text-gray-600 line-clamp-3">
+						<p class="text-gray-600 dark:text-gray-300 line-clamp-3">
 							{post.data.description}
 						</p>
 					</a>
