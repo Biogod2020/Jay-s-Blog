@@ -1,116 +1,129 @@
 ---
-import ThemeToggle from '../components/ThemeToggle.astro';
-import ParticleBackground from '../components/ParticleBackground.astro';
-import '../styles/global.css';
+import ThemeToggle from "../components/ThemeToggle.astro";
+import ParticleBackground from "../components/ParticleBackground.astro";
+import "../styles/global.css";
 
 interface Props {
-	title: string;
-	description?: string;
-	image?: string;
-	externalScripts?: string[];
-	localScripts?: string[];
-	localStyles?: string[];
+  title: string;
+  description?: string;
+  image?: string;
 }
 
-const { 
-	title, 
-	description = "Jiahao's Blog - AI & Algorithms", 
-	image = "/social-image.svg",
-	externalScripts = [],
-	localScripts = [],
-	localStyles = []
+const {
+  title,
+  description = "Jiahao's Blog - AI & Algorithms",
+  image = "/social-image.svg",
 } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		
-		<!-- Font Awesome -->
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-		<!-- Mermaid JS -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
-		<script is:inline>
-			document.addEventListener('DOMContentLoaded', () => {
-				// @ts-ignore
-				if (window.mermaid) {
-					// @ts-ignore
-					mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
-				}
-			});
-		</script>
-		<!-- Google Fonts -->
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
 
-		<!-- Custom Local Styles -->
-		{localStyles.map((style) => (
-			<link rel="stylesheet" href={style} />
-		))}
+    <!-- Font Awesome -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Mermaid JS -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"
+    ></script>
+    <script is:inline>
+      document.addEventListener("DOMContentLoaded", () => {
+        // @ts-ignore
+        if (window.mermaid) {
+          // @ts-ignore
+          mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+        }
+      });
+    </script>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
 
-		<!-- External Scripts -->
-		{externalScripts.map((script) => (
-			<script is:inline src={script}></script>
-		))}
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalURL} />
 
-		<!-- Custom Local Scripts -->
-		{localScripts.map((script) => (
-			<script is:inline src={script}></script>
-		))}
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
 
-		<!-- Canonical URL -->
-		<link rel="canonical" href={canonicalURL} />
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-		<!-- Open Graph / Facebook -->
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content={Astro.url} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={new URL(image, Astro.url)} />
+    <title>{title}</title>
+    <script is:inline>
+      // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-300 relative"
+  >
+    <ParticleBackground />
+    <header
+      class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-colors duration-300"
+    >
+      <nav
+        class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <a
+          href="/"
+          class="text-xl font-bold text-indigo-600 dark:text-indigo-400"
+          >Jiahao's Blog</a
+        >
+        <div class="flex items-center space-x-4">
+          <a
+            href="/"
+            class="hover:text-indigo-600 dark:hover:text-indigo-400 transition"
+            >Home</a
+          >
+          <a
+            href="/blog"
+            class="hover:text-indigo-600 dark:hover:text-indigo-400 transition"
+            >Blog</a
+          >
+          <ThemeToggle />
+        </div>
+      </nav>
+    </header>
 
-		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={Astro.url} />
-		<meta property="twitter:title" content={title} />
-		<meta property="twitter:description" content={description} />
-		<meta property="twitter:image" content={new URL(image, Astro.url)} />
+    <main class="max-w-4xl mx-auto px-4 py-8 min-h-[80vh]">
+      <slot />
+    </main>
 
-		<title>{title}</title>
-		<script is:inline>
-			// On page load or when changing themes, best to add inline in `head` to avoid FOUC
-			if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-				document.documentElement.classList.add('dark');
-			} else {
-				document.documentElement.classList.remove('dark');
-			}
-		</script>
-	</head>
-	<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-300 relative">
-		<ParticleBackground />
-		<header class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-colors duration-300">
-			<nav class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-				<a href="/" class="text-xl font-bold text-indigo-600 dark:text-indigo-400">Jiahao's Blog</a>
-				<div class="flex items-center space-x-4">
-					<a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Home</a>
-					<a href="/blog" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition">Blog</a>
-					<ThemeToggle />
-				</div>
-			</nav>
-		</header>
-		
-		<main class="max-w-4xl mx-auto px-4 py-8 min-h-[80vh]">
-			<slot />
-		</main>
-
-		<footer class="bg-white dark:bg-gray-800 border-t dark:border-gray-700 mt-12 transition-colors duration-300">
-			<div class="max-w-4xl mx-auto px-4 py-6 text-center text-gray-500 dark:text-gray-400 text-sm">
-				&copy; {new Date().getFullYear()} Jiahao's Blog. Powered by Astro & AI.
-			</div>
-		</footer>
-	</body>
+    <footer
+      class="bg-white dark:bg-gray-800 border-t dark:border-gray-700 mt-12 transition-colors duration-300"
+    >
+      <div
+        class="max-w-4xl mx-auto px-4 py-6 text-center text-gray-500 dark:text-gray-400 text-sm"
+      >
+        &copy; {new Date().getFullYear()} Jiahao's Blog. Powered by Astro & AI.
+      </div>
+    </footer>
+  </body>
 </html>
