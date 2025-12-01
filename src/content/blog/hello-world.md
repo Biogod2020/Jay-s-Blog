@@ -18,7 +18,7 @@ pubDate: 2025-12-01
   </p>
 </div>
 
-<h2>Why this setup rocks</h2>
+## Why this setup rocks
 <ul>
   <li><strong>Performance:</strong> Astro ships zero JavaScript by default.</li>
   <li><strong>SEO:</strong> Automatic sitemaps, canonical URLs, and Open Graph tags.</li>
@@ -30,8 +30,8 @@ pubDate: 2025-12-01
 </blockquote>
 
 <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 my-8">
-  <h3 class="text-indigo-800 mt-0">Did you know?</h3>
-  <p class="mb-0 text-indigo-700">
+  ### Did you know?
+<p class="mb-0 text-indigo-700">
     You can even use Tailwind utility classes directly inside your HTML content here!
-  </p>
+</p>
 </div>

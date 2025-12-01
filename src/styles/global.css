@@ -58,6 +58,15 @@
   background: #94a3b8;
 }
 
+/* Scroll margin for headings to prevent sticky header overlap */
+html {
+  scroll-behavior: smooth;
+}
+
+h2, h3 {
+  scroll-margin-top: 6rem; /* Approx 96px, enough for header */
+}
+
 /* Demo specific styles */
 .demo-browser-mockup {
   border-top: 24px solid #e2e8f0;

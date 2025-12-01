@@ -6,7 +6,7 @@ const LectureExperience = {
     typedInstance: null,
    
     init() {
-        gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
         // this.initTOC(); // Handled by global layout now
         this.initMermaid();
         this.initVisualizations();
@@ -101,7 +101,9 @@ const LectureExperience = {
         // Objective: Animate the core concept of 'learning' as a process of function fitting.
         const container = d3.select("#nn-training-viz");
         container.selectAll("*").remove();
-        const width = 500, height = 300;
+        // Use responsive width with fallback
+        const width = container.node().getBoundingClientRect().width || 500; 
+        const height = 300;
         const margin = { top: 20, right: 20, bottom: 30, left: 40 };
         const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`);
         const data = d3.range(50).map(() => ({ x: Math.random() * 10, y: 2 * Math.random() * 10 + 3 + (Math.random() - 0.5) * 5 }));
@@ -113,15 +115,20 @@ const LectureExperience = {
        
         svg.selectAll(".data-point").data(data).enter().append("circle").attr("class", "data-point").attr("cx", d => xScale(d.x)).attr("cy", d => yScale(d.y)).attr("r", 4).attr("opacity", 0.7);
        
-        const line = svg.append("line").attr("class", "regression-line");
+        const line = svg.append("line").attr("class", "regression-line")
+            .attr("x1", xScale(0))
+            .attr("y1", yScale(15))
+            .attr("x2", xScale(10))
+            .attr("y2", yScale(5));
+
         if (!this.isReducedMotion) {
-            gsap.fromTo(line.node(), { attr: { x1: xScale(0), y1: yScale(15), x2: xScale(10), y2: yScale(5) } }, {
+            gsap.to(line.node(), {
                 attr: { y1: yScale(3), y2: yScale(23) },
                 duration: 2, ease: "power2.inOut",
                 scrollTrigger: { trigger: container.node(), start: "top 70%", toggleActions: "play pause resume reverse" }
             });
         } else {
-             line.attr("x1", xScale(0)).attr("y1", yScale(3)).attr("x2", xScale(10)).attr("y2", yScale(23));
+             line.attr("y1", yScale(3)).attr("y2", yScale(23));
         }
     },
     createNeuralNetworkAnimation() { /* Unchanged: A complex animation that clearly illustrates forward propagation. */ const container = d3.select("#nn-viz-container"); container.selectAll("*").remove(); const width = container.node().getBoundingClientRect().width; const height = 250; const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`); const layers = [ { count: 4, x: 50 }, { count: 6, x: width / 2 - 50 }, { count: 6, x: width / 2 + 50 }, { count: 2, x: width - 50 } ]; const nodes = [], links = []; layers.forEach((layer, i) => { const layerNodes = d3.range(layer.count).map(j => ({ layer: i, id: `n-${i}-${j}`, x: layer.x, y: (height / (layer.count + 1)) * (j + 1) })); nodes.push(...layerNodes); if (i > 0) { layerNodes.forEach(node => { layers[i - 1].nodes.forEach(prevNode => links.push({ source: prevNode, target: node })); }); } layer.nodes = layerNodes; }); svg.selectAll('.nn-connection').data(links).enter().append('line').attr('class', 'nn-connection').attr('x1', d => d.source.x).attr('y1', d => d.source.y).attr('x2', d => d.target.x).attr('y2', d => d.target.y); const nodeElements = svg.selectAll('.nn-neuron').data(nodes).enter().append('circle').attr('class', 'nn-neuron').attr('id', d => d.id).attr('cx', d => d.x).attr('cy', d => d.y).attr('r', 8); if (!this.isReducedMotion) { const tl = gsap.timeline({ scrollTrigger: { trigger: '#nn-viz-container', start: 'top 70%', toggleActions: 'play restart play reverse' }, }); const animateSignal = (path) => { const signal = svg.append('circle').attr('class', 'nn-signal').attr('r', 5).attr('cx', path[0].x).attr('cy', path[0].y).style('opacity', 0); tl.to(signal.node(), { opacity: 1, duration: 0.1 }); for(let i = 0; i < path.length; i++) { tl.to(`#${path[i].id}`, { classList: "+=activated", duration: 0.1 }, "<"); if (i < path.length - 1) { tl.to(signal.node(), { motionPath: { path: [path[i], path[i+1]] }, duration: 0.4, ease: 'power1.inOut' }); } } tl.to(signal.node(), { opacity: 0, duration: 0.2 }); }; const path1 = [layers[0].nodes[1], layers[1].nodes[2], layers[2].nodes[0], layers[3].nodes[1]]; const path2 = [layers[0].nodes[2], layers[1].nodes[4], layers[2].nodes[3], layers[3].nodes[0]]; animateSignal(path1); tl.add(() => animateSignal(path2), ">-0.5"); tl.add(() => nodeElements.classed('activated', false), "+=0.5"); } },

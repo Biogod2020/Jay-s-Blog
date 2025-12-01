@@ -1,0 +1,330 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+// Transform flat headings into a nested tree structure (H2 -> children H3s)
+type TocItem = MarkdownHeading & { children: MarkdownHeading[] };
+const toc: TocItem[] = [];
+
+headings.forEach((h) => {
+  if (h.depth === 2) {
+    toc.push({ ...h, children: [] });
+  } else if (h.depth === 3 && toc.length > 0) {
+    toc[toc.length - 1].children.push(h);
+  }
+});
+---
+
+<!-- Desktop TOC (Sidebar) -->
+<!-- 
+  Container:
+  - Default: w-64
+  - Minimized: w-12
+  - Transition: width
+-->
+<aside 
+  id="toc-desktop-wrapper"
+  class="hidden lg:flex flex-col sticky top-32 h-[calc(100vh-9rem)] transition-all duration-500 ease-in-out w-64 group/toc shrink-0 z-30"
+>
+  <!-- Toggle Button (Absolute positioned to be always accessible) -->
+  <button
+    id="toc-desktop-toggle"
+    class="absolute -right-3 top-0 z-20 w-6 h-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full flex items-center justify-center text-gray-500 hover:text-indigo-600 transition-transform duration-300 shadow-sm focus:outline-none"
+    aria-label="Toggle TOC"
+    title="Toggle Table of Contents"
+  >
+    <i class="fas fa-chevron-left text-xs transition-transform duration-300" id="toc-toggle-icon"></i>
+  </button>
+
+  <!-- Inner Content Container (Scrollable) -->
+  <nav 
+    id="toc-desktop-nav"
+    class="flex-1 overflow-y-auto pr-2 scrollbar-hide transition-opacity duration-300"
+  >
+    <div class="relative pl-2">
+      <!-- The sliding marker -->
+      <div 
+        id="toc-marker" 
+        class="absolute left-0 w-[2px] bg-indigo-600 dark:bg-indigo-400 rounded-full transition-all duration-300 ease-out opacity-0"
+        style="top: 0; height: 0;"
+      ></div>
+
+      <!-- Border Line -->
+      <div class="absolute left-0 top-0 bottom-0 w-[1px] bg-gray-200 dark:bg-gray-800 -z-10"></div>
+
+      <!-- The List -->
+      <ul class="space-y-0 relative" id="toc-list">
+        {toc.map((h2) => (
+          <li class="toc-group">
+            <a
+              href={`#${h2.slug}`}
+              class="toc-link block py-2 pl-4 text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200 truncate"
+              data-slug={h2.slug}
+              data-depth="2"
+              title={h2.text}
+            >
+              {h2.text}
+            </a>
+            
+            {/* Sub-items */}
+            {h2.children.length > 0 && (
+              <ul 
+                class="toc-sublist overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-50" 
+                data-parent={h2.slug}
+              >
+                {h2.children.map((h3) => (
+                  <li>
+                    <a
+                      href={`#${h3.slug}`}
+                      class="toc-link block py-1.5 pl-8 text-xs text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200 truncate"
+                      data-slug={h3.slug}
+                      data-depth="3"
+                      title={h3.text}
+                    >
+                      {h3.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Minimized State Icon (Hidden by default, shown when minimized) -->
+  <div 
+    id="toc-minimized-icon"
+    class="hidden absolute top-12 left-1/2 -translate-x-1/2 flex-col items-center gap-4 opacity-0 transition-opacity duration-300"
+  >
+    <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+    <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+    <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+    <i class="fas fa-list-ul text-gray-400 text-lg"></i>
+  </div>
+</aside>
+
+<!-- Mobile TOC (Floating Button & Modal) - Unchanged mostly -->
+<div class="lg:hidden fixed inset-0 z-50 pointer-events-none">
+  <button
+    id="toc-mobile-toggle"
+    class="fixed bottom-8 right-6 pointer-events-auto flex items-center justify-center w-12 h-12 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md text-indigo-600 dark:text-indigo-400 rounded-full shadow-lg shadow-indigo-500/20 border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:scale-110 hover:shadow-xl active:scale-95"
+    aria-label="Toggle Table of Contents"
+  >
+    <i class="fas fa-list-ul text-lg"></i>
+  </button>
+
+  <div
+    id="toc-mobile-backdrop"
+    class="fixed inset-0 bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+    aria-hidden="true"
+  ></div>
+
+  <div
+    id="toc-mobile-menu"
+    class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 rounded-t-2xl shadow-2xl pointer-events-auto transform translate-y-full transition-transform duration-300 max-h-[75vh] flex flex-col border-t border-gray-100 dark:border-gray-800"
+  >
+    <div class="w-full flex justify-center pt-3 pb-1">
+      <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+    </div>
+    <div class="flex items-center justify-between px-6 py-2 shrink-0">
+      <h2 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider">
+        Table of Contents
+      </h2>
+      <button
+        id="toc-mobile-close"
+        class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      >
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+    <div class="overflow-y-auto p-6 pt-2 pb-12">
+      <ul class="space-y-1">
+        {toc.map((h2) => (
+          <li>
+            <a
+              href={`#${h2.slug}`}
+              class="toc-link-mobile block py-2 text-base font-medium text-gray-700 dark:text-gray-300 border-l-2 border-transparent pl-3 transition-colors"
+              data-slug={h2.slug}
+            >
+              {h2.text}
+            </a>
+            {h2.children.length > 0 && (
+              <ul class="mt-1 mb-2 space-y-1">
+                {h2.children.map((h3) => (
+                  <li>
+                    <a
+                      href={`#${h3.slug}`}
+                      class="toc-link-mobile block py-1.5 pl-7 text-sm text-gray-500 dark:text-gray-400 border-l-2 border-transparent transition-colors"
+                      data-slug={h3.slug}
+                    >
+                      {h3.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+
+<script>
+  // --- Desktop Toggle Logic ---
+  const wrapper = document.getElementById('toc-desktop-wrapper');
+  const nav = document.getElementById('toc-desktop-nav');
+  const toggleBtn = document.getElementById('toc-desktop-toggle');
+  const toggleIcon = document.getElementById('toc-toggle-icon');
+  const minimizedIcon = document.getElementById('toc-minimized-icon');
+  
+  // Load state
+  let isMinimised = localStorage.getItem('toc-minimised') === 'true';
+
+  function applyState() {
+    if (isMinimised) {
+      // Collapse
+      wrapper?.classList.remove('w-64');
+      wrapper?.classList.add('w-8'); // Narrow width
+      nav?.classList.add('opacity-0', 'pointer-events-none');
+      toggleIcon?.classList.add('rotate-180');
+      minimizedIcon?.classList.remove('hidden', 'opacity-0');
+      minimizedIcon?.classList.add('flex', 'opacity-100');
+    } else {
+      // Expand
+      wrapper?.classList.add('w-64');
+      wrapper?.classList.remove('w-8');
+      nav?.classList.remove('opacity-0', 'pointer-events-none');
+      toggleIcon?.classList.remove('rotate-180');
+      minimizedIcon?.classList.add('hidden', 'opacity-0');
+      minimizedIcon?.classList.remove('flex', 'opacity-100');
+    }
+  }
+
+  // Initial apply
+  applyState();
+
+  toggleBtn?.addEventListener('click', () => {
+    isMinimised = !isMinimised;
+    localStorage.setItem('toc-minimised', String(isMinimised));
+    applyState();
+  });
+
+
+  // --- Core TOC Logic (Scroll Spy) ---
+  const desktopLinks = document.querySelectorAll('.toc-link');
+  const mobileLinks = document.querySelectorAll('.toc-link-mobile');
+  const sections = document.querySelectorAll('h2[id], h3[id]');
+  const marker = document.getElementById('toc-marker');
+  const sublists = document.querySelectorAll('.toc-sublist');
+  
+  function updateDesktopTOC(slug: string) {
+    if (isMinimised) return; // Don't update visuals if minimised
+
+    // Reset
+    desktopLinks.forEach(link => {
+      link.classList.remove('text-indigo-600', 'dark:text-indigo-400', 'font-medium');
+      link.classList.add('text-gray-500', 'dark:text-gray-400');
+    });
+
+    const activeLink = document.querySelector(`.toc-link[data-slug="${CSS.escape(slug)}"]`) as HTMLElement;
+    
+    if (activeLink) {
+      activeLink.classList.remove('text-gray-500', 'dark:text-gray-400');
+      activeLink.classList.add('text-indigo-600', 'dark:text-indigo-400', 'font-medium');
+
+      if (marker) {
+        marker.style.opacity = '1';
+        marker.style.top = `${activeLink.offsetTop + 8}px`;
+        marker.style.height = `20px`;
+      }
+
+      // Collapsible sublists
+      let parentSlug = slug;
+      const depth = activeLink.getAttribute('data-depth');
+      if (depth === '3') {
+        const sublist = activeLink.closest('.toc-sublist');
+        if (sublist) parentSlug = sublist.getAttribute('data-parent') || '';
+      }
+
+      sublists.forEach((list) => {
+        const listParent = list.getAttribute('data-parent');
+        if (listParent === parentSlug || listParent === slug) {
+          list.classList.remove('max-h-0', 'opacity-50');
+          list.classList.add('max-h-96', 'opacity-100');
+        } else {
+          list.classList.add('max-h-0', 'opacity-50');
+          list.classList.remove('max-h-96', 'opacity-100');
+        }
+      });
+    } else {
+       if (marker) marker.style.opacity = '0';
+    }
+  }
+
+  function updateMobileTOC(slug: string) {
+    mobileLinks.forEach(link => {
+      link.classList.remove('text-indigo-600', 'dark:text-indigo-400', 'border-indigo-600', 'font-bold', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+      link.classList.add('border-transparent');
+    });
+    const activeLink = document.querySelector(`.toc-link-mobile[data-slug="${CSS.escape(slug)}"]`);
+    if (activeLink) {
+      activeLink.classList.remove('border-transparent');
+      activeLink.classList.add('text-indigo-600', 'dark:text-indigo-400', 'border-indigo-600', 'font-bold', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+    }
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const activeSlug = entry.target.getAttribute('id') || '';
+        updateDesktopTOC(activeSlug);
+        updateMobileTOC(activeSlug);
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+
+  sections.forEach(section => observer.observe(section));
+
+
+  // --- Mobile Menu Logic ---
+  const mToggleBtn = document.getElementById('toc-mobile-toggle');
+  const mCloseBtn = document.getElementById('toc-mobile-close');
+  const mBackdrop = document.getElementById('toc-mobile-backdrop');
+  const mMenu = document.getElementById('toc-mobile-menu');
+  let isMenuOpen = false;
+
+  function toggleMenu() {
+    isMenuOpen = !isMenuOpen;
+    if (isMenuOpen) {
+      mBackdrop?.classList.remove('opacity-0', 'pointer-events-none');
+      mBackdrop?.classList.add('pointer-events-auto');
+      mMenu?.classList.remove('translate-y-full');
+      document.body.style.overflow = 'hidden';
+    } else {
+      mBackdrop?.classList.add('opacity-0', 'pointer-events-none');
+      mBackdrop?.classList.remove('pointer-events-auto');
+      mMenu?.classList.add('translate-y-full');
+      document.body.style.overflow = '';
+    }
+  }
+
+  mToggleBtn?.addEventListener('click', toggleMenu);
+  mCloseBtn?.addEventListener('click', toggleMenu);
+  mBackdrop?.addEventListener('click', toggleMenu);
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => { if(isMenuOpen) toggleMenu(); });
+  });
+</script>
