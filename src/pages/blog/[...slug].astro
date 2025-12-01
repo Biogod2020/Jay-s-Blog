@@ -15,7 +15,13 @@ const post = Astro.props;
 const { Content } = await post.render();
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
+<Layout 
+	title={post.data.title} 
+	description={post.data.description}
+	externalScripts={post.data.externalScripts}
+	localScripts={post.data.localScripts}
+	localStyles={post.data.localStyles}
+>
 	<article class="prose prose-lg prose-indigo dark:prose-invert mx-auto max-w-none">
 		<div class="mb-8 text-center">
 			<h1 class="mb-2 text-gray-900 dark:text-white">{post.data.title}</h1>
