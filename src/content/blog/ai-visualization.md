@@ -2,375 +2,328 @@
 title: "讲义：AI 时代的科研可视化革命"
 description: "从被动阅读到全流程交互重构 - 建立“AI 逻辑 + HTML 呈现”的可视化思维"
 pubDate: 2025-12-01
+localScripts:
+  - "/scripts/ai-visualization.js"
 ---
 
+<div class="not-prose mb-12 space-y-8">
+  <div class="relative text-center space-y-3">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-primary-50 dark:bg-primary-900/20 rounded-full blur-3xl -z-10"></div>
+    <div class="inline-flex items-center justify-center px-3 py-1 text-xs font-medium text-primary-700 bg-primary-50 dark:bg-primary-900/30 rounded-full ring-1 ring-inset ring-primary-600/20">
+      <i class="fas fa-university mr-2"></i> 复旦大学上海医学院
+    </div>
+    <div class="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-slate-100 leading-tight">
+      讲义：AI 时代的 <span class="gradient-text block md:inline">科研可视化革命</span>
+    </div>
+    <p class="text-xl text-slate-500 dark:text-slate-400 font-light tracking-wide">——从被动阅读到全流程交互重构</p>
+  </div>
 
-
-<div class="max-w-4xl mx-auto px-6 py-16">
-
-<!-- Header Section -->
-<header class="text-center mb-16 relative">
-<div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-32 bg-primary-50 dark:bg-primary-900/300/20 rounded-full blur-3xl -z-10"></div>
-<div class="inline-flex items-center justify-center px-3 py-1 mb-6 text-xs font-medium text-primary-700 bg-primary-50 dark:bg-primary-900/30 rounded-full ring-1 ring-inset ring-primary-600/20">
-<i class="fas fa-university mr-2"></i> 复旦大学上海医学院
-</div>
-<h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-slate-900 dark:text-slate-100 leading-tight">
-讲义：AI 时代的<br><span class="gradient-text">科研可视化革命</span>
-</h1>
-<p class="text-xl text-slate-500 dark:text-slate-400 font-light tracking-wide">——从被动阅读到全流程交互重构</p>
-</header>
-
-<!-- Meta Info Card -->
-<div class="glass-card rounded-2xl p-8 mb-16 relative overflow-hidden group hover:shadow-lg transition-shadow duration-300">
-<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-<i class="fas fa-layer-group text-8xl text-primary-500"></i>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-<div class="flex flex-col">
-<span class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">授课对象</span>
-<span class="text-slate-700 dark:text-slate-300 font-medium">高年级本科 / 硕博研究生</span>
-</div>
-<div class="flex flex-col">
-<span class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">课程时长</span>
-<span class="text-slate-700 dark:text-slate-300 font-medium">约 90 分钟</span>
-</div>
-<div class="flex flex-col">
-<span class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">核心目标</span>
-<span class="text-slate-700 dark:text-slate-300 font-medium">建立“AI 逻辑 + HTML 呈现”的可视化思维，掌握科研全流程的降维打击工具。</span>
-</div>
-</div>
+  <div class="glass-card rounded-2xl p-8 relative overflow-hidden group hover:shadow-lg transition-shadow duration-300">
+    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+      <i class="fas fa-layer-group text-8xl text-primary-500"></i>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10 text-left">
+      <div>
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">授课对象</div>
+        <div class="text-slate-700 dark:text-slate-300 font-medium">高年级本科 / 硕博研究生</div>
+      </div>
+      <div>
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">课程时长</div>
+        <div class="text-slate-700 dark:text-slate-300 font-medium">约 90 分钟</div>
+      </div>
+      <div>
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-1">核心目标</div>
+        <div class="text-slate-700 dark:text-slate-300 font-medium">建立“AI 逻辑 + HTML 呈现”的可视化思维，掌握科研全流程的降维打击工具。</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Intro Section -->
-<section class="mb-20">
-<div class="flex items-center gap-4 mb-8">
-<div class="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-900 text-white shadow-lg shadow-slate-900/20">
-<i class="fas fa-quote-left text-sm"></i>
-</div>
-<h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 m-0">引言：认知摩擦与沟通的桥梁</h2>
+## 引言：认知摩擦与沟通的桥梁
+
+在上一章中，我们探讨了 AI 如何作为“第四范式”驱动科学发现。更现实的瓶颈是：**如何让我们的人类大脑高效地读取并理解 AI 的产出？**
+
+我们正面对前所未有的 **认知摩擦（Cognitive Friction）**，源于人机底层思维模式的巨大差异。
+
+<div class="not-prose grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+  <div class="glass-card p-6 rounded-xl border-l-4 border-l-slate-400">
+    <div class="flex items-center gap-3 mb-3">
+      <i class="fas fa-microchip text-slate-500 dark:text-slate-400 text-xl"></i>
+      <span class="text-lg font-bold text-slate-900 dark:text-slate-100">AI 的舒适区</span>
+    </div>
+    <p class="text-sm text-slate-600 dark:text-slate-400 mb-3"><strong>结构化逻辑与线性流</strong></p>
+    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+      AI（尤其是大语言模型）是概率预测引擎，输出被迫坍缩为线性文本流。它最擅长生成<strong>结构化语言</strong>（JSON、Python、HTML、XML），不在乎括号或层级的复杂度。
+    </p>
+  </div>
+  <div class="glass-card p-6 rounded-xl border-l-4 border-l-primary-500">
+    <div class="flex items-center gap-3 mb-3">
+      <i class="fas fa-eye text-primary-500 text-xl"></i>
+      <span class="text-lg font-bold text-slate-900 dark:text-slate-100">人类的舒适区</span>
+    </div>
+    <p class="text-sm text-slate-600 dark:text-slate-400 mb-3"><strong>视觉感知与模式识别</strong></p>
+    <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+      人类是视觉动物，对图像、颜色、空间布局、交互的处理速度远高于纯文本。
+    </p>
+    <ul class="list-none space-y-2 mt-4 text-sm text-slate-500 dark:text-slate-400">
+      <li class="flex items-start gap-2">
+        <i class="fas fa-exclamation-circle text-amber-500 mt-1"></i>
+        <span>大段纯文本是一种高能耗活动，尤其是未格式化的数据或代码。</span>
+      </li>
+      <li class="flex items-start gap-2">
+        <i class="fas fa-arrow-down text-red-500 mt-1"></i>
+        <span>高能耗直接拖慢科研效率，易错失洞察。</span>
+      </li>
+    </ul>
+  </div>
 </div>
 
-<div class="prose prose-lg prose-slate max-w-none text-justify">
-<p>在上一章中，我们深入探讨了 AI 如何作为“第四范式”驱动科学发现，从海量数据中提取假设。今天，我们将视角转向一个更为实际、却往往被忽视的瓶颈问题：<strong class="text-slate-900 dark:text-slate-100">如何让我们的人类大脑高效地“读取”并“理解”AI 的产出？</strong></p>
+> 核心矛盾：AI 生产的是“高密度的代码/文本”，人类渴望的是“高带宽的视觉/交互”。
 
-<p>我们正面临着一个前所未有的<strong class="text-primary-600 bg-primary-50 dark:bg-primary-900/30 px-1 rounded">认知摩擦（Cognitive Friction）</strong>，这种摩擦来源于人机之间底层思维模式的巨大差异：</p>
+解决之道是把 AI 擅长的“结构化代码”实时转译为人类更易理解的视觉体验。那座桥梁，就是 **HTML + 浏览器**。
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8 not-prose">
-<!-- Card 1 -->
-<div class="glass-card p-6 rounded-xl border-l-4 border-l-slate-400">
-<div class="flex items-center gap-3 mb-3">
-<i class="fas fa-microchip text-slate-500 dark:text-slate-400 text-xl"></i>
-<h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">AI 的舒适区</h3>
-</div>
-<p class="text-sm text-slate-600 dark:text-slate-400 mb-3"><strong>结构化逻辑与线性流</strong></p>
-<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-AI（特别是大语言模型）本质上是一个概率预测引擎。它的“思维”过程是基于高维向量空间的运算，但它的<strong>输出</strong>被强制坍缩为<strong>线性文本流</strong>（Tokens）。AI 最擅长生成的是<strong>结构化的语言</strong>——也就是<strong>代码</strong>（JSON, Python, HTML, XML）。对 AI 来说，数据是流动的，结构是严谨的，它不在乎括号是否闭合，不在乎 JSON 的层级有多深，它能完美地处理这些枯燥的符号。
-</p>
-</div>
-<!-- Card 2 -->
-<div class="glass-card p-6 rounded-xl border-l-4 border-l-primary-500">
-<div class="flex items-center gap-3 mb-3">
-<i class="fas fa-eye text-primary-500 text-xl"></i>
-<h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">人类的舒适区</h3>
-</div>
-<p class="text-sm text-slate-600 dark:text-slate-400 mb-3"><strong>视觉感知与模式识别</strong></p>
-<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-而我们人类是<strong>视觉动物</strong>。数百万年的进化塑造了我们的大脑，使我们对<strong>图像、颜色、空间布局、动态交互</strong>的反应速度远快于对纯文本的解码。
-</p>
-<ul class="list-none space-y-2 mt-4 text-sm text-slate-500 dark:text-slate-400">
-<li class="flex items-start gap-2">
-<i class="fas fa-exclamation-circle text-amber-500 mt-1"></i>
-<span>阅读大段的纯文本，尤其是枯燥的代码或未格式化的数据，对人类大脑来说是一种极高能耗的活动（High Cognitive Load）。</span>
-</li>
-<li class="flex items-start gap-2">
-<i class="fas fa-arrow-down text-red-500 mt-1"></i>
-<span>这种“高能耗”直接导致了科研效率的低下：当你盯着屏幕上密密麻麻的 Python 输出或 Markdown 表格时，你的大脑在疲惫中错失了敏锐的洞察力。</span>
-</li>
-</ul>
-</div>
-</div>
+## 互联网馈赠给科学的礼物
 
-<p class="text-center font-serif italic text-xl text-slate-700 dark:text-slate-300 my-8">“核心矛盾：AI 生产的是‘高密度的代码/文本’，而人类渴望的是‘高带宽的视觉/交互’。”</p>
+要理解为什么选择 HTML 作为科研可视化的核心载体，需要回顾它的起源：**Web 技术诞生的初衷就是为科学交流服务。**
 
-<p>如何解决这个矛盾？我们需要一座桥梁，能将 AI 擅长的“结构化代码”<strong>无损</strong>地、<strong>实时</strong>地转化为人类擅长的“视觉体验”。</p>
+<div class="not-prose relative border-l-4 border-slate-200 dark:border-slate-700 ml-4 my-10 space-y-12">
+  <div class="relative pl-8">
+    <div class="absolute -left-[10px] top-1 w-6 h-6 bg-slate-100 border-4 border-slate-400 rounded-full"></div>
+    <div class="flex items-baseline gap-3 mb-1">
+      <span class="font-bold text-2xl text-slate-800">1989</span>
+      <span class="font-bold text-primary-600">Web 诞生于 CERN (欧洲核子研究中心)</span>
+    </div>
+    <p class="text-sm text-slate-600 dark:text-slate-400">物理学家 <strong>Tim Berners-Lee</strong> 为了解决论文格式不兼容、信息无法共享的痛点，发明了 HTML。
+      <span class="bg-primary-50 dark:bg-primary-900/30 text-primary-700 px-2 py-0.5 rounded text-xs ml-1">基因：为科学交流而生</span>
+    </p>
+    <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
+      <a href="https://baike.baidu.com/item/%E8%92%82%E5%A7%86%C2%B7%E4%BC%AF%E7%BA%B3%E6%96%AF-%E6%9D%8E" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/LS3_4919_%28cropped%29.jpg/330px-LS3_4919_%28cropped%29.jpg" alt="Tim Berners-Lee" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
+        <span>Tim Berners-Lee · 百度百科</span>
+      </a>
+      <a href="https://en.wikipedia.org/wiki/Tim_Berners-Lee" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 hover:text-primary-600">
+        <i class="fas fa-globe text-[11px]"></i>
+        <span>Wikipedia</span>
+      </a>
+    </div>
+    <div class="mt-3 flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
+      <a href="https://www.w3.org/People/Berners-Lee/" target="_blank" class="inline-flex items-center gap-2 hover:text-primary-600">
+        <span class="w-8 h-8 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center">
+          <i class="fas fa-user text-slate-500 dark:text-slate-400 text-xs"></i>
+        </span>
+        <span>Tim Berners-Lee 个人主页（W3C）</span>
+      </a>
+      <a href="https://home.cern/" target="_blank" class="inline-flex items-center gap-2 hover:text-primary-600">
+        <span class="w-8 h-8 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center">
+          <i class="fas fa-atom text-slate-500 dark:text-slate-400 text-xs"></i>
+        </span>
+        <span>CERN 官网</span>
+      </a>
+    </div>
+  </div>
 
-<p>这座桥梁，就是我们今天要讲的主角，也是互联网最伟大的发明：<strong class="text-primary-600">HTML + 浏览器</strong>。</p>
-</div>
-</section>
+  <div class="relative pl-8">
+    <div class="absolute -left-[10px] top-1 w-6 h-6 bg-slate-100 border-4 border-slate-300 rounded-full"></div>
+    <div class="flex items-baseline gap-3 mb-1">
+      <span class="font-bold text-xl text-slate-500 dark:text-slate-400">2004</span>
+      <span class="font-medium text-slate-700 dark:text-slate-300">Markdown 发布</span>
+    </div>
+    <p class="text-sm text-slate-500 dark:text-slate-400">John Gruber 为简化 HTML 书写创造了 Markdown，成为 AI 输出的默认格式。</p>
+    <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
+      <a href="https://baike.baidu.com/item/%E7%BA%A6%E7%BF%B0%C2%B7%E6%A0%BC%E9%B2%81%E4%BC%AF" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/John_Gruber%2C_2009_%28cropped%29.jpg" alt="John Gruber" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
+        <span>John Gruber · 百度百科</span>
+      </a>
+      <a href="https://en.wikipedia.org/wiki/John_Gruber" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 hover:text-primary-600">
+        <i class="fas fa-globe text-[11px]"></i>
+        <span>Wikipedia</span>
+      </a>
+    </div>
+    <div class="mt-3 text-xs">
+      <a href="https://daringfireball.net/projects/markdown/" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:text-primary-600 hover:bg-primary-50 dark:bg-primary-900/30 border border-slate-100">
+        <i class="fas fa-link text-xs"></i>
+        <span>原始 Markdown 规范（Daring Fireball）</span>
+      </a>
+    </div>
+  </div>
 
-<!-- Chapter 1 -->
-<section class="mb-20">
-<div class="flex items-center gap-4 mb-8">
-<div class="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-200 text-slate-700 dark:text-slate-300">
-<span class="font-bold text-lg">01</span>
-</div>
-<h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 m-0">互联网馈赠给科学的礼物</h2>
-</div>
+  <div class="relative pl-8">
+    <div class="absolute -left-[10px] top-1 w-6 h-6 bg-white dark:bg-gray-800 border-4 border-blue-500 rounded-full"></div>
+    <div class="flex items-baseline gap-3 mb-1">
+      <span class="font-bold text-2xl text-slate-800">2008</span>
+      <span class="font-bold text-blue-600">Chrome 与 V8 引擎革命</span>
+    </div>
+    <p class="text-sm text-slate-600 dark:text-slate-400">Google 推出极速 V8 引擎，浏览器升级为“超级操作系统”。</p>
+    <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
+      <a href="https://baike.baidu.com/item/%E6%8B%89%E6%96%AF%C2%B7%E5%B7%B4%E5%85%8B" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Lars_Bak.png" alt="Lars Bak" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
+        <span>Lars Bak · 百度百科</span>
+      </a>
+      <a href="https://en.wikipedia.org/wiki/Lars_Bak_(computer_programmer)" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 hover:text-blue-600">
+        <i class="fas fa-globe text-[11px]"></i>
+        <span>Wikipedia</span>
+      </a>
+    </div>
+    <div class="mt-3 flex items-center gap-4">
+      <a href="https://www.google.com/" target="_blank" class="inline-flex items-center gap-2 hover:opacity-80">
+        <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google Logo" class="h-4 object-contain">
+        <span class="text-xs text-slate-500 dark:text-slate-400">Google</span>
+      </a>
+      <a href="https://www.google.com/chrome/" target="_blank" class="inline-flex items-center gap-2 hover:opacity-80">
+        <img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="Chrome Logo" class="h-5 object-contain">
+        <span class="text-xs text-slate-500 dark:text-slate-400">Chrome 浏览器</span>
+      </a>
+      <a href="https://v8.dev/" target="_blank" class="inline-flex items-center gap-2 hover:text-blue-600 text-xs text-slate-500 dark:text-slate-400">
+        <i class="fas fa-bolt text-blue-500 text-xs"></i>
+        <span>V8 引擎官方博客</span>
+      </a>
+    </div>
+  </div>
 
-<div class="prose prose-lg prose-slate max-w-none">
-<p>要理解为什么选择 HTML 作为科研可视化的核心载体，我们需要稍微回顾一下历史。这并非巧合，<strong>Web 技术诞生的初衷，本就是为了科学。</strong></p>
+  <div class="relative pl-8">
+    <div class="absolute -left-[10px] top-1 w-6 h-6 bg-slate-100 border-4 border-slate-300 rounded-full"></div>
+    <div class="flex items-baseline gap-3 mb-1">
+      <span class="font-bold text-xl text-slate-500 dark:text-slate-400">2011-2014</span>
+      <span class="font-medium text-slate-700 dark:text-slate-300">可视化与前端框架爆发</span>
+    </div>
+    <p class="text-sm text-slate-500 dark:text-slate-400">
+      <strong>D3.js (2011)</strong> 让数据在网页上动起来；<br>
+      <strong>Vue.js (2014)</strong> 让开发者像搭积木一样构建复杂应用。
+    </p>
+    <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
+      <a href="https://en.wikipedia.org/wiki/Mike_Bostock" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
+        <img src="https://avatars.githubusercontent.com/u/230541?v=4" alt="Mike Bostock" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
+        <span>Mike Bostock · Wikipedia</span>
+      </a>
+      <a href="https://baike.baidu.com/item/%E5%B0%A4%E9%9B%A8%E6%BA%AA" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
+        <img src="https://avatars.githubusercontent.com/u/499550?v=4" alt="尤雨溪 (Evan You)" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
+        <span>尤雨溪 · 百度百科</span>
+      </a>
+      <a href="https://en.wikipedia.org/wiki/Evan_You" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 hover:text-primary-600">
+        <i class="fas fa-globe text-[11px]"></i>
+        <span>Evan You · Wikipedia</span>
+      </a>
+    </div>
+    <div class="mt-3 flex items-center gap-4">
+      <a href="https://d3js.org/" target="_blank" class="inline-flex items-center gap-2 hover:opacity-80">
+        <img src="https://d3js.org/logo.svg" alt="D3.js Logo" class="h-5 object-contain">
+        <span class="text-xs text-slate-500 dark:text-slate-400">D3.js 官网</span>
+      </a>
+      <a href="https://vuejs.org/" target="_blank" class="inline-flex items-center gap-2 hover:opacity-80">
+        <img src="https://vuejs.org/images/logo.png" alt="Vue.js Logo" class="h-5 object-contain">
+        <span class="text-xs text-slate-500 dark:text-slate-400">Vue.js 官网</span>
+      </a>
+    </div>
+  </div>
 
-<!-- Timeline -->
-<div class="relative border-l-4 border-slate-200 dark:border-slate-700 ml-4 my-10 space-y-12">
-
-<!-- Event 1 -->
-<div class="relative pl-8">
-<div class="absolute -left-[10px] top-1 w-6 h-6 bg-slate-100 border-4 border-slate-400 rounded-full"></div>
-<div class="flex items-baseline gap-3 mb-1">
-<span class="font-bold text-2xl text-slate-800">1989</span>
-<span class="font-bold text-primary-600">Web 诞生于 CERN (欧洲核子研究中心)</span>
-</div>
-<p class="text-sm text-slate-600 dark:text-slate-400">物理学家 <strong>Tim Berners-Lee</strong> 为了解决全球科学家之间论文格式不兼容、信息无法共享的痛点，发明了 HTML。
-<span class="bg-primary-50 dark:bg-primary-900/30 text-primary-700 px-2 py-0.5 rounded text-xs ml-1">基因：为科学交流而生</span></p>
-<div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
-<a href="https://baike.baidu.com/item/%E8%92%82%E5%A7%86%C2%B7%E4%BC%AF%E7%BA%B3%E6%96%AF-%E6%9D%8E" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/LS3_4919_%28cropped%29.jpg/330px-LS3_4919_%28cropped%29.jpg" alt="Tim Berners-Lee" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
-<span>Tim Berners-Lee · 百度百科</span>
-</a>
-<a href="https://en.wikipedia.org/wiki/Tim_Berners-Lee" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 hover:text-primary-600">
-<i class="fas fa-globe text-[11px]"></i>
-<span>Wikipedia</span>
-</a>
-</div>
-<div class="mt-3 flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
-<a href="https://www.w3.org/People/Berners-Lee/" target="_blank" class="inline-flex items-center gap-2 hover:text-primary-600">
-<span class="w-8 h-8 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center">
-<i class="fas fa-user text-slate-500 dark:text-slate-400 text-xs"></i>
-</span>
-<span>Tim Berners-Lee 个人主页（W3C）</span>
-</a>
-<a href="https://home.cern/" target="_blank" class="inline-flex items-center gap-2 hover:text-primary-600">
-<span class="w-8 h-8 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center">
-<i class="fas fa-atom text-slate-500 dark:text-slate-400 text-xs"></i>
-</span>
-<span>CERN 官网</span>
-</a>
-</div>
-</div>
-
-<!-- Event 2 -->
-<div class="relative pl-8">
-<div class="absolute -left-[10px] top-1 w-6 h-6 bg-slate-100 border-4 border-slate-300 rounded-full"></div>
-<div class="flex items-baseline gap-3 mb-1">
-<span class="font-bold text-xl text-slate-500 dark:text-slate-400">2004</span>
-<span class="font-medium text-slate-700 dark:text-slate-300">Markdown 发布</span>
-</div>
-<p class="text-sm text-slate-500 dark:text-slate-400">John Gruber 为了简化 HTML 的书写，创造了“易读易写”的纯文本格式。它成为了后来 AI 输出的默认格式。</p>
-<div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
-<a href="https://baike.baidu.com/item/%E7%BA%A6%E7%BF%B0%C2%B7%E6%A0%BC%E9%B2%81%E4%BC%AF" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/64/John_Gruber%2C_2009_%28cropped%29.jpg" alt="John Gruber" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
-<span>John Gruber · 百度百科</span>
-</a>
-<a href="https://en.wikipedia.org/wiki/John_Gruber" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 hover:text-primary-600">
-<i class="fas fa-globe text-[11px]"></i>
-<span>Wikipedia</span>
-</a>
-</div>
-<div class="mt-3 text-xs">
-<a href="https://daringfireball.net/projects/markdown/" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded bg-slate-50 dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:text-primary-600 hover:bg-primary-50 dark:bg-primary-900/30 border border-slate-100">
-<i class="fas fa-link text-xs"></i>
-<span>原始 Markdown 规范（Daring Fireball）</span>
-</a>
-</div>
-</div>
-
-<!-- Event 3 -->
-<div class="relative pl-8">
-<div class="absolute -left-[10px] top-1 w-6 h-6 bg-white dark:bg-gray-800 border-4 border-blue-500 rounded-full"></div>
-<div class="flex items-baseline gap-3 mb-1">
-<span class="font-bold text-2xl text-slate-800">2008</span>
-<span class="font-bold text-blue-600">Chrome 与 V8 引擎革命</span>
-</div>
-<p class="text-sm text-slate-600 dark:text-slate-400">Google 推出了极速的 JavaScript 引擎 V8。浏览器不再只是“文档查看器”，变成了能运行复杂程序（如 3D 绘图、数据分析）的“超级操作系统”。
-<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded text-xs ml-1">转折点：浏览器性能飞跃</span></p>
-<div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
-<a href="https://baike.baidu.com/item/%E6%8B%89%E6%96%AF%C2%B7%E5%B7%B4%E5%85%8B" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
-<img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/Lars_Bak.png" alt="Lars Bak" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
-<span>Lars Bak · 百度百科</span>
-</a>
-<a href="https://en.wikipedia.org/wiki/Lars_Bak_(computer_programmer)" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 hover:text-blue-600">
-<i class="fas fa-globe text-[11px]"></i>
-<span>Wikipedia</span>
-</a>
-</div>
-<div class="mt-3 flex items-center gap-4">
-<a href="https://www.google.com/" target="_blank" class="inline-flex items-center gap-2 hover:opacity-80">
-<img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google Logo" class="h-4 object-contain">
-<span class="text-xs text-slate-500 dark:text-slate-400">Google</span>
-</a>
-<a href="https://www.google.com/chrome/" target="_blank" class="inline-flex items-center gap-2 hover:opacity-80">
-<img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="Chrome Logo" class="h-5 object-contain">
-<span class="text-xs text-slate-500 dark:text-slate-400">Chrome 浏览器</span>
-</a>
-<a href="https://v8.dev/" target="_blank" class="inline-flex items-center gap-2 hover:text-blue-600 text-xs text-slate-500 dark:text-slate-400">
-<i class="fas fa-bolt text-blue-500 text-xs"></i>
-<span>V8 引擎官方博客</span>
-</a>
-</div>
-</div>
-
-<!-- Event 4 -->
-<div class="relative pl-8">
-<div class="absolute -left-[10px] top-1 w-6 h-6 bg-slate-100 border-4 border-slate-300 rounded-full"></div>
-<div class="flex items-baseline gap-3 mb-1">
-<span class="font-bold text-xl text-slate-500 dark:text-slate-400">2011-2014</span>
-<span class="font-medium text-slate-700 dark:text-slate-300">可视化与前端框架爆发</span>
-</div>
-<p class="text-sm text-slate-500 dark:text-slate-400">
-<strong>D3.js (2011)</strong> 让数据可以在网页上动起来；<br>
-<strong>Vue.js (2014)</strong> 让开发者能像搭积木一样构建复杂应用。
-</p>
-<div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
-<a href="https://en.wikipedia.org/wiki/Mike_Bostock" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
-<img src="https://avatars.githubusercontent.com/u/230541?v=4" alt="Mike Bostock" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
-<span>Mike Bostock · Wikipedia</span>
-</a>
-<a href="https://baike.baidu.com/item/%E5%B0%A4%E9%9B%A8%E6%BA%AA" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
-<img src="https://avatars.githubusercontent.com/u/499550?v=4" alt="尤雨溪 (Evan You)" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
-<span>尤雨溪 · 百度百科</span>
-</a>
-<a href="https://en.wikipedia.org/wiki/Evan_You" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 hover:text-primary-600">
-<i class="fas fa-globe text-[11px]"></i>
-<span>Evan You · Wikipedia</span>
-</a>
-</div>
-<div class="mt-3 flex items-center gap-4">
-<a href="https://d3js.org/" target="_blank" class="inline-flex items-center gap-2 hover:opacity-80">
-<img src="https://d3js.org/logo.svg" alt="D3.js Logo" class="h-5 object-contain">
-<span class="text-xs text-slate-500 dark:text-slate-400">D3.js 官网</span>
-</a>
-<a href="https://vuejs.org/" target="_blank" class="inline-flex items-center gap-2 hover:opacity-80">
-<img src="https://vuejs.org/images/logo.png" alt="Vue.js Logo" class="h-5 object-contain">
-<span class="text-xs text-slate-500 dark:text-slate-400">Vue.js 官网</span>
-</a>
-</div>
+  <div class="relative pl-8">
+    <div class="absolute -left-[10px] top-1 w-6 h-6 bg-white dark:bg-gray-800 border-4 border-purple-500 rounded-full animate-pulse"></div>
+    <div class="flex items-baseline gap-3 mb-1">
+      <span class="font-bold text-2xl text-slate-800">Now</span>
+      <span class="font-bold text-purple-600">AI Coding 时代</span>
+    </div>
+    <p class="text-sm text-slate-600 dark:text-slate-400">无需手写 V8 或 Vue 语法，只需自然语言 Prompt，即可调动上述历史积淀生成科研工具。</p>
+    <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
+      <a href="https://baike.baidu.com/item/%E8%90%A8%E5%A7%86%C2%B7%E9%98%BF%E7%89%B9%E6%9B%BC" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Sam_Altman_TechCrunch_SF_2019_Day_2_Oct_3_%28cropped%29.jpg/330px-Sam_Altman_TechCrunch_SF_2019_Day_2_Oct_3_%28cropped%29.jpg" alt="Sam Altman" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
+        <span>Sam Altman · 百度百科</span>
+      </a>
+      <a href="https://en.wikipedia.org/wiki/Sam_Altman" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 hover:text-purple-600">
+        <i class="fas fa-globe text-[11px]"></i>
+        <span>Wikipedia</span>
+      </a>
+    </div>
+  </div>
 </div>
 
-<!-- Event 5 -->
-<div class="relative pl-8">
-<div class="absolute -left-[10px] top-1 w-6 h-6 bg-white dark:bg-gray-800 border-4 border-purple-500 rounded-full animate-pulse"></div>
-<div class="flex items-baseline gap-3 mb-1">
-<span class="font-bold text-2xl text-slate-800">Now</span>
-<span class="font-bold text-purple-600">AI Coding 时代</span>
-</div>
-<p class="text-sm text-slate-600 dark:text-slate-400">我们不需要再学习复杂的 V8 引擎或 Vue 语法。我们只需要用自然语言（Prompt）命令 AI，就能调动上述所有历史积淀，生成专业级的科研工具。</p>
-<div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
-<a href="https://baike.baidu.com/item/%E8%90%A8%E5%A7%86%C2%B7%E9%98%BF%E7%89%B9%E6%9B%BC" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-primary-50 dark:bg-primary-900/30 text-primary-700 hover:bg-primary-100">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Sam_Altman_TechCrunch_SF_2019_Day_2_Oct_3_%28cropped%29.jpg/330px-Sam_Altman_TechCrunch_SF_2019_Day_2_Oct_3_%28cropped%29.jpg" alt="Sam Altman" class="w-9 h-9 rounded-full object-cover ring-2 ring-white shadow" loading="lazy">
-<span>Sam Altman · 百度百科</span>
-</a>
-<a href="https://en.wikipedia.org/wiki/Sam_Altman" target="_blank" class="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 hover:text-purple-600">
-<i class="fas fa-globe text-[11px]"></i>
-<span>Wikipedia</span>
-</a>
-</div>
-</div>
+### 1.2 辨析：Markdown vs. HTML
+
+<div class="not-prose grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+  <div class="glass-card p-6 rounded-xl flex flex-col h-full">
+    <div class="mb-4">
+      <span class="bg-slate-100 text-slate-600 dark:text-slate-400 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">Markdown</span>
+      <div class="text-lg font-bold text-slate-900 dark:text-slate-100 mt-1">2004 年的极简主义</div>
+    </div>
+    <div class="flex-grow space-y-4 text-sm text-slate-600 dark:text-slate-400">
+      <p><strong>你其实早就见过它</strong>：星号 <code>**重点**</code>、井号 <code># 标题</code> 都是标记。它是所有 AI 模型输出文本时的默认格式。</p>
+      <div class="bg-red-50 text-red-700 p-3 rounded text-xs border border-red-100">
+        <strong>局限</strong>：它是一张“数字纸张”。排序表格、图像放大、交互按钮都做不到。
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card p-6 rounded-xl flex flex-col h-full border border-primary-100 shadow-lg shadow-primary-500/5">
+    <div class="mb-4">
+      <span class="bg-primary-100 text-primary-600 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">HTML</span>
+      <div class="text-lg font-bold text-slate-900 dark:text-slate-100 mt-1">全维度的数字容器</div>
+    </div>
+    <div class="flex-grow space-y-4 text-sm text-slate-600 dark:text-slate-400">
+      <p><strong>本质</strong>：结构（Structure）、表现（Presentation）、行为（Behavior）的结合。AI 可以轻松生成 HTML，让浏览器立即把它变成可交互的软件。</p>
+      <div class="bg-green-50 text-green-800 p-3 rounded text-xs border border-green-100">
+        <strong>优势</strong>：信息从“二维纸面”跃升到“三维交互”，匹配人类视觉优势。
+      </div>
+    </div>
+  </div>
 </div>
 
-<h3 class="text-xl font-bold text-slate-800 mt-10 mb-4 flex items-center gap-2">
-<span class="w-1.5 h-6 bg-primary-50 dark:bg-primary-900/300 rounded-full"></span>
-1.2 辨析：Markdown vs. HTML
-</h3>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 not-prose">
-<!-- Markdown Card -->
-<div class="glass-card p-6 rounded-xl flex flex-col h-full">
-<div class="mb-4">
-<span class="bg-slate-100 text-slate-600 dark:text-slate-400 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">Markdown</span>
-<h4 class="text-lg font-bold text-slate-900 dark:text-slate-100 mt-1">2004 年的极简主义</h4>
-</div>
-<div class="flex-grow space-y-4 text-sm text-slate-600 dark:text-slate-400">
-<p><strong>你其实早就见过它</strong>：哪怕你从未听说过“Markdown”，你其实每天都在与它打交道。比如，原本应该是<strong>加粗</strong>的文字，两边却出现了星号 <code>**重点**</code>；大标题前面带着井号 <code># 标题</code>。</p>
-<p><strong>这就是 Markdown</strong>：这些符号是<strong>标记</strong>。它是目前所有 AI 模型输出文本时的<strong>默认格式</strong>。</p>
-<div class="bg-red-50 text-red-700 p-3 rounded text-xs border border-red-100">
-<strong>局限</strong>：它是一张“数字纸张”。当你需要排序表格、点击图片查看细节时，Markdown 做不到。
-</div>
-</div>
+<div class="not-prose mt-6 p-4 bg-slate-800 text-slate-200 rounded-lg text-center text-sm font-medium">
+  结论：<span class="text-white">Markdown</span> 适合用来与 AI 对话（输入），<span class="text-white">HTML</span> 适合用来接收 AI 的成果（输出）。
 </div>
 
-<!-- HTML Card -->
-<div class="glass-card p-6 rounded-xl flex flex-col h-full border border-primary-100 shadow-lg shadow-primary-500/5">
-<div class="mb-4">
-<span class="bg-primary-100 text-primary-600 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">HTML</span>
-<h4 class="text-lg font-bold text-slate-900 dark:text-slate-100 mt-1">全维度的数字容器</h4>
-</div>
-<div class="flex-grow space-y-4 text-sm text-slate-600 dark:text-slate-400">
-<p><strong>本质</strong>：它是<strong>为了“用”而设计的</strong>。它是结构化语言（Structure）、表现层（Presentation）与行为层（Behavior）的完美结合。</p>
-<div class="bg-green-50 text-green-800 p-3 rounded text-xs border border-green-100">
-<strong>优势</strong>：它是 AI 的“母语”之一。AI 可以轻松生成包含复杂逻辑的 HTML 代码，而通过浏览器，这些代码立刻变成了可以点击、滑动、交互的“软件”。它将信息从“二维的纸面”提升到了“三维的交互空间”。
-</div>
-</div>
-</div>
-</div>
+## 可视化工具的谱系——寻找“中间地带”
 
-<div class="mt-6 p-4 bg-slate-800 text-slate-200 rounded-lg text-center text-sm font-medium">
-结论：在人机协作的新流中，<span class="text-white">Markdown</span> 适合用来与 AI 对话（输入），而 <span class="text-white">HTML</span> 适合用来接收 AI 的成果（输出）。
-</div>
-</div>
-</section>
+在科研可视化的光谱上，我们拥有不同的工具。理解它们的边界，是选择正确工具的前提。
 
-<!-- Chapter 2 -->
-<section class="mb-20">
-<div class="flex items-center gap-4 mb-8">
-<div class="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-200 text-slate-700 dark:text-slate-300">
-<span class="font-bold text-lg">02</span>
-</div>
-<h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 m-0">可视化工具的谱系——寻找“中间地带”</h2>
-</div>
+### 2.1 基础层：Markdown (草稿本)
 
-<div class="prose prose-lg prose-slate max-w-none">
-<p>在科研可视化的光谱上，我们拥有不同的工具。理解它们的边界，是选择正确工具的前提。</p>
-
-<div class="space-y-8 mt-8">
-<!-- Layer 1 -->
-<div class="relative pl-8 border-l-2 border-slate-200 dark:border-slate-700">
-<div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-300 border-2 border-white"></div>
-<h3 class="text-xl font-bold text-slate-800 mb-2">2.1 基础层：Markdown (草稿本)</h3>
-<p class="text-sm text-slate-500 dark:text-slate-400 mb-2">这是我们与 ChatGPT 对话时最常见的格式，也是目前 AI 的默认输出。</p>
-<div class="flex flex-wrap gap-2 text-sm">
-<span class="px-2 py-1 bg-slate-100 text-slate-600 dark:text-slate-400 rounded">纯文本</span>
-<span class="px-2 py-1 bg-slate-100 text-slate-600 dark:text-slate-400 rounded">格式简单</span>
-<span class="px-2 py-1 bg-red-50 text-red-600 rounded">局限：静态且线性</span>
-</div>
-<div class="mt-4 grid md:grid-cols-2 gap-4 text-xs not-prose">
-<div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono">
-<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">原始格式（Markdown）</div>
-<pre><code># 免疫检查点阻断简介
+<div class="not-prose relative pl-8 border-l-2 border-slate-200 dark:border-slate-700">
+  <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-300 border-2 border-white"></div>
+  <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">与 ChatGPT 对话时最常见的格式，也是目前 AI 的默认输出。</p>
+  <div class="flex flex-wrap gap-2 text-sm">
+    <span class="px-2 py-1 bg-slate-100 text-slate-600 dark:text-slate-400 rounded">纯文本</span>
+    <span class="px-2 py-1 bg-slate-100 text-slate-600 dark:text-slate-400 rounded">格式简单</span>
+    <span class="px-2 py-1 bg-red-50 text-red-600 rounded">局限：静态且线性</span>
+  </div>
+  <div class="mt-4 grid md:grid-cols-2 gap-4 text-xs">
+    <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono">
+      <div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">原始格式（Markdown）</div>
+      <pre><code># 免疫检查点阻断简介
 
 **PD-1 抑制剂** 可以重新激活
 被耗竭的 T 细胞。
 
 - nivolumab
 - pembrolizumab</code></pre>
-</div>
-<div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700 text-[13px] leading-relaxed">
-<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">渲染效果（在论文 / 网页中）</div>
-<h4 class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-1">免疫检查点阻断简介</h4>
-<p class="mb-1"><strong>PD-1 抑制剂</strong> 可以重新激活被耗竭的 T 细胞。</p>
-<ul class="list-disc pl-5 text-slate-600 dark:text-slate-400">
-<li>nivolumab</li>
-<li>pembrolizumab</li>
-</ul>
-</div>
-</div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700 text-[13px] leading-relaxed">
+      <div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">渲染效果（在论文 / 网页中）</div>
+      <div class="text-sm font-bold text-slate-900 dark:text-slate-100 mb-1">免疫检查点阻断简介</div>
+      <p class="mb-1"><strong>PD-1 抑制剂</strong> 可以重新激活被耗竭的 T 细胞。</p>
+      <ul class="list-disc pl-5 text-slate-600 dark:text-slate-400">
+        <li>nivolumab</li>
+        <li>pembrolizumab</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
-<!-- Layer 2 -->
-<div class="relative pl-8 border-l-2 border-slate-200 dark:border-slate-700">
-<div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-300 border-2 border-white"></div>
-<h3 class="text-xl font-bold text-slate-800 mb-2">2.2 严谨层：Python / R (印刷机)</h3>
-<p class="text-sm text-slate-500 dark:text-slate-400 mb-2">这是我们在发表 SCI 论文时使用的工具（如 Matplotlib, ggplot2）。</p>
-<div class="mb-2 text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-900 p-2 rounded inline-block">
-<strong>历史背景</strong>：John Hunter (Matplotlib, 2003) / Hadley Wickham (ggplot2, 2005)
-</div>
-<div class="flex flex-wrap gap-2 text-sm mt-1">
-<span class="px-2 py-1 bg-slate-100 text-slate-600 dark:text-slate-400 rounded">静态高清</span>
-<span class="px-2 py-1 bg-slate-100 text-slate-600 dark:text-slate-400 rounded">精确控制</span>
-<span class="px-2 py-1 bg-red-50 text-red-600 rounded">局限：重且慢</span>
-</div>
-<div class="mt-4 grid md:grid-cols-2 gap-4 text-xs not-prose">
-<div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono overflow-x-auto">
-<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">原始格式（Python / Matplotlib）</div>
-<pre><code>import matplotlib.pyplot as plt
+### 2.2 严谨层：Python / R (印刷机)
+
+<div class="not-prose relative pl-8 border-l-2 border-slate-200 dark:border-slate-700">
+  <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-slate-300 border-2 border-white"></div>
+  <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">发表 SCI 论文常用的绘图工具（Matplotlib, ggplot2）。</p>
+  <div class="mb-2 text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-900 p-2 rounded inline-block">
+    <strong>历史背景</strong>：John Hunter (Matplotlib, 2003) / Hadley Wickham (ggplot2, 2005)
+  </div>
+  <div class="flex flex-wrap gap-2 text-sm mt-1">
+    <span class="px-2 py-1 bg-slate-100 text-slate-600 dark:text-slate-400 rounded">静态高清</span>
+    <span class="px-2 py-1 bg-slate-100 text-slate-600 dark:text-slate-400 rounded">精确控制</span>
+    <span class="px-2 py-1 bg-red-50 text-red-600 rounded">局限：重且慢</span>
+  </div>
+  <div class="mt-4 grid md:grid-cols-2 gap-4 text-xs">
+    <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono overflow-x-auto">
+      <div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">原始格式（Python / Matplotlib）</div>
+      <pre><code>import matplotlib.pyplot as plt
 
 groups = ["CR", "PR", "SD", "PD"]
 values = [12, 25, 18, 9]
@@ -380,131 +333,116 @@ plt.ylabel("Patients")
 plt.title("Response to PD-1 Blockade")
 plt.tight_layout()
 plt.show()</code></pre>
-</div>
-<div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700 text-[13px] leading-relaxed flex flex-col">
-<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">渲染效果（论文中的静态图）</div>
-<div class="flex-1 flex items-center justify-center">
-<div class="w-full max-w-xs h-32 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 rounded-lg flex items-end justify-around px-4 py-3">
-<div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
-<div class="w-6 bg-blue-500 rounded-t h-16 mb-1"></div>
-<span>CR</span>
-</div>
-<div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
-<div class="w-6 bg-blue-500 rounded-t h-24 mb-1"></div>
-<span>PR</span>
-</div>
-<div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
-<div class="w-6 bg-blue-500 rounded-t h-14 mb-1"></div>
-<span>SD</span>
-</div>
-<div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
-<div class="w-6 bg-blue-500 rounded-t h-8 mb-1"></div>
-<span>PD</span>
-</div>
-</div>
-</div>
-<p class="mt-2 text-[11px] text-slate-500 dark:text-slate-400 text-center">静态 PNG / PDF，被嵌入到文章中。</p>
-</div>
-</div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700 text-[13px] leading-relaxed flex flex-col">
+      <div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">渲染效果（论文中的静态图）</div>
+      <div class="flex-1 flex items-center justify-center">
+        <div class="w-full max-w-xs h-32 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 rounded-lg flex items-end justify-around px-4 py-3">
+          <div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
+            <div class="w-6 bg-blue-500 rounded-t h-16 mb-1"></div>
+            <span>CR</span>
+          </div>
+          <div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
+            <div class="w-6 bg-blue-500 rounded-t h-24 mb-1"></div>
+            <span>PR</span>
+          </div>
+          <div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
+            <div class="w-6 bg-blue-500 rounded-t h-14 mb-1"></div>
+            <span>SD</span>
+          </div>
+          <div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
+            <div class="w-6 bg-blue-500 rounded-t h-8 mb-1"></div>
+            <span>PD</span>
+          </div>
+        </div>
+      </div>
+      <p class="mt-2 text-[11px] text-slate-500 dark:text-slate-400 text-center">静态 PNG / PDF，被嵌入到文章中。</p>
+    </div>
+  </div>
 </div>
 
-<!-- Layer 3 -->
-<div class="relative pl-8 border-l-2 border-primary-500">
-<div class="absolute -left-[11px] top-0 w-5 h-5 rounded-full bg-primary-50 dark:bg-primary-900/300 border-4 border-primary-100 shadow-sm"></div>
-<h3 class="text-xl font-bold text-primary-700 mb-2">2.3 核心层：HTML + JS (仪表盘)</h3>
-<p class="text-sm text-slate-500 dark:text-slate-400 mb-2">这是本课程的核心，也是被大多数科研人员忽视的“中间地带”。</p>
-<div class="mb-2 text-sm text-slate-600 dark:text-slate-400 bg-primary-50 dark:bg-primary-900/30 p-2 rounded inline-block border border-primary-100">
-<strong>历史背景</strong>：Mike Bostock (D3.js, 2011) —— 开启“数据驱动文档”时代。
-</div>
-<ul class="list-none space-y-2 mt-2">
-<li class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-<i class="fas fa-chevron-down text-primary-500 text-xs"></i> <strong>折叠 (Collapsible)</strong>：保持主界面清爽。
-</li>
-<li class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-<i class="fas fa-filter text-primary-500 text-xs"></i> <strong>筛选 (Filtering)</strong>：瞬间找到关注的数据。
-</li>
-<li class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
-<i class="fas fa-mouse-pointer text-primary-500 text-xs"></i> <strong>响应 (Responsiveness)</strong>：悬停显示数值，框选放大。
-</li>
-</ul>
-<p class="text-sm font-bold text-primary-700 mt-2">价值：它是思考的容器。提供了最佳的探索性数据分析 (EDA) 体验。</p>
-<div class="mt-4 grid md:grid-cols-2 gap-4 text-xs not-prose">
-<div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono overflow-x-auto">
-<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">原始格式（HTML + JS 仪表盘片段）</div>
-<pre><code>&lt;div id="response-dashboard"&gt;
-&lt;select id="group-filter"&gt;
-&lt;option value="all"&gt;All patients&lt;/option&gt;
-&lt;option value="responder"&gt;Responders (CR+PR)&lt;/option&gt;
-&lt;/select&gt;
-&lt;div class="bar" data-type="CR"&gt;CR: 12&lt;/div&gt;
-&lt;div class="bar" data-type="PR"&gt;PR: 25&lt;/div&gt;
-&lt;div class="bar" data-type="SD"&gt;SD: 18&lt;/div&gt;
-&lt;div class="bar" data-type="PD"&gt;PD: 9&lt;/div&gt;
+### 2.3 核心层：HTML + JS (仪表盘)
+
+<div class="not-prose relative pl-8 border-l-2 border-primary-500">
+  <div class="absolute -left-[11px] top-0 w-5 h-5 rounded-full bg-primary-50 dark:bg-primary-900/30 border-4 border-primary-100 shadow-sm"></div>
+  <p class="text-sm text-slate-500 dark:text-slate-400 mb-2">本课程的核心，也是常被忽视的“中间地带”。</p>
+  <div class="mb-2 text-sm text-slate-600 dark:text-slate-400 bg-primary-50 dark:bg-primary-900/30 p-2 rounded inline-block border border-primary-100">
+    <strong>历史背景</strong>：Mike Bostock (D3.js, 2011) —— 开启“数据驱动文档”时代。
+  </div>
+  <ul class="list-none space-y-2 mt-2">
+    <li class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+      <i class="fas fa-chevron-down text-primary-500 text-xs"></i> <strong>折叠</strong>：保持主界面清爽。
+    </li>
+    <li class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+      <i class="fas fa-filter text-primary-500 text-xs"></i> <strong>筛选</strong>：瞬间找到关注的数据。
+    </li>
+    <li class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+      <i class="fas fa-mouse-pointer text-primary-500 text-xs"></i> <strong>响应</strong>：悬停显示数值，框选放大。
+    </li>
+  </ul>
+  <p class="text-sm font-bold text-primary-700 mt-2">价值：它是思考的容器，提供最佳的探索性数据分析 (EDA) 体验。</p>
+  <div class="mt-4 grid md:grid-cols-2 gap-4 text-xs">
+    <div class="bg-slate-900 text-slate-100 rounded-lg p-3 font-mono overflow-x-auto">
+      <div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">原始格式（HTML + JS 仪表盘片段）</div>
+      <pre><code>&lt;div id="response-dashboard"&gt;
+  &lt;select id="group-filter"&gt;
+    &lt;option value="all"&gt;All patients&lt;/option&gt;
+    &lt;option value="responder"&gt;Responders (CR+PR)&lt;/option&gt;
+  &lt;/select&gt;
+  &lt;div class="bar" data-type="CR"&gt;CR: 12&lt;/div&gt;
+  &lt;div class="bar" data-type="PR"&gt;PR: 25&lt;/div&gt;
+  &lt;div class="bar" data-type="SD"&gt;SD: 18&lt;/div&gt;
+  &lt;div class="bar" data-type="PD"&gt;PD: 9&lt;/div&gt;
 &lt;/div&gt;</code></pre>
-</div>
-<div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700 text-[13px] leading-relaxed">
-<div class="flex items-center justify-between">
-<div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">渲染效果（炫彩交互仪表盘）</div>
-<div class="flex gap-2">
-<button class="px-2 py-1 text-[11px] rounded bg-gradient-to-r from-indigo-500 to-cyan-400 text-white shadow" onclick="renderDashboardDemo(true)">刷新模拟数据</button>
-<select id="group-filter-demo" class="p-1.5 border border-slate-200 dark:border-slate-700 rounded text-[11px]" onchange="filterResponseBarsDemo()">
-<option value="all">All patients</option>
-<option value="responder">Responders</option>
-</select>
-</div>
-</div>
-<div id="response-dashboard-demo" class="mt-2 space-y-3">
-<div class="grid grid-cols-4 gap-2 h-28 items-end">
-<div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
-<div class="w-full rounded-t response-bar-demo transition-all duration-500 shadow-sm" data-type="CR"></div>
-<span class="mt-1 font-semibold text-slate-700 dark:text-slate-300">CR</span>
-</div>
-<div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
-<div class="w-full rounded-t response-bar-demo transition-all duration-500 shadow-sm" data-type="PR"></div>
-<span class="mt-1 font-semibold text-slate-700 dark:text-slate-300">PR</span>
-</div>
-<div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
-<div class="w-full rounded-t response-bar-demo transition-all duration-500 shadow-sm" data-type="SD"></div>
-<span class="mt-1 text-slate-500 dark:text-slate-400">SD</span>
-</div>
-<div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
-<div class="w-full rounded-t response-bar-demo transition-all duration-500 shadow-sm" data-type="PD"></div>
-<span class="mt-1 text-slate-500 dark:text-slate-400">PD</span>
-</div>
-</div>
-<div class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-2">
-<span class="inline-flex items-center gap-1 text-indigo-600"><i class="fas fa-magic text-xs"></i> 渐变高亮</span>
-<span class="inline-flex items-center gap-1 text-emerald-600"><i class="fas fa-filter text-xs"></i> 筛选突出 CR/PR</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Chapter 3 -->
-<section class="mb-20">
-<div class="flex items-center gap-4 mb-8">
-<div class="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-200 text-slate-700 dark:text-slate-300">
-<span class="font-bold text-lg">03</span>
-</div>
-<h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 m-0">实战——全流程的交互式重构</h2>
+    </div>
+    <div class="bg-white dark:bg-gray-800 rounded-lg p-3 border border-slate-200 dark:border-slate-700 text-[13px] leading-relaxed">
+      <div class="flex items-center justify-between">
+        <div class="text-[10px] uppercase tracking-wider text-slate-400 mb-1">渲染效果（炫彩交互仪表盘）</div>
+        <div class="flex gap-2">
+          <button class="px-2 py-1 text-[11px] rounded bg-gradient-to-r from-indigo-500 to-cyan-400 text-white shadow" onclick="renderDashboardDemo(true)">刷新模拟数据</button>
+          <select id="group-filter-demo" class="p-1.5 border border-slate-200 dark:border-slate-700 rounded text-[11px]" onchange="filterResponseBarsDemo()">
+            <option value="all">All patients</option>
+            <option value="responder">Responders</option>
+          </select>
+        </div>
+      </div>
+      <div id="response-dashboard-demo" class="mt-2 space-y-3">
+        <div class="grid grid-cols-4 gap-2 h-28 items-end">
+          <div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
+            <div class="w-full rounded-t response-bar-demo transition-all duration-500 shadow-sm" data-type="CR"></div>
+            <span class="mt-1 font-semibold text-slate-700 dark:text-slate-300">CR</span>
+          </div>
+          <div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
+            <div class="w-full rounded-t response-bar-demo transition-all duration-500 shadow-sm" data-type="PR"></div>
+            <span class="mt-1 font-semibold text-slate-700 dark:text-slate-300">PR</span>
+          </div>
+          <div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
+            <div class="w-full rounded-t response-bar-demo transition-all duration-500 shadow-sm" data-type="SD"></div>
+            <span class="mt-1 text-slate-500 dark:text-slate-400">SD</span>
+          </div>
+          <div class="flex flex-col items-center text-[11px] text-slate-600 dark:text-slate-400">
+            <div class="w-full rounded-t response-bar-demo transition-all duration-500 shadow-sm" data-type="PD"></div>
+            <span class="mt-1 text-slate-500 dark:text-slate-400">PD</span>
+          </div>
+        </div>
+        <div class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-2">
+          <span class="inline-flex items-center gap-1 text-indigo-600"><i class="fas fa-magic text-xs"></i> 渐变高亮</span>
+          <span class="inline-flex items-center gap-1 text-emerald-600"><i class="fas fa-filter text-xs"></i> 筛选突出 CR/PR</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="prose prose-lg prose-slate max-w-none mb-12">
-<p>理论必须服务于实践。以下是 5 个可以在科研中立刻使用的具体场景。每个场景都配有<strong>“保姆级”操作步骤</strong>和<strong>可以直接复制给 AI 的 Prompt</strong>。</p>
-</div>
+## 实战——全流程的交互式重构
 
-<div class="space-y-16">
-<!-- Case 3.1 -->
+理论必须服务于实践。以下是 5 个可以立刻落地的场景，每个都配有 **操作步骤** 与 **可直接复制的 Prompt**。
+
+<div class="not-prose space-y-16">
+### 3.1 阅读的重构：从线性文本到交互式 App
+
 <div class="glass-card p-8 rounded-2xl relative overflow-hidden">
 <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -z-10"></div>
-<h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2 border-b border-slate-100 pb-4">
-<i class="fas fa-book-reader text-primary-500"></i>
-3.1 阅读的重构：从线性文本到交互式 App
-</h3>
 
 <div class="bg-primary-50 dark:bg-primary-900/30 rounded-lg p-5 mb-6 text-sm text-primary-800 leading-relaxed">
 <strong>核心思路</strong>：我们平常阅读的文献，大多是行间距很窄、版心拥挤的 PDF，图片经常跨页、来回翻找，既不护眼也不利于专注。<br>
@@ -594,12 +532,6 @@ PD-1
 <button onclick="toggleModal()" class="mt-4 px-4 py-2 bg-slate-800 text-white rounded-lg text-sm hover:bg-slate-700 transition-colors">关闭</button>
 </div>
 </div>
-<script>
-function toggleModal() {
-const el = document.getElementById('fig1-modal');
-el.classList.toggle('hidden');
-}
-</script>
 </div>
 
 <!-- Bonus: Gemini Tool -->
@@ -624,44 +556,6 @@ el.classList.toggle('hidden');
 <i class="fas fa-circle-notch fa-spin"></i> 正在解析逻辑...
 </div>
 </div>
-
-<script>
-const apiKey = ""; 
-async function callGemini() {
-const input = document.getElementById('gemini-input').value;
-if (!input.trim()) return;
-
-const outputDiv = document.getElementById('gemini-output');
-const outputContent = outputDiv.querySelector('div');
-const loadingDiv = document.getElementById('gemini-loading');
-
-outputDiv.classList.add('hidden');
-loadingDiv.classList.remove('hidden');
-
-try {
-const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-contents: [{
-parts: [{ text: `Please act as a medical professor. Explain the following academic text in simple, easy-to-understand Chinese for a medical student. Highlight 3 key technical terms in bold. Text: ${input}` }]
-}]
-})
-});
-const data = await response.json();
-const text = data.candidates[0].content.parts[0].text;
-
-outputContent.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-purple-700">$1</strong>').replace(/\n/g, '<br>');
-loadingDiv.classList.add('hidden');
-outputDiv.classList.remove('hidden');
-} catch (e) {
-console.error(e);
-loadingDiv.classList.add('hidden');
-outputDiv.classList.remove('hidden');
-outputContent.innerHTML = '<span class="text-red-500">API 调用失败，请检查网络或 API Key。</span>';
-}
-}
-</script>
 </div>
 
 <!-- 3.1 Prompt 选型与结构拆解 -->
@@ -729,13 +623,10 @@ Prompt 解剖：文献重构类的共同结构
 </div>
 </div>
 
-<!-- Case 3.2 -->
+### 3.2 演示的重构：从静态 PPT 到交互式 Slides
+
 <div class="glass-card p-8 rounded-2xl relative overflow-hidden">
 <div class="absolute top-0 right-0 w-24 h-24 bg-orange-50 rounded-bl-full -z-10"></div>
-<h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2 border-b border-slate-100 pb-4">
-<i class="fas fa-desktop text-orange-500"></i>
-3.2 演示的重构：从静态 PPT 到交互式 Slides
-</h3>
 
 <div class="bg-orange-50 rounded-lg p-5 mb-6 text-sm text-orange-800 leading-relaxed">
 <strong>核心思路</strong>：传统 PPT 汇报往往存在几个痛点：文件体积大、版本混乱（final_v3_real_final.pptx）、动画效果无法跨平台复现，还不便于嵌入可交互图表。<br>
@@ -811,37 +702,6 @@ AI Prompt (直接复制)
 <button onclick="changeSlide(1)" class="w-8 h-8 bg-white dark:bg-gray-800/10 hover:bg-white dark:bg-gray-800/20 rounded text-white flex items-center justify-center backdrop-blur"><i class="fas fa-chevron-right"></i></button>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const slides = [
-        `<h1 class="text-3xl font-bold text-white mb-2">期刊俱乐部</h1><p class="text-orange-400 font-mono">单细胞 RNA-seq 分析</p>`,
-        `<h2 class="text-xl text-white mb-4">代码示例</h2><pre class="bg-slate-800 p-4 rounded text-left text-xs text-green-200 font-mono overflow-x-auto"><code>import scanpy as sc
-adata = sc.read_h5ad('data.h5ad')
-sc.pl.umap(adata, color=['leiden'])</code></pre>`,
-        `<h2 class="text-xl text-white mb-4">交互式图表</h2><div class="flex gap-2 justify-center items-end h-24"><div class="w-8 bg-blue-500 hover:bg-blue-400 h-12 rounded transition-all cursor-pointer" title="NK 细胞: 12%"></div><div class="w-8 bg-purple-500 hover:bg-purple-400 h-20 rounded transition-all cursor-pointer" title="T 细胞: 45%"></div><div class="w-8 bg-rose-500 hover:bg-rose-400 h-16 rounded transition-all cursor-pointer" title="B 细胞: 23%"></div></div><p class="text-xs text-slate-400 mt-2">将鼠标悬停查看数值</p>`
-    ];
-    let currentSlide = 0;
-    const container = document.getElementById('slide-container');
-    
-    if (!container) return;
-
-    function renderSlide() {
-        container.style.opacity = 0;
-        setTimeout(() => {
-            container.innerHTML = slides[currentSlide];
-            container.style.opacity = 1;
-        }, 200);
-    }
-
-    // Expose changeSlide to global scope so onclick works
-    window.changeSlide = function(dir) {
-        currentSlide = (currentSlide + dir + slides.length) % slides.length;
-        renderSlide();
-    }
-
-    renderSlide(); // init
-});
-</script>
 </div>
 </div>
 
@@ -900,13 +760,10 @@ sc.pl.umap(adata, color=['leiden'])</code></pre>`,
 </div>
 </div>
 
-<!-- Case 3.3 -->
+### 3.3 概念的重构：从静态图示到动态模型
+
 <div class="glass-card p-8 rounded-2xl relative overflow-hidden">
 <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-bl-full -z-10"></div>
-<h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2 border-b border-slate-100 pb-4">
-<i class="fas fa-project-diagram text-emerald-500"></i>
-3.3 概念的重构：从静态图示到动态模型
-</h3>
 
 <div class="bg-emerald-50 rounded-lg p-5 mb-6 text-sm text-emerald-800 leading-relaxed">
 <strong>核心思路</strong>：在科研训练中，我们经常需要画“流程图”“信号通路图”或“诊断决策树”。用 PowerPoint 或手动画图，不仅费时费力，而且一旦修改实验流程，整张图几乎等于推倒重来。<br>
@@ -1002,57 +859,6 @@ style Dry_Lab fill:#f3e8ff,stroke:#a855f7
 </div>
 </div>
 
-<script>
-// Initialize Mermaid
-document.addEventListener('DOMContentLoaded', () => {
-    const initMermaid = () => {
-        if (window.mermaid) {
-            mermaid.initialize({
-                startOnLoad: false,
-                theme: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
-                securityLevel: 'loose'
-            });
-            renderMermaid();
-            
-            // Re-init on theme change
-            const observer = new MutationObserver((mutations) => {
-                mutations.forEach((mutation) => {
-                    if (mutation.attributeName === 'class') {
-                        const isDark = document.documentElement.classList.contains('dark');
-                        mermaid.initialize({ theme: isDark ? 'dark' : 'default', securityLevel: 'loose' });
-                        renderMermaid();
-                    }
-                });
-            });
-            observer.observe(document.documentElement, { attributes: true });
-        } else {
-            setTimeout(initMermaid, 100);
-        }
-    };
-    initMermaid();
-});
-
-async function renderMermaid() {
-    const input = document.getElementById('mermaid-input').value;
-    const output = document.getElementById('mermaid-output');
-
-    try {
-        // Clear previous content and create fresh container
-        const id = 'mermaid-' + Date.now();
-        output.innerHTML = '<div class="mermaid" id="' + id + '">' + input + '</div>';
-        
-        if (window.mermaid && mermaid.run) {
-            await mermaid.run({
-                nodes: [document.getElementById(id)]
-            });
-        }
-    } catch (error) {
-        output.innerHTML = '<div class="text-red-500 text-xs p-4">Syntax Error: ' + error.message + '</div>';
-        console.error(error);
-    }
-}
-</script>
-
 <!-- Live Demo 3.3 (CSS Animation) -->
 <div class="mt-6 bg-slate-50 dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center overflow-hidden relative h-48">
 <div class="absolute top-2 left-2 text-xs font-mono text-slate-400">CSS Animation: Receptor Binding</div>
@@ -1078,39 +884,13 @@ L
 <i class="fas fa-play mr-1"></i> Trigger
 </button>
 </div>
-
-<script>
-function activateSignal() {
-const ligand = document.getElementById('ligand');
-const signal = document.getElementById('signal');
-
-// Bind
-ligand.style.top = 'calc(100% - 50px)'; 
-
-// Signal Transduction
-setTimeout(() => {
-signal.style.opacity = '1';
-signal.style.boxShadow = '0 0 10px #facc15';
-}, 1000);
-
-// Reset
-setTimeout(() => {
-ligand.style.top = '40px';
-signal.style.opacity = '0';
-signal.style.boxShadow = 'none';
-}, 3000);
-}
-</script>
 </div>
 </div>
 
-<!-- Case 3.4 -->
+### 3.4 逻辑的重构：从被动查询到专属工具定制
+
 <div class="glass-card p-8 rounded-2xl relative overflow-hidden border border-slate-100 shadow-xl shadow-slate-200/40">
 <div class="absolute top-0 right-0 w-24 h-24 bg-indigo-50 rounded-bl-full -z-10"></div>
-<h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2 border-b border-slate-100 pb-4">
-<i class="fas fa-tools text-indigo-500"></i>
-3.4 逻辑的重构：从被动查询到专属工具定制
-</h3>
 
 <div class="bg-indigo-50 rounded-lg p-5 mb-6 text-sm text-indigo-800 leading-relaxed">
 <strong>核心思路</strong>：在临床和科研中，我们每天都在做各种“如果…则…”的判断：评分量表（GCS、CHA<sub>2</sub>DS<sub>2</sub>-VASc）、分期分级、用药剂量调整等。传统做法要么是纸质表格，要么是在脑中硬记规则，既容易出错，也不便于团队共享。<br>
@@ -1227,41 +1007,13 @@ AI Prompt (直接复制)
 </div>
 </div>
 </div>
-
-<script>
-function calcGCS() {
-const e = parseInt(document.getElementById('eye').value);
-const v = parseInt(document.getElementById('verbal').value);
-const m = parseInt(document.getElementById('motor').value);
-const score = e + v + m;
-const box = document.getElementById('gcs-result-box');
-const scoreEl = document.getElementById('gcs-score');
-const statusEl = document.getElementById('gcs-status');
-
-scoreEl.innerText = score;
-
-if (score <= 8) {
-box.className = "mt-6 p-4 rounded-xl bg-red-500 text-white shadow-lg animate-pulse";
-statusEl.innerText = "重度损伤，考虑气管插管";
-} else if (score <= 12) {
-box.className = "mt-6 p-4 rounded-xl bg-orange-100 text-orange-900";
-statusEl.innerText = "中度损伤";
-} else {
-box.className = "mt-6 p-4 rounded-xl bg-emerald-100 text-emerald-900";
-statusEl.innerText = "正常";
-}
-}
-</script>
 </div>
 </div>
 
-<!-- Case 3.5 -->
+### 3.5 知识的重构：从教材到多步知识卡片流水线
+
 <div class="glass-card p-8 rounded-2xl relative overflow-hidden border border-emerald-100 shadow-xl shadow-emerald-100/40">
 <div class="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-bl-full -z-10"></div>
-<h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2 border-b border-slate-100 pb-4">
-<i class="fas fa-layer-group text-emerald-500"></i>
-3.5 知识的重构：从教材到多步知识卡片流水线
-</h3>
 
 <div class="grid md:grid-cols-2 gap-8 items-start">
 <div class="space-y-4 text-sm text-slate-600 dark:text-slate-400">
@@ -1347,176 +1099,80 @@ statusEl.innerText = "正常";
 </div>
 <p class="mt-2 text-[10px] text-slate-400">提示：用上面的 ANKI/USMLE Prompt，可以把整章节内容批量转化为类似风格的闭合卡片。</p>
 </div>
-<script>
-function toggleAnkiDemo() {
-const front = document.getElementById('anki-front');
-const back = document.getElementById('anki-back');
-const label = document.getElementById('anki-toggle-label');
-const showingFront = !front.classList.contains('hidden');
-if (showingFront) {
-front.classList.add('hidden');
-back.classList.remove('hidden');
-label.innerText = '隐藏答案';
-} else {
-back.classList.add('hidden');
-front.classList.remove('hidden');
-label.innerText = '显示答案';
-}
-}
-</script>
 </div>
 </div>
-</div>
-</div>
-</section>
-
-<!-- Prompt Table Section -->
-<section class="mb-20">
-<div class="flex items-center gap-4 mb-6">
-<div class="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-200 text-slate-700 dark:text-slate-300">
-<span class="font-bold text-lg">P</span>
-</div>
-<h2 class="text-3xl font-bold text-slate-900 dark:text-slate-100 m-0">附录：我的 Prompt 仓库（AI Studio）</h2>
-</div>
-
-<div class="glass-card rounded-2xl p-6">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-<div class="prose prose-slate max-w-none text-sm">
-<p>下方小窗口实时引用我在 Notion 中维护的 <strong>Prompts List</strong> 表格，用来集中存放本课程中用到的 System Prompt 和场景 Prompt。</p>
-<ul class="text-sm text-slate-600 dark:text-slate-400 list-disc pl-5 space-y-1">
-<li><span class="font-medium">html / code / knowledge / agent</span> 等标签，对应讲义中的几个主线：文献重构、代码阅读与前端可视化、知识卡片（USMLE / ANKI）、以及多步骤智能体。</li>
-<li>学生可以一边阅读讲义，一边在表格中按标签筛选，并把适合自己的 Prompt 复制到 AI 工具中反复打磨。</li>
-<li>讲义后续新增案例时，只需在 Notion 中补充行，即可自动出现在这里，形成一个持续演化的 Prompt 库。</li>
-</ul>
-<h3 class="text-sm font-semibold text-slate-800 mt-4 flex items-center gap-2">
-<span class="inline-flex w-1.5 h-4 bg-slate-900 rounded-full"></span>
-建议配置的一组 “AI 团队”
-</h3>
-<ul class="text-xs text-slate-600 dark:text-slate-400 list-disc pl-5 space-y-1">
-<li><strong>学术导师（长期陪跑）</strong>：<a href="https://rune-gem-5ee.notion.site/2736ff12-2f6b-80db-9ed9-d1cef1dd8b1e" target="_blank" class="text-primary-600 hover:text-primary-800 underline-offset-2 hover:underline">9. AI教授指导</a>。</li>
-<li><strong>考试教练（USMLE/执业）</strong>：<a href="https://rune-gem-5ee.notion.site/2776ff12-2f6b-80a7-b738-c4021ccd8a1c" target="_blank" class="text-primary-600 hover:text-primary-800 underline-offset-2 hover:underline">10. USMLE导师</a> + <a href="https://rune-gem-5ee.notion.site/2ab6ff12-2f6b-80a1-bed8-fd6e2b323d3d" target="_blank" class="text-primary-600 hover:text-primary-800 underline-offset-2 hover:underline">21. ANKI_USMLE_精华版</a>。</li>
-<li><strong>前端工程师（可视化助手）</strong>：<a href="https://rune-gem-5ee.notion.site/2786ff12-2f6b-805f-8234-e85c775fdd78" target="_blank" class="text-primary-600 hover:text-primary-800 underline-offset-2 hover:underline">12. 前端工程师</a>，负责把你的想法变成 HTML 小工具。</li>
-<li><strong>知识工程师（卡片工厂）</strong>：<a href="https://rune-gem-5ee.notion.site/2786ff12-2f6b-802a-a819-fbe5bd3da611" target="_blank" class="text-primary-600 hover:text-primary-800 underline-offset-2 hover:underline">11. ANKI工程师</a>，负责从文本批量生成结构化卡片。</li>
-</ul>
-<p class="mt-3 text-xs text-slate-500 dark:text-slate-400">提示：如果内嵌窗口因浏览器或网络设置无法加载，请点击右侧「在 Notion 中打开」按钮，在新标签页查看完整表格。</p>
-</div>
-<div class="relative">
-<div class="flex items-center justify-between mb-2 text-xs text-slate-500 dark:text-slate-400">
-<span class="inline-flex items-center gap-1">
-<i class="fas fa-table text-slate-400"></i>
-<span>Table · My Prompt For AI Studio</span>
-</span>
-<a href="https://rune-gem-5ee.notion.site/Table-My-Prompt-For-AI-Studio-2716ff122f6b806fae7dc5f95183fa25?pvs=74" target="_blank" class="inline-flex items-center gap-1 text-primary-600 hover:text-primary-800">
-<span>在 Notion 中打开</span>
-<i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
-</a>
-</div>
-<div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-inner">
-<iframe
-src="https://rune-gem-5ee.notion.site/Table-My-Prompt-For-AI-Studio-2716ff122f6b806fae7dc5f95183fa25?pvs=74"
-class="w-full h-80"
-loading="lazy"
-referrerpolicy="no-referrer"
-></iframe>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- Outro Section -->
-<section class="text-center py-12">
-<h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6">结语：成为你知识产品的“首席产品经理”</h2>
-<p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-8">
-回顾科学发展的历程，每一次工具的革新都带来了认知效率的飞跃。从手抄本到印刷术，从静态 PDF 到今天的交互式 HTML。我们并没有要求大家成为程序员，在 AI 时代，<strong>自然语言就是编程语言</strong>。
-</p>
-
-<div class="inline-flex flex-col md:flex-row items-center gap-4 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-slate-100">
-<div class="flex items-center gap-2">
-<span class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold">1</span>
-<span class="font-bold text-slate-800">Ask (提问)</span>
-</div>
-<i class="fas fa-arrow-right text-slate-300 hidden md:block"></i>
-<i class="fas fa-arrow-down text-slate-300 md:hidden"></i>
-<div class="flex items-center gap-2">
-<span class="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold">2</span>
-<span class="font-bold text-primary-700">Wrap (封装)</span>
-</div>
-<i class="fas fa-arrow-right text-slate-300 hidden md:block"></i>
-<i class="fas fa-arrow-down text-slate-300 md:hidden"></i>
-<div class="flex items-center gap-2">
-<span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">3</span>
-<span class="font-bold text-emerald-700">View (浏览)</span>
 </div>
 </div>
 
-<p class="mt-12 text-xl font-bold text-primary-600 animate-pulse">
+## 附录：我的 Prompt 仓库（AI Studio）
+
+<div class="not-prose glass-card rounded-2xl p-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+    <div class="prose prose-slate max-w-none text-sm">
+      <p>下方小窗口实时引用我在 Notion 中维护的 <strong>Prompts List</strong> 表格，用来集中存放本课程中用到的 System Prompt 和场景 Prompt。</p>
+      <ul class="text-sm text-slate-600 dark:text-slate-400 list-disc pl-5 space-y-1">
+        <li><span class="font-medium">html / code / knowledge / agent</span> 等标签，对应讲义中的主线：文献重构、代码阅读、知识卡片（USMLE / ANKI）、以及多步骤智能体。</li>
+        <li>阅读讲义时，可以在表格中按标签筛选，并把适合自己的 Prompt 复制到 AI 工具中反复打磨。</li>
+        <li>讲义后续新增案例时，只需在 Notion 中补充行，即可自动出现在这里，形成一个持续演化的 Prompt 库。</li>
+      </ul>
+      <div class="text-sm font-semibold text-slate-800 mt-4 flex items-center gap-2">
+        <span class="inline-flex w-1.5 h-4 bg-slate-900 rounded-full"></span>
+        建议配置的一组 “AI 团队”
+      </div>
+      <ul class="text-xs text-slate-600 dark:text-slate-400 list-disc pl-5 space-y-1">
+        <li><strong>学术导师（长期陪跑）</strong>：<a href="https://rune-gem-5ee.notion.site/2736ff12-2f6b-80db-9ed9-d1cef1dd8b1e" target="_blank" class="text-primary-600 hover:text-primary-800 underline-offset-2 hover:underline">9. AI教授指导</a>。</li>
+        <li><strong>考试教练（USMLE/执业）</strong>：<a href="https://rune-gem-5ee.notion.site/2776ff12-2f6b-80a7-b738-c4021ccd8a1c" target="_blank" class="text-primary-600 hover:text-primary-800 underline-offset-2 hover:underline">10. USMLE导师</a> + <a href="https://rune-gem-5ee.notion.site/2ab6ff12-2f6b-80a1-bed8-fd6e2b323d3d" target="_blank" class="text-primary-600 hover:text-primary-800 underline-offset-2 hover:underline">21. ANKI_USMLE_精华版</a>。</li>
+        <li><strong>前端工程师（可视化助手）</strong>：<a href="https://rune-gem-5ee.notion.site/2786ff12-2f6b-805f-8234-e85c775fdd78" target="_blank" class="text-primary-600 hover:text-primary-800 underline-offset-2 hover:underline">12. 前端工程师</a>，把想法变成 HTML 小工具。</li>
+        <li><strong>知识工程师（卡片工厂）</strong>：<a href="https://rune-gem-5ee.notion.site/2786ff12-2f6b-802a-a819-fbe5bd3da611" target="_blank" class="text-primary-600 hover:text-primary-800 underline-offset-2 hover:underline">11. ANKI工程师</a>，负责从文本批量生成结构化卡片。</li>
+      </ul>
+      <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">提示：如果内嵌窗口因浏览器或网络设置无法加载，请点击右侧「在 Notion 中打开」按钮。</p>
+    </div>
+    <div class="relative">
+      <div class="flex items-center justify-between mb-2 text-xs text-slate-500 dark:text-slate-400">
+        <span class="inline-flex items-center gap-1">
+          <i class="fas fa-table text-slate-400"></i>
+          <span>Table · My Prompt For AI Studio</span>
+        </span>
+        <a href="https://rune-gem-5ee.notion.site/Table-My-Prompt-For-AI-Studio-2716ff122f6b806fae7dc5f95183fa25?pvs=74" target="_blank" class="inline-flex items-center gap-1 text-primary-600 hover:text-primary-800">
+          <span>在 Notion 中打开</span>
+          <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
+        </a>
+      </div>
+      <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-inner">
+        <iframe
+          src="https://rune-gem-5ee.notion.site/Table-My-Prompt-For-AI-Studio-2716ff122f6b806fae7dc5f95183fa25?pvs=74"
+          class="w-full h-80"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+## 结语：成为你知识产品的“首席产品经理”
+
+回顾科学发展的历程，每一次工具的革新都带来了认知效率的飞跃。从手抄本到印刷术，从静态 PDF 到今天的交互式 HTML。在 AI 时代，**自然语言就是编程语言**。
+
+<div class="not-prose inline-flex flex-col md:flex-row items-center gap-4 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-slate-100">
+  <div class="flex items-center gap-2">
+    <span class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 dark:text-slate-400 flex items-center justify-center font-bold">1</span>
+    <span class="font-bold text-slate-800">Ask (提问)</span>
+  </div>
+  <i class="fas fa-arrow-right text-slate-300 hidden md:block"></i>
+  <i class="fas fa-arrow-down text-slate-300 md:hidden"></i>
+  <div class="flex items-center gap-2">
+    <span class="w-8 h-8 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-bold">2</span>
+    <span class="font-bold text-primary-700">Wrap (封装)</span>
+  </div>
+  <i class="fas fa-arrow-right text-slate-300 hidden md:block"></i>
+  <i class="fas fa-arrow-down text-slate-300 md:hidden"></i>
+  <div class="flex items-center gap-2">
+    <span class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">3</span>
+    <span class="font-bold text-emerald-700">View (浏览)</span>
+  </div>
+</div>
+
+<p class="mt-12 text-xl font-bold text-primary-600 animate-pulse text-center">
 欢迎来到科研可视化的新纪元。
 </p>
-</section>
-
-</div>
-
-<script>
-function copyToClipboard(id) {
-const text = document.getElementById(id).innerText;
-const textarea = document.createElement("textarea");
-textarea.value = text;
-document.body.appendChild(textarea);
-textarea.select();
-document.execCommand("copy");
-document.body.removeChild(textarea);
-alert("Prompt 已复制，请粘贴给 AI！");
-}
-
-// 简单的交互演示：根据选择高亮 / 变暗不同 response bar
-function filterResponseBarsDemo() {
-const select = document.getElementById('group-filter-demo');
-if (!select) return;
-const value = select.value;
-const bars = document.querySelectorAll('.response-bar-demo');
-bars.forEach(bar => {
-const type = bar.getAttribute('data-type');
-if (value === 'all') {
-bar.classList.remove('opacity-30');
-} else if (value === 'responder') {
-if (type === 'CR' || type === 'PR') {
-bar.classList.remove('opacity-30');
-} else {
-bar.classList.add('opacity-30');
-}
-}
-});
-}
-
-// 炫彩仪表盘：随机生成数据 + 渐变色条
-function renderDashboardDemo(refresh) {
-const bars = document.querySelectorAll('.response-bar-demo');
-if (!bars.length) return;
-const colors = {
-CR: 'linear-gradient(135deg, #22d3ee, #6366f1)',
-PR: 'linear-gradient(135deg, #34d399, #22c55e)',
-SD: 'linear-gradient(135deg, #cbd5e1, #94a3b8)',
-PD: 'linear-gradient(135deg, #fca5a5, #f43f5e)'
-};
-bars.forEach(bar => {
-const type = bar.getAttribute('data-type');
-// 随机高度，CR/PR 稍高，SD/PD 较低
-const base = (type === 'CR' || type === 'PR') ? 40 : 20;
-const height = base + Math.round(Math.random() * 40); // px
-bar.style.height = `${height}px`;
-bar.style.backgroundImage = colors[type] || '#cbd5e1';
-bar.style.opacity = 1;
-});
-// 如果刷新后保持当前筛选状态
-if (!refresh) {
-filterResponseBarsDemo();
-} else {
-filterResponseBarsDemo();
-}
-}
-
-// Execute immediately as the DOM elements are already rendered above
-renderDashboardDemo();
-</script>
-

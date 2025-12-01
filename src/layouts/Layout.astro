@@ -7,12 +7,20 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  externalScripts?: string[];
+  localScripts?: string[];
+  localStyles?: string[];
+  maxWidth?: string;
 }
 
 const {
   title,
   description = "Jiahao's Blog - AI & Algorithms",
   image = "/social-image.svg",
+  externalScripts = [],
+  localScripts = [],
+  localStyles = [],
+  maxWidth = "max-w-4xl",
 } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -67,6 +75,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
+    {
+      localStyles.map((style) => (
+        <link rel="stylesheet" href={style} />
+      ))
+    }
+    {
+      externalScripts.map((script) => (
+        <script src={script} is:inline></script>
+      ))
+    }
+
     <title>{title}</title>
     <script is:inline>
       // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -112,7 +131,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       </nav>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 py-8 min-h-[80vh]">
+    <main class={`mx-auto px-4 py-8 min-h-[80vh] ${maxWidth}`}>
       <slot />
     </main>
 
@@ -125,5 +144,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         &copy; {new Date().getFullYear()} Jiahao's Blog. Powered by Astro & AI.
       </div>
     </footer>
+
+    {
+      localScripts.map((script) => (
+        <script src={script} is:inline></script>
+      ))
+    }
   </body>
 </html>

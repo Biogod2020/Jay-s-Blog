@@ -7,7 +7,7 @@ const LectureExperience = {
    
     init() {
         gsap.registerPlugin(ScrollTrigger);
-        this.initTOC();
+        // this.initTOC(); // Handled by global layout now
         this.initMermaid();
         this.initVisualizations();
     },
@@ -34,41 +34,8 @@ const LectureExperience = {
     },
    
 
-    initTOC() {
-        const tocList = document.getElementById('toc-list');
-        const headings = document.querySelectorAll('#content h2[id], #content h3[id]');
-        if (!tocList || headings.length === 0) return;
-        
-        headings.forEach(heading => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.textContent = heading.textContent;
-            a.href = `#${heading.id}`;
-            a.dataset.targetId = heading.id;
-            if(heading.tagName === 'H3') { li.className = 'toc-level-3'; }
-            li.appendChild(a);
-            tocList.appendChild(li);
-        });
-        
-        const tocLinks = tocList.querySelectorAll('a');
-        const indicator = document.getElementById('toc-indicator');
-        
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                const id = entry.target.getAttribute('id');
-                const link = tocList.querySelector(`a[href="#${id}"]`);
-                if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-                    tocLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    if (!this.isReducedMotion && link && indicator) {
-                        gsap.to(indicator, { top: link.offsetTop, height: link.offsetHeight, duration: 0.4, ease: 'power3.out' });
-                    }
-                }
-            });
-        }, { rootMargin: "-50% 0px -50% 0px", threshold: [0, 0.5, 1] });
-        
-        headings.forEach(heading => observer.observe(heading));
-    },
+    // initTOC() { ... } Removed in favor of global layout TOC
+    
     initMermaid() { mermaid.initialize({ startOnLoad: true, theme: 'default' }); },
    
     // --- Visualization Modules ---

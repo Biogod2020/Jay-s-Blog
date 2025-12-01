@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
 ---
 
 <Layout 
@@ -21,23 +21,80 @@ const { Content } = await post.render();
 	externalScripts={post.data.externalScripts}
 	localScripts={post.data.localScripts}
 	localStyles={post.data.localStyles}
+	maxWidth="max-w-7xl"
 >
-	<article class="prose prose-lg prose-indigo dark:prose-invert mx-auto max-w-none">
-		<div class="mb-8 text-center">
-			<h1 class="mb-2 text-gray-900 dark:text-white">{post.data.title}</h1>
-			<time datetime={post.data.pubDate.toISOString()} class="text-gray-500 dark:text-gray-400">
-				{post.data.pubDate.toLocaleDateString('en-us', {
-					year: 'numeric',
-					month: 'long',
-					day: 'numeric',
-				})}
-			</time>
-		</div>
-		
-		{/* 
-			This is where the AI generated HTML content (wrapped in Markdown) will be rendered.
-			The 'prose' class from @tailwindcss/typography handles the styling of raw HTML elements automatically.
-		*/}
-		<Content />
-	</article>
+	<div class="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-12 relative">
+		{/* Sidebar TOC - Desktop */}
+		<aside class="hidden lg:block sticky top-24 h-[calc(100vh-8rem)] overflow-y-auto pt-2 pb-8 pr-4 transition-opacity duration-300">
+			<nav id="toc-nav">
+				<h2 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
+					Table of Contents
+				</h2>
+				<ul class="space-y-1 border-l-2 border-gray-100 dark:border-gray-800">
+					{headings.filter(h => h.depth > 1 && h.depth <= 3).map((heading) => (
+						<li>
+							<a 
+								href={`#${heading.slug}`}
+								class={`
+									block py-1.5 px-4 text-sm transition-colors duration-200
+									${heading.depth === 2 ? 'text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium' : ''}
+									${heading.depth === 3 ? 'text-gray-500 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 pl-8 text-xs' : ''}
+									toc-link
+								`}
+							>
+								{heading.text}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</aside>
+
+		<article class="prose prose-lg prose-indigo dark:prose-invert max-w-none w-full min-w-0">
+			{/* Mobile TOC - Collapsible or simplified? For now, just title and date */}
+			<div class="mb-8 text-center">
+				<h1 class="mb-2 text-gray-900 dark:text-white !text-4xl md:!text-5xl !leading-tight">{post.data.title}</h1>
+				<time datetime={post.data.pubDate.toISOString()} class="text-gray-500 dark:text-gray-400">
+					{post.data.pubDate.toLocaleDateString('en-us', {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+					})}
+				</time>
+			</div>
+			
+			<Content />
+		</article>
+	</div>
+
+	<script>
+		// TOC Highlighting Logic
+		const observerOptions = {
+			root: null,
+			rootMargin: '-20% 0px -60% 0px', // Highlight when the heading is near the top
+			threshold: 0
+		};
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				const id = entry.target.getAttribute('id');
+				if (entry.isIntersecting) {
+					document.querySelectorAll('.toc-link').forEach(link => {
+						link.classList.remove('text-indigo-600', 'dark:text-indigo-400', 'border-l-2', 'border-indigo-600', '-ml-0.5');
+						link.classList.add('text-gray-600', 'dark:text-gray-400'); // Reset
+					});
+					
+					const activeLink = document.querySelector(`.toc-link[href="#${id}"]`);
+					if (activeLink) {
+						activeLink.classList.remove('text-gray-600', 'dark:text-gray-400');
+						activeLink.classList.add('text-indigo-600', 'dark:text-indigo-400', 'border-l-2', 'border-indigo-600', '-ml-0.5');
+					}
+				}
+			});
+		}, observerOptions);
+
+		document.querySelectorAll('h2[id], h3[id]').forEach((section) => {
+			observer.observe(section);
+		});
+	</script>
 </Layout>
