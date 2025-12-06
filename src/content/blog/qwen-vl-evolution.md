@@ -186,7 +186,7 @@ Qwen-VL 系列的很多设计其实都是在回答这三个问题：如何在算
 class="bg-gradient-to-br from-indigo-500 to-purple-600 text-white w-14 h-14 rounded-2xl inline-flex items-center justify-center text-2xl mr-5 shadow-xl group-hover:scale-110 transition-transform duration-300 ring-4 ring-indigo-50">2</span>
 二、基础补课：从「只会看文字的大脑」到「会看世界的大脑」
 </h2>
-<div class="mb-12 bg-white p-8 rounded-[2rem] shadow-premium border border-slate-100 relative overflow-hidden">
+<div class="mb-12 bg-white p-4 md:p-8 rounded-[2rem] shadow-premium border border-slate-100 relative overflow-hidden">
 <div
 class="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-50 rounded-full mix-blend-multiply filter blur-[80px] opacity-60 animate-pulse">
 </div>
@@ -222,7 +222,7 @@ Qwen-VL 骚操作（如 M-RoPE, DeepStack）的地基。
 class="bg-indigo-100 text-indigo-800 px-1 rounded font-bold">把一张二维的图片，切碎成一串一维的向量序列。</span>
 </p>
 <!-- SVG: Patching Process -->
-<div class="my-10 bg-white p-8 rounded-3xl border border-slate-200 shadow-lg relative">
+<div class="my-10 bg-white p-4 md:p-8 rounded-3xl border border-slate-200 shadow-lg relative">
 <h4 class="text-center font-serif text-xl font-bold text-slate-800 mb-8">🎨 图解：从 Pixel 到 Patch Embedding
 </h4>
 <div class="flex justify-center overflow-x-auto">
@@ -344,7 +344,7 @@ Transformer 的 Attention 机制本质上是“位置无关”的（Permutation 
 <br>
 RoPE 是目前最优雅的解决方案。它不是把位置向量加（Add）上去，而是把词向量在空间中<strong>旋转（Rotate）</strong>一个角度。
 </p>
-<div class="bg-slate-900 p-8 rounded-3xl shadow-2xl relative overflow-hidden mb-10 group">
+<div class="bg-slate-900 p-4 md:p-8 rounded-3xl shadow-2xl relative overflow-hidden mb-10 group">
 <div
 class="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-full filter blur-[80px] opacity-30 group-hover:opacity-50 transition-opacity duration-500">
 </div>
@@ -405,7 +405,7 @@ RoPE 的“相对位置由旋转角度决定”这个核心直觉，你就无法
 <p class="text-lg text-slate-600 mb-6">
 这是 Qwen-VL 将视觉特征融入 LLM 的关键机制。在 Self-Attention 中，Query, Key, Value 都来自同一个序列。但在 Cross-Attention 中，它们分家了。
 </p>
-<div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl">
+<div class="bg-white p-4 md:p-8 rounded-3xl border border-slate-200 shadow-xl">
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
 <!-- Diagram -->
 <div class="relative">
@@ -503,7 +503,7 @@ Qwen-VL 不仅能看图，还能在图上把物体框出来（Grounding）。
 <span class="text-amber-600 font-bold">错！大错特错！</span>
 LLM 的世界里只有 Token。为了让 LLM 能输出坐标，我们必须把连续的像素坐标，强制变成离散的字典词。
 </p>
-<div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-xl mb-10">
+<div class="bg-white p-4 md:p-8 rounded-3xl border border-slate-200 shadow-xl mb-10">
 <h4 class="text-center font-bold text-slate-700 mb-8 text-xl">🎯 图解：Binning —— 将世界网格化</h4>
 <div class="flex justify-center overflow-x-auto">
 <svg width="700" height="320" viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" class="font-sans">
@@ -708,7 +708,7 @@ t-1$。
 我们用一幅 Mermaid 图把这一系列的演化用「版本进化树」的方式画出来。
 </p>
 <!-- SVG Diagram: Qwen Family Tree -->
-<div class="my-12 bg-white rounded-xl shadow-premium p-8 border border-slate-100 overflow-x-auto">
+<div class="my-12 bg-white rounded-xl shadow-premium p-4 md:p-8 border border-slate-100 overflow-x-auto">
 <h4 class="text-center font-bold text-slate-700 mb-8 text-lg font-serif">图解：Qwen 家族进化树 (The Phylogeny Tree)</h4>
 <div class="min-w-[700px] flex justify-center">
 <svg width="800" height="360" viewBox="0 0 800 360" xmlns="http://www.w3.org/2000/svg">
