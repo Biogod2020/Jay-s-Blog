@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Stem: 基于扩散生成模型的空间基因表达推断深度解析文档">
+    <title>Stem: 深度解析与学术重构</title>
+
+    <!-- MathJax Configuration -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          displayMath: [['$$','$$'], ['\\[','\\]']],
+          processEscapes: true
+        },
+        "HTML-CSS": { fonts: ["TeX"], scale: 90 }
+      });
+    </script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML"></script>
+
+    <!-- Mermaid JS for Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'neutral',
+            securityLevel: 'loose',
+            flowchart: { curve: 'basis' },
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
+        });
+    </script>
+
+    <!-- Google Fonts (Optional, using system fonts fallback) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <style>
+        :root {
+            /* Color Palette - Academic Blue & Slate */
+            --color-bg: #f8fafc;
+            --color-surface: #ffffff;
+            --color-text-main: #1e293b;
+            --color-text-muted: #64748b;
+            --color-primary: #2563eb;
+            --color-primary-dark: #1e40af;
+            --color-primary-light: #eff6ff;
+            --color-accent: #059669;
+            --color-border: #e2e8f0;
+            --color-code-bg: #1e1e1e;
+
+            /* Typography */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+            /* Spacing & Layout */
+            --width-max: 1000px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.8;
+            color: var(--color-text-main);
+            background-color: var(--color-bg);
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: var(--color-primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: var(--width-max);
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            /* Sidebar + Main Content */
+            gap: 2rem;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: sticky;
+            top: 2rem;
+            height: fit-content;
+            background: var(--color-surface);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--color-border);
+        }
+
+        .sidebar h3 {
+            margin-top: 0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin-bottom: 0.75rem;
+        }
+
+        .toc a {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--color-text-main);
+            border-left: 2px solid transparent;
+            padding-left: 0.75rem;
+        }
+
+        .toc a:hover,
+        .toc a.active {
+            color: var(--color-primary);
+            border-left-color: var(--color-primary);
+        }
+
+        /* Main Content Area */
+        main {
+            background: var(--color-surface);
+            padding: 3rem 4rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            min-width: 0;
+            /* Prevent overflow */
+        }
+
+        /* Headers */
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-muted);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--color-border);
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 1.8rem;
+            background: var(--color-primary);
+            margin-right: 1rem;
+            border-radius: 4px;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            margin-top: 2rem;
+            color: #334155;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            color: #475569;
+            font-weight: 700;
+        }
+
+        /* Components: Information Cards */
+        .info-card {
+            background-color: var(--color-primary-light);
+            border-left: 4px solid var(--color-primary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid var(--color-border);
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--color-code-bg);
+            color: #e5e7eb;
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.9em;
+        }
+
+        p code {
+            background-color: #f1f5f9;
+            color: #be185d;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+        }
+
+        /* Figures */
+        figure {
+            margin: 2.5rem 0;
+            text-align: center;
+            border: 1px solid var(--color-border);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            background: #fafafa;
+        }
+
+        figure img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            cursor: zoom-in;
+            transition: transform 0.2s;
+        }
+
+        figure img:hover {
+            transform: scale(1.01);
+        }
+
+        figcaption {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            font-weight: 500;
+        }
+
+        /* Mermaid Diagrams */
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            background: white;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+        }
+
+        /* Term Definition Tooltip */
+        .term-def {
+            border-bottom: 1px dashed var(--color-text-muted);
+            cursor: help;
+            position: relative;
+            color: var(--color-primary-dark);
+            font-weight: 600;
+        }
+
+        .term-def:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            width: max-content;
+            max-width: 300px;
+            z-index: 100;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+
+        .checklist input[type="checkbox"] {
+            margin-top: 0.3rem;
+            margin-right: 1rem;
+            accent-color: var(--color-primary);
+            transform: scale(1.2);
+        }
+
+        /* Image Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 1400px;
+            max-height: 90vh;
+            object-fit: contain;
+            animation: zoom 0.3s;
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+                margin-bottom: 2rem;
+            }
+
+            main {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <h3>目录 Contents</h3>
+            <nav class="toc">
+                <ul>
+                    <li><a href="#sec-0">Section 0｜学术考古与背景</a></li>
+                    <li><a href="#sec-a">Section A｜直觉与心智模型</a></li>
+                    <li><a href="#sec-b">Section B｜机理深度解析</a></li>
+                    <li><a href="#sec-c">Section C｜实验证据分析</a></li>
+                    <li><a href="#sec-d">Section D｜边界与风险</a></li>
+                    <li><a href="#sec-e">Section E｜模拟问答</a></li>
+                    <li><a href="#sec-f">Section F｜复现清单</a></li>
+                </ul>
+            </nav>
+
+            <h3>Tools Used</h3>
+            <div style="font-size: 0.9rem; color: #64748b;">
+                • MathJax (LaTeX)<br>
+                • Mermaid (Diagrams)<br>
+                • Python (Pseudocode)
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <header>
+                <div
+                    style="text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-primary); font-weight: 700; margin-bottom: 0.5rem;">
+                    SOTA Literature Analysis v6.1</div>
+                <h1>Stem: 基于扩散生成模型的空间基因表达推断</h1>
+                <div class="subtitle">从“回归均值”到“生成分布”：计算病理学的生成式范式转移</div>
+
+                <!-- Metadata Block -->
+                <div
+                    style="background: #f1f5f9; padding: 1rem; border-radius: 8px; font-size: 0.9rem; display: flex; flex-wrap: wrap; gap: 2rem;">
+                    <div><strong>来源:</strong> arXiv:2501.15598v1 [q-bio.QM]</div>
+                    <div><strong>作者:</strong> Sichen Zhu, Yuchen Zhu, et al. (Georgia Tech)</div>
+                    <div><strong>领域:</strong> 生物信息学 / 生成式 AI / 计算病理学</div>
+                    <div><strong>关键词:</strong> Spatial Transcriptomics, Diffusion Models, Foundation Models</div>
+                </div>
+            </header>
+
+            <!-- Section 0: Academic Context -->
+            <section id="sec-0">
+                <h2>Section 0｜学术考古与研究脉络 (Academic Context)</h2>
+
+                <p>要真正理解 Stem 的贡献，我们不能只看它用了什么模型，必须先理清它所处的历史坐标。这是一场从“宏观平均”到“微观生成”的漫长征途。</p>
+
+                <h3>0.1 空间转录组学 (ST) 的前世今生</h3>
+                <p>生物学研究的核心问题之一是：<b>“谁（哪个基因）在哪（哪个细胞/位置）干什么（表达量）？”</b> 为了回答这个问题，技术经历了三次飞跃：</p>
+
+                <div class="mermaid">
+                    timeline
+                    title 基因测序技术的演进史
+                    2000s : Bulk RNA-seq : 奶昔时代 <br> 只能测出一块组织的平均基因表达，丢失空间和单细胞信息。
+                    2010s : scRNA-seq : 水果沙拉时代 <br> 能测出单个细胞的表达，但要把组织打散，丢失了空间位置信息。
+                    2016 : Spatial Transcriptomics (ST) : 水果塔时代 <br> 2016年《Science》发表ST技术，既保留了空间位置，又测出了基因表达。
+                    2020s : AI for ST : 虚拟染色时代 <br> 利用深度学习从廉价的 H&E 图像推断昂贵的 ST 数据。
+                </div>
+
+                <p>Stem 正是处于 <b>"AI for ST"</b> 这一阶段的最新产物。传统的 ST 技术（如 10x Visium）虽然强大，但<b>极其昂贵</b>且操作复杂。如果能用 AI
+                    仅凭一张几十块钱的 H&E 染色切片（临床最常见的病理图）就推断出几万块钱的 ST 数据，将具有革命性的临床意义。</p>
+
+                <h3>0.2 计算病理学的范式转移</h3>
+                <p>在 Stem 之前，该领域（从 H&E 图预测基因）主要由<b>回归模型（Regression Models）</b>统治，如 ST-Net (2020), HisToGene (2021)
+                    等。它们的假设是：<b>图像特征 $V$ 与基因表达 $X$ 存在一一对应的函数关系 $X = f(V)$</b>。</p>
+
+                <p>然而，这个假设在生物学上是脆弱的。同样的细胞形态可能因为微环境不同、细胞周期不同而有完全不同的基因表达。这就是 Stem 引入<b>生成式 AI（Generative
+                        AI）</b>的根本动机：从预测一个确定的“值”，转变为预测一个可能的“分布”。</p>
+            </section>
+
+            <!-- Section A: Intuition -->
+            <section id="sec-a">
+                <h2>Section A｜核心直觉与心智模型 (Intuition & Mental Models)</h2>
+
+                <h3>1.1 为什么回归模型会失效？——“平均脸”效应</h3>
+                <p>想象你在训练一个模型画“猫”。
+                <ul>
+                    <li>如果你用<b>回归模型</b>（最小化 MSE
+                        损失），模型看到一千张姿态各异的猫，为了让总误差最小，它会输出一张所有猫的<b>叠加平均图</b>——这通常是一团模糊的褐色物体，既不像黑猫也不像白猫。</li>
+                    <li>如果你用<b>生成模型</b>（如 Stem），它会学习“猫的分布”。当你要求它画一只猫时，它会掷骰子，画出一只清晰的黑猫，或者一只清晰的白猫。</li>
+                </ul>
+                <p>在基因预测中同理。回归模型倾向于输出“平均基因表达”，导致数据丢失了生物学最重要的<b>异质性（Heterogeneity）</b>和<b>方差（Variance）</b>。Stem 则能恢复这些细节。
+                </p>
+
+                <h3>1.2 核心类比：调频收音机 (FM Radio)</h3>
+                <p>Stem 的工作原理可以类比为一台复杂的收音机：</p>
+                <ul>
+                    <li><b>白噪声 (White Noise)</b>：这是输入的初始状态，毫无意义的随机信号。</li>
+                    <li><b>旋钮 (Conditioning)</b>：H&E 图像就是那个“旋钮”。当我们把旋钮转到“肾脏皮质”这个频道时，Stem 就知道应该从噪声中过滤出什么样的基因信号。</li>
+                    <li><b>音乐 (Gene Expression)</b>：最终生成的清晰信号，就是符合该组织特征的基因表达谱。</li>
+                </ul>
+
+                <div class="info-card">
+                    <h4>🧠 关键洞察：一对多映射 (One-to-Many Mapping)</h4>
+                    <p>一张 H&E 图像块可能对应多种健康的或病变的基因状态。Stem 不试图给出一个绝对正确的答案，而是给出一组<b>合理的可能性</b>。这在生物学上比一个错误的“平均值”更有价值。</p>
+                </div>
+            </section>
+
+            <!-- Section B: Methods -->
+            <section id="sec-b">
+                <h2>Section B｜结构拆解与机理解析 (Methodology)</h2>
+
+                <h3>2.1 整体架构：DiT 与基础模型的联姻</h3>
+                <p>Stem 的架构设计极其精巧，它融合了当前 AI 领域的两大显学：<b>Foundation Models (基础模型)</b> 和 <b>Diffusion Transformers
+                        (DiT)</b>。</p>
+
+                <figure id="fig-02">
+                    <a class="figure-link" href="#"
+                        data-hires="https://arxiv.org/html/2501.15598v1/extracted/6157387/figs/fig2.png"
+                        aria-label="查看架构高清图">
+                        <img src="https://arxiv.org/html/2501.15598v1/extracted/6157387/figs/fig2.png"
+                            alt="Stem Neural Network Architecture">
+                    </a>
+                    <figcaption>图 2. Stem 神经网络架构图。左侧利用预训练的病理大模型提取图像特征，右侧是基于 DiT 的扩散去噪网络。</figcaption>
+                </figure>
+
+                <h4>架构细节图解 (Model Architecture)</h4>
+                <div class="mermaid">
+                    flowchart LR
+                    subgraph Image_Branch [图像编码分支]
+                    direction TB
+                    Img[H&E 图像块] --> FM[基础模型 UNI/CONCH]
+                    FM --> ImgTokens[图像 Tokens]
+                    ImgTokens --> Pool[Attention Pooling]
+                    Pool --> MLP_I[MLP Projector]
+                    MLP_I --> Cond[条件向量 c]
+                    end
+
+                    subgraph Gene_Branch [基因编码分支]
+                    direction TB
+                    Gene[基因表达计数] --> MLP_G[数值 MLP 编码]
+                    GeneID[基因 ID] --> Emb_G[身份 Embedding]
+                    MLP_G & Emb_G --> Add((相加))
+                    Add --> GeneTokens[基因 Tokens h]
+                    end
+
+                    subgraph Diffusion_Core [DiT 核心]
+                    direction TB
+                    Time[时间步 t] --> Sin[正弦编码]
+                    GeneTokens --> DiT1[DiT Block 1]
+                    Cond -.->|AdaLN 调节| DiT1
+                    Sin -.->|AdaLN 调节| DiT1
+
+                    DiT1 --> DiT2[DiT Block 2 ... N]
+                    Cond -.->|AdaLN 调节| DiT2
+                    Sin -.->|AdaLN 调节| DiT2
+
+                    DiT2 --> Final[输出层]
+                    Final --> Pred[噪声预测]
+                    end
+
+                    Image_Branch --> Diffusion_Core
+                    Gene_Branch --> Diffusion_Core
+                </div>
+
+                <h3>2.2 扩散与训练流程</h3>
+                <p>Stem 遵循 DDPM 的训练范式，但加入了图像条件。以下流程图展示了其训练逻辑：</p>
+
+                <h4>训练过程图解 (Training Process)</h4>
+                <div class="mermaid">
+                    flowchart TD
+                    Start((开始)) --> Data[加载数据对: H&E图像 V, 基因表达 X0]
+
+                    subgraph Forward_Process [前向扩散过程]
+                    Data --> SampleT[采样时间步 t ~ Uniform]
+                    SampleT --> SampleE[采样高斯噪声 ε]
+                    Data & SampleT & SampleE --> AddNoise[加噪: Xt = √αX0 + √1-α ε]
+                    end
+
+                    subgraph Conditioning [条件提取]
+                    Data --> Enc[冻结的基础模型 UNI/CONCH]
+                    Enc --> V_feat[图像特征 V]
+                    end
+
+                    subgraph Reverse_Process [反向去噪学习]
+                    AddNoise & V_feat & SampleT --> Model[Stem DiT 网络]
+                    Model --> PredE[预测噪声 ε_pred]
+                    end
+
+                    PredE & SampleE --> Loss[计算 MSE 损失: ||ε - ε_pred||^2]
+                    Loss --> Opt[梯度下降 & 参数更新]
+
+                    Opt --> End((结束或下一轮))
+                </div>
+
+                <h3>2.3 核心组件深入剖析</h3>
+
+                <h4>A. 图像编码器：巨人的肩膀</h4>
+                <p>Stem 并没有从头训练 CNN，而是利用了计算病理学的 SOTA 基础模型：</p>
+                <ul>
+                    <li><span class="term-def" data-tooltip="利用大量未标注数据进行预训练的模型，具有强大的特征提取能力">Foundation Models</span>:
+                        作者选用了 <b>UNI</b> (基于 DINOv2 的视觉自监督学习) 和 <b>CONCH</b> (基于 CoCa 的视觉-语言对比学习)。</li>
+                    <li><b>策略</b>：将 UNI 和 CONCH 的特征向量拼接（Concatenate）。UNI 擅长捕捉纯视觉纹理，CONCH 擅长捕捉语义信息，两者互补。</li>
+                </ul>
+
+                <h4>B. 基因编码器：把数字变成向量</h4>
+                <p>基因表达数据是稀疏的计数矩阵。Stem 设计了一个巧妙的编码方式：</p>
+                $$ h_i = \text{MLP}(x_i) + \text{Embedding}(\text{Gene\_ID}_i) $$
+                <ul>
+                    <li>第一部分 $\text{MLP}(x_i)$：将标量数值映射为高维向量，捕捉“表达量的强度”。</li>
+                    <li>第二部分 $\text{Embedding}$：类似 NLP 中的 Word2Vec，捕捉“基因的身份”。</li>
+                </ul>
+
+                <h4>C. 调节机制 (Conditioning Mechanism)：AdaLN</h4>
+                <p>这是 Stem 区别于许多旧方法的关键。它没有简单地把图像特征和基因特征相加，而是使用了 <b>Adaptive Layer Normalization (AdaLN)</b>。</p>
+
+                <p>在 Transformer 的每一层，$c_{hist}$（图像特征）被用来预测 LayerNorm 的参数 $\gamma$ (scale) 和 $\beta$ (shift)：</p>
+                <pre><code class="language-python">
+class AdaLN(nn.Module):
+    def __init__(self, hidden_size, cond_size):
+        super().__init__()
+        self.norm = nn.LayerNorm(hidden_size, elementwise_affine=False)
+        # 这里的 MLP 学习如何根据图像条件 V 调节基因特征的分布
+        self.film = nn.Sequential(
+            nn.SiLU(),
+            nn.Linear(cond_size, hidden_size * 2) 
+        )
+
+    def forward(self, x, condition):
+        # x: 基因特征流 [Batch, Seq_Len, Dim]
+        # condition: H&E 图像特征 [Batch, Cond_Dim]
+        
+        scale, shift = self.film(condition).chunk(2, dim=-1)
+        x = self.norm(x)
+        return x * (1 + scale.unsqueeze(1)) + shift.unsqueeze(1)
+            </code></pre>
+                <p><b>深层含义</b>：这种机制允许图像信息在网络的每一层动态地调整基因特征的分布空间，类似于一种“软控制”，比简单的拼接（Concatenation）更灵活且强大。</p>
+            </section>
+
+            <!-- Section C: Evidence -->
+            <section id="sec-c">
+                <h2>Section C｜证据、实验与验证 (Evidence & Validation)</h2>
+
+                <h3>3.1 为什么 PCC (相关系数) 具有欺骗性？</h3>
+                <p>在实验部分，作者提出了一个极具批判性的观点：<b>高 PCC 不代表好模型。</b></p>
+                <p>如果一个模型对于所有样本都预测<b>“训练集的平均值”</b>，由于平均值通常捕捉了大概的趋势，它的 PCC
+                    依然可能是正的且显著的。但这种预测完全丢失了<b>空间特异性</b>。比如，肿瘤核心区和边缘区的基因表达应该有剧烈波动，但“均值模型”会把它们抹平。</p>
+
+                <h3>3.2 杀手锏指标：RVD (相对变异距离)</h3>
+                <p>为了戳穿“均值预测”的假象，作者引入了 <b>RVD (Relative Variation Distance)</b>：</p>
+                $$ \text{RVD} = \frac{1}{C}\sum_{i=1}^{C}\frac{(\sigma^{2,i}_{\text{pred}} -
+                \sigma^{2,i}_{\text{gt}})^2}{(\sigma^{2,i}_{\text{gt}})^2} $$
+                <p>这个公式测量的是<b>方差的误差</b>。如果模型倾向于输出平均值，其预测方差 $\sigma^2_{\text{pred}}$ 会趋近于 0，导致 RVD
+                    非常大（差）。只有生成模型（Stem）能生成具有真实波动幅度的数据，从而获得极低的 RVD。</p>
+
+                <h3>3.3 下游分析验证 (Downstream Analysis)</h3>
+                <p>为了证明生成的基因数据不仅仅是数字好看，作者还进行了生物学验证。以下是验证流程：</p>
+
+                <div class="mermaid">
+                    flowchart LR
+                    subgraph Validation_Flow [下游验证流程]
+                    Input[Stem 生成的基因矩阵] --> Analysis
+
+                    subgraph Analysis [生物信息学分析]
+                    direction TB
+                    Clustering[无监督聚类 (Leiden)]
+                    Markers[标志物基因筛选]
+                    end
+
+                    Clustering --> Viz1[UMAP 可视化]
+                    Clustering --> Overlay1[空间区域映射]
+
+                    Markers --> Viz2[基因热图 (Heatmap)]
+
+                    Overlay1 & Viz2 --> Comparison{与病理学家标注对比}
+                    Comparison -- 高度重合 --> Success[验证成功: 发现肿瘤/间质边界]
+                    end
+                </div>
+
+                <p>可视化结果（图3）显示，Stem 生成的数据能清晰地聚类出“浸润性癌”和“正常腺体”，而对比方法 BLEEP 则将它们混淆在一起。</p>
+
+                <h3>3.4 实验结果对比</h3>
+                <p>在 Kidney Visium 数据集上的结果极具说服力：</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>模型</th>
+                            <th>方法类型</th>
+                            <th>PCC-50 (准确度)</th>
+                            <th>RVD (真实度)</th>
+                            <th>分析</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HisToGene</td>
+                            <td>Transformer 回归</td>
+                            <td>0.350</td>
+                            <td>0.996</td>
+                            <td>预测过于平滑，丢失细节。</td>
+                        </tr>
+                        <tr>
+                            <td>BLEEP</td>
+                            <td>对比学习检索</td>
+                            <td>0.422</td>
+                            <td>0.217</td>
+                            <td>检索法能保留一定方差，但准确度受限于检索库。</td>
+                        </tr>
+                        <tr>
+                            <td>TRIPLEX</td>
+                            <td>多尺度回归</td>
+                            <td>0.410</td>
+                            <td>0.587</td>
+                            <td>回归模型的通病，方差丢失严重。</td>
+                        </tr>
+                        <tr style="background-color: #ecfdf5; font-weight: bold;">
+                            <td>Stem (Ours)</td>
+                            <td>条件扩散生成</td>
+                            <td>0.533</td>
+                            <td>0.075</td>
+                            <td>准确度最高，且完美复刻了数据的真实波动。</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <figure id="fig-03">
+                    <a class="figure-link" href="#" data-hires="https://arxiv.org/html/2501.15598v1/x1.png">
+                        <img src="https://arxiv.org/html/2501.15598v1/x1.png" alt="基因表达热图与聚类分析">
+                    </a>
+                    <figcaption>图 3. 下游分析验证。(a) 真实 H&E 图像。(b) 病理学家标注的肿瘤区域。(c) 基于 Stem 预测数据的无监督聚类结果，完美复原了肿瘤结构。(d) 基于
+                        BLEEP 的聚类结果，结构混乱。</figcaption>
+                </figure>
+            </section>
+
+            <!-- Section D: Discussion -->
+            <section id="sec-d">
+                <h2>Section D｜边界、局限与风险 (Discussion & Risks)</h2>
+
+                <div class="info-card" style="background-color: #fff7ed; border-left-color: #ea580c;">
+                    <h4>⚠️ 批判性思考：生成的代价</h4>
+                    <p>虽然 Stem 效果拔群，但我们必须保持清醒。生成式 AI 带来的“真实感”有时可能是一种错觉（Hallucination）。</p>
+                </div>
+
+                <h3>4.1 计算成本与延迟</h3>
+                <p>Stem 是一个扩散模型，意味着推理时需要进行几十步（例如 20-50 步）的迭代去噪。相比于回归模型的一次前向传播，Stem 的推理速度慢了 1-2 个数量级。在大规模全切片图像（WSI,
+                    往往包含数万个 Patch）分析中，这是一个必须考虑的工程瓶颈。</p>
+
+                <h3>4.2 基础模型的黑盒依赖</h3>
+                <p>Stem 的强大很大程度上归功于 UNI 和 CONCH 提取的特征。如果输入的组织切片染色质量差（Domain
+                    Shift），或者属于基础模型未见过的罕见亚型，特征提取可能失效，进而导致生成结果不仅错误，而且错得“很自信”。</p>
+
+                <h3>4.3 临床解释性</h3>
+                <p>回归模型通常可以直接用 Attention Map 来看模型关注图像的哪个区域。而扩散模型的去噪过程高度非线性且随机，解释模型“为什么”生成这个基因表达值变得更加困难。这在循证医学中是一个挑战。</p>
+            </section>
+
+            <!-- Section E: Q&A -->
+            <section id="sec-e">
+                <h2>Section E｜模拟问答与跨学科视角 (Socratic Q&A)</h2>
+
+                <details open>
+                    <summary>Q1: 如果 Stem 是随机生成的，那每次预测结果不一样怎么办？临床上能接受吗？</summary>
+                    <p>这是一个极好的问题。Stem 在推理时通常会生成多个样本（例如 20 个），然后取<b>平均值</b>作为最终预测。
+                        <br>有人会问：“那最后取平均，不又回到回归模型的老路了吗？”
+                        <br><b>区别在于</b>：Stem
+                        的“平均”是后处理步骤，模型内部学到的是完整的概率分布。更重要的是，这一组样本的<b>方差（Variance）</b>本身就是一个非常有用的指标，它代表了模型的不确定性（Uncertainty）。如果方差很大，说明模型对这个区域很困惑，医生应该介入人工复核。这是回归模型无法提供的。
+                    </p>
+                </details>
+
+                <details>
+                    <summary>Q2: 为什么不直接用 Stable Diffusion 这样的 Text-to-Image 模型来改？</summary>
+                    <p>虽然原理相似，但数据结构不同。Stable Diffusion 处理的是 Grid Data（像素网格），用的是 U-Net。而基因表达数据是 Tabular/Vector
+                        Data（向量数据），没有空间邻接关系。因此 Stem 选择了 <b>DiT (Diffusion Transformer)</b>，它能更好地处理这种非结构化的序列数据，且参数效率更高。
+                    </p>
+                </details>
+
+                <details>
+                    <summary>Q3: 这项技术能替代真实的测序吗？</summary>
+                    <p>短期内不能。Stem 本质上是在挖掘形态学（图像）与转录组学（基因）之间的<b>相关性</b>。如果某种基因变化完全不引起细胞形态的改变（Morphological Change），Stem
+                        是无法预测出来的。它更像是一个“能够根据外貌猜测内涵”的高级筛选工具，而不是物理测量工具。</p>
+                </details>
+            </section>
+
+            <!-- Section F: Checklist -->
+            <section id="sec-f">
+                <h2>Section F｜复现与合规清单 (Reproducibility)</h2>
+
+                <p>为了帮助研究者复现本工作，整理核心要素如下：</p>
+
+                <ul class="checklist">
+                    <li>
+                        <input type="checkbox" checked disabled>
+                        <div>
+                            <b>环境依赖</b>: Python 3.8+, PyTorch 1.12+, Diffusers 库。
+                            <div style="font-size:0.85em; color:#666;">注：需安装 `huggingface_hub` 以获取 UNI/CONCH 权重。</div>
+                        </div>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked disabled>
+                        <div>
+                            <b>数据预处理</b>: 必须对基因表达数据进行 Log1p 变换。
+                            <div style="font-size:0.85em; color:#666;">公式：$X_{new} = \log(X_{raw} +
+                                1)$。这能缓解基因表达数据的长尾分布问题。</div>
+                        </div>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked disabled>
+                        <div>
+                            <b>硬件门槛</b>: 训练需至少 24GB 显存 (RTX 3090/4090 或 A10/A100)。
+                            <div style="font-size:0.85em; color:#666;">因为 DiT 和基础模型特征提取都比较吃显存。推理可在 8GB 显存设备上进行。</div>
+                        </div>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked disabled>
+                        <div>
+                            <b>基础模型权限</b>: UNI 和 CONCH 通常需要申请学术许可。
+                            <div style="font-size:0.85em; color:#666;">请访问 HuggingFace 的相关页面签署协议。</div>
+                        </div>
+                    </li>
+                </ul>
+
+                <div
+                    style="margin-top: 2rem; padding: 1rem; border: 1px solid #fee2e2; background: #fef2f2; border-radius: var(--radius-md); color: #991b1b;">
+                    <strong>🚨 免责声明</strong>：本文档系对原始论文的第三方深度解析。文中涉及的代码片段仅作逻辑演示，临床应用请务必遵循当地法律法规及伦理审查。
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal Logic -->
+    <div id="imgModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImg">
+        <div id="caption" style="color: white; text-align: center; margin-top: 10px;"></div>
+    </div>
+
+    <script>
+        // 简单的图片模态框交互逻辑
+        const modal = document.getElementById("imgModal");
+        const modalImg = document.getElementById("modalImg");
+        const links = document.querySelectorAll(".figure-link");
+        const closeBtn = document.querySelector(".close");
+
+        links.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.style.display = "flex";
+                modalImg.src = link.getAttribute('data-hires');
+            });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && modal.style.display === "flex") {
+                modal.style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

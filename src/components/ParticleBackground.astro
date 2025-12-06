@@ -6,42 +6,50 @@
   class ParticleNetwork {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
-    particles: Array<{x: number, y: number, vx: number, vy: number, size: number}>;
+    particles: Array<{
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      size: number;
+    }>;
     width: number;
     height: number;
     color: string;
     connectionDistance: number;
-    mouse: { x: number | null, y: number | null, radius: number };
+    mouse: { x: number | null; y: number | null; radius: number };
 
     constructor() {
-      this.canvas = document.getElementById('particles-canvas') as HTMLCanvasElement;
-      this.ctx = this.canvas.getContext('2d')!;
+      this.canvas = document.getElementById(
+        "particles-canvas"
+      ) as HTMLCanvasElement;
+      this.ctx = this.canvas.getContext("2d")!;
       this.particles = [];
       this.width = window.innerWidth;
       this.height = window.innerHeight;
       this.connectionDistance = 150;
       this.mouse = { x: null, y: null, radius: 200 };
-      
+
       // Determine color based on theme (initial check)
       this.updateColor();
 
       this.init();
       this.animate();
-      
-      window.addEventListener('resize', () => this.resize());
-      window.addEventListener('mousemove', (e) => {
+
+      window.addEventListener("resize", () => this.resize());
+      window.addEventListener("mousemove", (e) => {
         this.mouse.x = e.x;
         this.mouse.y = e.y;
       });
-      window.addEventListener('mouseout', () => {
+      window.addEventListener("mouseout", () => {
         this.mouse.x = null;
         this.mouse.y = null;
       });
-      
+
       // Listen for theme changes
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
-          if (mutation.attributeName === 'class') {
+          if (mutation.attributeName === "class") {
             this.updateColor();
           }
         });
@@ -50,9 +58,11 @@
     }
 
     updateColor() {
-      const isDark = document.documentElement.classList.contains('dark');
+      const isDark = document.documentElement.classList.contains("dark");
       // Indigo-500 with low opacity for light mode, Indigo-400 for dark mode
-      this.color = isDark ? 'rgba(129, 140, 248, 0.2)' : 'rgba(99, 102, 241, 0.15)';
+      this.color = isDark
+        ? "rgba(129, 140, 248, 0.2)"
+        : "rgba(99, 102, 241, 0.15)";
     }
 
     resize() {
@@ -70,22 +80,25 @@
     initParticles() {
       this.particles = [];
       // Responsive particle count
-      const particleCount = Math.min(Math.floor(this.width * this.height / 10000), 150);
-      
+      const particleCount = Math.min(
+        Math.floor((this.width * this.height) / 10000),
+        150
+      );
+
       for (let i = 0; i < particleCount; i++) {
         this.particles.push({
           x: Math.random() * this.width,
           y: Math.random() * this.height,
           vx: (Math.random() - 0.5) * 1.5,
           vy: (Math.random() - 0.5) * 1.5,
-          size: Math.random() * 2 + 1
+          size: Math.random() * 2 + 1,
         });
       }
     }
 
     animate() {
       this.ctx.clearRect(0, 0, this.width, this.height);
-      
+
       // Update and draw particles
       this.particles.forEach((p, index) => {
         p.x += p.vx;
@@ -100,16 +113,16 @@
           const dx = this.mouse.x - p.x;
           const dy = this.mouse.y - p.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          
+
           if (distance < this.mouse.radius) {
-             const forceDirectionX = dx / distance;
-             const forceDirectionY = dy / distance;
-             const force = (this.mouse.radius - distance) / this.mouse.radius;
-             const directionX = forceDirectionX * force * 3; // Attraction strength
-             const directionY = forceDirectionY * force * 3;
-             
-             p.x += directionX;
-             p.y += directionY;
+            const forceDirectionX = dx / distance;
+            const forceDirectionY = dy / distance;
+            const force = (this.mouse.radius - distance) / this.mouse.radius;
+            const directionX = forceDirectionX * force * 3; // Attraction strength
+            const directionY = forceDirectionY * force * 3;
+
+            p.x += directionX;
+            p.y += directionY;
           }
         }
 
@@ -141,14 +154,14 @@
   }
 
   // Initialize when DOM is ready
-  document.addEventListener('astro:page-load', () => {
+  document.addEventListener("astro:page-load", () => {
     new ParticleNetwork();
   });
-  
+
   // Fallback for initial load if View Transitions aren't used or fail
-  if (document.readyState === 'complete') {
+  if (document.readyState === "complete") {
     new ParticleNetwork();
   } else {
-    document.addEventListener('DOMContentLoaded', () => new ParticleNetwork());
+    document.addEventListener("DOMContentLoaded", () => new ParticleNetwork());
   }
 </script>

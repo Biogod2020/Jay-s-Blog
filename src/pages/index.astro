@@ -1,9 +1,9 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
 const featuredPost = posts[0];
@@ -11,146 +11,223 @@ const otherPosts = posts.slice(1);
 ---
 
 <Layout title="Jiahao's Blog - Thinking in Algorithms">
-	<!-- Hero Section -->
-	<section class="relative py-12 md:py-20 overflow-hidden">
-		<div class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-white/50 dark:from-gray-900/50 dark:to-gray-800/50 -z-10"></div>
-		<div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] aspect-square bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
-		
-		<div class="max-w-4xl mx-auto px-4 text-center">
-			<div class="inline-flex items-center px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 text-xs md:text-sm font-medium mb-6">
-				<span class="flex h-2 w-2 rounded-full bg-indigo-500 mr-2 animate-pulse"></span>
-				Exploring the Future of AI
-			</div>
-			<h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight">
-				Thinking in <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">Algorithms</span>
-			</h1>
-			<p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4">
-				A digital garden where I document my journey through Artificial Intelligence, Web Development, and the intersection of technology and creativity.
-			</p>
-		</div>
-	</section>
+  <!-- Hero Section -->
+  <section class="relative py-12 md:py-20 overflow-hidden">
+    <div
+      class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-white/50 dark:from-gray-900/50 dark:to-gray-800/50 -z-10"
+    >
+    </div>
+    <div
+      class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] aspect-square bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl -z-10 pointer-events-none"
+    >
+    </div>
 
-	<div class="max-w-6xl mx-auto px-4 py-12">
-		<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-			
-			<!-- Main Content -->
-			<div class="lg:col-span-8 space-y-12">
-				
-				<!-- Section Title -->
-				<div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-4">
-					<h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-						<i class="fas fa-pen-nib text-indigo-500"></i> Latest Writings
-					</h2>
-					<a href="/blog" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition">
-						View Archive &rarr;
-					</a>
-				</div>
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <div
+        class="inline-flex items-center px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 text-xs md:text-sm font-medium mb-6"
+      >
+        <span class="flex h-2 w-2 rounded-full bg-indigo-500 mr-2 animate-pulse"
+        ></span>
+        Exploring the Future of AI
+      </div>
+      <h1
+        class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight"
+      >
+        Thinking in <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400"
+          >Algorithms</span
+        >
+      </h1>
+      <p
+        class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4"
+      >
+        A digital garden where I document my journey through Artificial
+        Intelligence, Web Development, and the intersection of technology and
+        creativity.
+      </p>
+    </div>
+  </section>
 
-				<!-- Featured Post -->
-				{featuredPost && (
-					<article class="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
-						<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
-						<div class="p-6 md:p-10 relative z-20">
-							<div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
-								<span class="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 px-3 py-1 rounded-full font-medium">Featured</span>
-								<time datetime={featuredPost.data.pubDate.toISOString()}>
-									{featuredPost.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'long', day: 'numeric' })}
-								</time>
-							</div>
-							<a href={`/blog/${featuredPost.slug}`} class="block group-hover:translate-x-1 transition-transform duration-300">
-								<h3 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-									{featuredPost.data.title}
-								</h3>
-								<p class="text-gray-600 dark:text-gray-300 text-base md:text-lg line-clamp-3 mb-6">
-									{featuredPost.data.description}
-								</p>
-							</a>
-							<div class="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-medium group-hover:translate-x-2 transition-transform">
-								Read Article <i class="fas fa-arrow-right text-sm"></i>
-							</div>
-						</div>
-					</article>
-				)}
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <!-- Main Content -->
+      <div class="lg:col-span-8 space-y-12">
+        <!-- Section Title -->
+        <div
+          class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-4"
+        >
+          <h2
+            class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2"
+          >
+            <i class="fas fa-pen-nib text-indigo-500"></i> Latest Writings
+          </h2>
+          <a
+            href="/blog"
+            class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition"
+          >
+            View Archive &rarr;
+          </a>
+        </div>
 
-				<!-- Other Posts Grid -->
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-					{otherPosts.map((post) => (
-						<article class="flex flex-col bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden group">
-							<div class="p-6 flex-1 flex flex-col">
-								<div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
-									<i class="far fa-calendar"></i>
-									<time datetime={post.data.pubDate.toISOString()}>
-										{post.data.pubDate.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}
-									</time>
-								</div>
-								<a href={`/blog/${post.slug}`} class="block flex-1">
-									<h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2">
-										{post.data.title}
-									</h3>
-									<p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-4">
-										{post.data.description}
-									</p>
-								</a>
-								<a href={`/blog/${post.slug}`} class="inline-flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline mt-auto">
-									Read more
-								</a>
-							</div>
-						</article>
-					))}
-				</div>
-			</div>
+        <!-- Featured Post -->
+        {
+          featuredPost && (
+            <article class="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+              <div class="p-6 md:p-10 relative z-20">
+                <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                  <span class="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 px-3 py-1 rounded-full font-medium">
+                    Featured
+                  </span>
+                  <time datetime={featuredPost.data.pubDate.toISOString()}>
+                    {featuredPost.data.pubDate.toLocaleDateString("en-us", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </time>
+                </div>
+                <a
+                  href={`/blog/${featuredPost.slug}`}
+                  class="block group-hover:translate-x-1 transition-transform duration-300"
+                >
+                  <h3 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    {featuredPost.data.title}
+                  </h3>
+                  <p class="text-gray-600 dark:text-gray-300 text-base md:text-lg line-clamp-3 mb-6">
+                    {featuredPost.data.description}
+                  </p>
+                </a>
+                <div class="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-medium group-hover:translate-x-2 transition-transform">
+                  Read Article <i class="fas fa-arrow-right text-sm" />
+                </div>
+              </div>
+            </article>
+          )
+        }
 
-			<!-- Sidebar -->
-			<aside class="lg:col-span-4 space-y-8">
-				
-				<!-- About Card -->
-				<div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-					<div class="flex items-center gap-4 mb-4">
-						<div class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl">
-							J
-						</div>
-						<div>
-							<h3 class="font-bold text-gray-900 dark:text-white">Jiahao</h3>
-							<p class="text-xs text-gray-500 dark:text-gray-400">AI Researcher & Developer</p>
-						</div>
-					</div>
-					<p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-						Passionate about leveraging AI to transform how we learn, create, and visualize knowledge.
-					</p>
-					<div class="flex gap-3">
-						<a href="#" class="text-gray-400 hover:text-indigo-500 transition"><i class="fab fa-github text-xl"></i></a>
-						<a href="#" class="text-gray-400 hover:text-blue-400 transition"><i class="fab fa-twitter text-xl"></i></a>
-						<a href="#" class="text-gray-400 hover:text-blue-600 transition"><i class="fab fa-linkedin text-xl"></i></a>
-					</div>
-				</div>
+        <!-- Other Posts Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          {
+            otherPosts.map((post) => (
+              <article class="flex flex-col bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden group">
+                <div class="p-6 flex-1 flex flex-col">
+                  <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
+                    <i class="far fa-calendar" />
+                    <time datetime={post.data.pubDate.toISOString()}>
+                      {post.data.pubDate.toLocaleDateString("en-us", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </time>
+                  </div>
+                  <a href={`/blog/${post.slug}`} class="block flex-1">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2">
+                      {post.data.title}
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-4">
+                      {post.data.description}
+                    </p>
+                  </a>
+                  <a
+                    href={`/blog/${post.slug}`}
+                    class="inline-flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline mt-auto"
+                  >
+                    Read more
+                  </a>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
 
-				<!-- Topics (Static for now) -->
-				<div class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-					<h3 class="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-						<i class="fas fa-tags text-indigo-500"></i> Trending Topics
-					</h3>
-					<div class="flex flex-wrap gap-2">
-						{['Artificial Intelligence', 'Data Visualization', 'Web Development', 'Astro', 'React', 'Machine Learning'].map(tag => (
-							<span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900 hover:text-indigo-600 dark:hover:text-indigo-300 transition cursor-pointer">
-								#{tag}
-							</span>
-						))}
-					</div>
-				</div>
+      <!-- Sidebar -->
+      <aside class="lg:col-span-4 space-y-8">
+        <!-- About Card -->
+        <div
+          class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700"
+        >
+          <div class="flex items-center gap-4 mb-4">
+            <div
+              class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl"
+            >
+              J
+            </div>
+            <div>
+              <h3 class="font-bold text-gray-900 dark:text-white">Jiahao</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                AI Researcher & Developer
+              </p>
+            </div>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+            Passionate about leveraging AI to transform how we learn, create,
+            and visualize knowledge.
+          </p>
+          <div class="flex gap-3">
+            <a href="#" class="text-gray-400 hover:text-indigo-500 transition"
+              ><i class="fab fa-github text-xl"></i></a
+            >
+            <a href="#" class="text-gray-400 hover:text-blue-400 transition"
+              ><i class="fab fa-twitter text-xl"></i></a
+            >
+            <a href="#" class="text-gray-400 hover:text-blue-600 transition"
+              ><i class="fab fa-linkedin text-xl"></i></a
+            >
+          </div>
+        </div>
 
-				<!-- Newsletter (Mockup) -->
-				<div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white shadow-lg">
-					<h3 class="font-bold text-lg mb-2">Stay Updated</h3>
-					<p class="text-indigo-100 text-sm mb-4">Get the latest AI insights delivered to your inbox.</p>
-					<div class="flex gap-2">
-						<input type="email" placeholder="Your email" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-indigo-200 text-sm focus:outline-none focus:ring-2 focus:ring-white/50" />
-						<button class="bg-white text-indigo-600 px-3 py-2 rounded-lg text-sm font-bold hover:bg-indigo-50 transition">
-							<i class="fas fa-paper-plane"></i>
-						</button>
-					</div>
-				</div>
+        <!-- Topics (Static for now) -->
+        <div
+          class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700"
+        >
+          <h3
+            class="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2"
+          >
+            <i class="fas fa-tags text-indigo-500"></i> Trending Topics
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            {
+              [
+                "Artificial Intelligence",
+                "Data Visualization",
+                "Web Development",
+                "Astro",
+                "React",
+                "Machine Learning",
+              ].map((tag) => (
+                <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900 hover:text-indigo-600 dark:hover:text-indigo-300 transition cursor-pointer">
+                  #{tag}
+                </span>
+              ))
+            }
+          </div>
+        </div>
 
-			</aside>
-		</div>
-	</div>
+        <!-- Newsletter (Mockup) -->
+        <div
+          class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white shadow-lg"
+        >
+          <h3 class="font-bold text-lg mb-2">Stay Updated</h3>
+          <p class="text-indigo-100 text-sm mb-4">
+            Get the latest AI insights delivered to your inbox.
+          </p>
+          <div class="flex gap-2">
+            <input
+              type="email"
+              placeholder="Your email"
+              class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-indigo-200 text-sm focus:outline-none focus:ring-2 focus:ring-white/50"
+            />
+            <button
+              class="bg-white text-indigo-600 px-3 py-2 rounded-lg text-sm font-bold hover:bg-indigo-50 transition"
+            >
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
 </Layout>

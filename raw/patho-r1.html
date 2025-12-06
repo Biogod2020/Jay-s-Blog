@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patho-R1: 基于多模态强化学习的病理学专家推理架构解析 | 深度复现版</title>
+  <meta name="description" content="Patho-R1 论文架构深度解析：从数据管线到强化学习策略">
+
+  <!-- 1. Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            serif: ['Merriweather', 'Georgia', 'serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
+          },
+          colors: {
+            slate: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+            },
+            primary: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+            },
+            patho: {
+              red: '#be123c',     /* 对应 H&E 染色中的伊红 */
+              purple: '#7e22ce',  /* 对应 H&E 染色中的苏木精 */
+            }
+          },
+          typography: {
+            DEFAULT: {
+              css: {
+                maxWidth: 'none',
+                color: '#334155',
+                h1: { color: '#1e293b', fontWeight: '800' },
+                h2: { color: '#1e3a8a', fontWeight: '700', marginTop: '2em' },
+                h3: { color: '#334155', fontWeight: '600', marginTop: '1.5em' },
+                strong: { color: '#0f172a', fontWeight: '600' },
+                code: { color: '#be123c', backgroundColor: '#f1f5f9', padding: '0.2em 0.4em', borderRadius: '0.25rem', fontWeight: '500' },
+                'code::before': { content: '""' },
+                'code::after': { content: '""' },
+                blockquote: { borderLeftColor: '#2563eb', fontStyle: 'italic', color: '#475569', backgroundColor: '#f8fafc', padding: '1rem' },
+              }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- 2. Typography Plugin -->
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+  <!-- 3. Mermaid.js (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#dbeafe',
+        primaryTextColor: '#1e3a8a',
+        primaryBorderColor: '#2563eb',
+        lineColor: '#64748b',
+        secondaryColor: '#fce7f3',
+        tertiaryColor: '#fff',
+        fontFamily: 'Inter, sans-serif'
+      },
+      flowchart: { curve: 'monotoneX' },
+      sequence: { actorMargin: 50 }
+    });
+  </script>
+
+  <!-- 4. MathJax (CDN) -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        tags: 'ams'
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <!-- 5. Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* 基础样式微调 */
+    body {
+      background-color: #f8fafc;
+      font-feature-settings: "cv11", "ss01";
+    }
+
+    /* 玻璃拟态面板 */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    /* 图片交互 */
+    .zoomable {
+      cursor: zoom-in;
+      transition: all 0.3s ease;
+      border-radius: 0.5rem;
+    }
+
+    .zoomable:hover {
+      transform: scale(1.015);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 灯箱样式 */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(15, 23, 42, 0.95);
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+    }
+
+    .lightbox img {
+      max-width: 95%;
+      max-height: 95vh;
+      border-radius: 4px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 自定义滚动条 */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 20px;
+      border: 3px solid transparent;
+      background-clip: content-box;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #94a3b8;
+    }
+
+    /* 代码块样式 */
+    pre {
+      background-color: #1e293b !important;
+      color: #e2e8f0 !important;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+
+    /* 目录激活状态 */
+    .toc-link.active {
+      color: #2563eb;
+      border-left-color: #2563eb;
+      background-color: #eff6ff;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<!-- LENGTH-PLAN: total≈12000字 | complexity=high | structure=academic-deep-dive -->
+
+<body class="text-slate-700 antialiased selection:bg-blue-100 selection:text-blue-900">
+
+  <!-- 侧边悬浮目录 (大屏显示) -->
+  <nav id="toc-container"
+    class="fixed right-8 top-24 w-72 hidden xl:flex flex-col gap-1 glass-panel rounded-2xl shadow-xl p-5 max-h-[80vh] z-50 transition-all duration-300 ease-in-out group">
+    
+    <!-- Header with Toggle Button -->
+    <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-200">
+      <div id="toc-header-text" class="flex items-center gap-2 text-slate-800 font-bold uppercase tracking-wider text-xs transition-opacity duration-200">
+        <i class="fas fa-list-ul text-blue-500"></i> 
+        <span class="whitespace-nowrap">目录导航</span>
+      </div>
+      <button id="toc-toggle" class="text-slate-400 hover:text-blue-600 transition-colors focus:outline-none p-1 rounded-md hover:bg-slate-100">
+        <i class="fas fa-chevron-right transition-transform duration-300" id="toc-toggle-icon"></i>
+      </button>
+    </div>
+
+    <!-- TOC Content Wrapper -->
+    <div id="toc-content-wrapper" class="overflow-hidden transition-all duration-300 opacity-100 max-h-[70vh]">
+      <div id="toc-content" class="flex flex-col gap-1 text-sm text-slate-500 overflow-y-auto pr-1 custom-scrollbar" style="max-height: 65vh;"></div>
+    </div>
+  </nav>
+
+  <!-- 主内容容器 -->
+  <main class="max-w-6xl mx-auto px-6 md:px-12 py-12 my-10 bg-white shadow-2xl rounded-3xl border border-slate-100">
+
+    <!-- 论文 Header -->
+    <header class="text-center mb-20 pb-12 border-b border-slate-100 relative">
+      <div
+        class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-1 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full opacity-50">
+      </div>
+
+      <div
+        class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 text-xs font-bold px-4 py-1.5 rounded-full mb-6 hover:bg-blue-100 transition-colors cursor-default">
+        <i class="fas fa-file-alt"></i> arXiv:2505.11404v2 [cs.CV]
+      </div>
+
+      <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
+        Patho-R1: <br class="hidden md:block" />
+        <span
+          class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">多模态强化学习病理推理专家</span>
+      </h1>
+
+      <div class="flex flex-wrap justify-center items-center gap-6 text-sm font-medium text-slate-500">
+        <span class="flex items-center gap-2 hover:text-blue-600 transition-colors"><i
+            class="fas fa-user-edit text-blue-400"></i> Wenchuan Zhang 等</span>
+        <span class="flex items-center gap-2 hover:text-purple-600 transition-colors"><i
+            class="fas fa-university text-purple-400"></i> 四川大学华西医院</span>
+        <a href="https://github.com/Wenchuan-Zhang/Patho-R1" target="_blank"
+          class="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+          <i class="fab fa-github"></i> 代码与模型
+        </a>
+      </div>
+    </header>
+
+    <article class="prose prose-slate prose-lg max-w-none">
+
+      
+
+      <!-- 0. 作者团队背景 -->
+      <section id="sec-authors" class="mb-16">
+        <h2 class="flex items-center gap-4 text-3xl font-bold text-slate-900 mb-8 group">
+          <span
+            class="flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+            <i class="fas fa-user-graduate"></i>
+          </span>
+          0. 作者团队背景 (Author Background)
+        </h2>
+
+        <div class="bg-slate-50 rounded-3xl p-8 border border-slate-200 shadow-sm">
+          
+          <!-- 0.1 Dual Leadership -->
+          <div class="mb-12">
+            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+              <i class="fas fa-chess text-slate-400"></i> 双核心指导团队 (Dual Leadership)
+            </h3>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+              <!-- Clinical Lead: Hong Bu -->
+              <div class="bg-white p-6 rounded-2xl border-t-4 border-blue-500 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-start gap-4">
+                  <div class="relative w-20 h-20 flex-shrink-0">
+                     <img
+                      src="https://ui-avatars.com/api/?name=Hong+Bu&background=0D8ABC&color=fff&size=256"
+                      alt="Hong Bu"
+                      class="w-full h-full rounded-full object-cover border-2 border-white shadow-md zoomable"
+                      onclick="openLightbox(this.src)">
+                     <div class="absolute -bottom-2 -right-2 bg-blue-100 text-blue-600 text-xs font-bold px-2 py-0.5 rounded-full border border-white">Clinical</div>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-bold text-slate-900">Hong Bu (步宏)</h4>
+                    <p class="text-xs text-slate-500 font-mono mb-2">Director of Pathology, WCH</p>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                      <strong>临床总负责人</strong>。中国病理学界泰斗，中华医学会病理学分会前任主委。
+                      主要提供<strong>顶级临床数据资源</strong>与<strong>病理诊断金标准</strong>，确保 AI 模型的医学逻辑严谨性。
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- AI Supervisor: Yuhao Yi -->
+              <div class="bg-white p-6 rounded-2xl border-t-4 border-purple-500 shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-start gap-4">
+                  <div class="relative w-20 h-20 flex-shrink-0">
+                     <img
+                      src="https://ui-avatars.com/api/?name=Yuhao+Yi&background=7C3AED&color=fff&size=256"
+                      alt="Yuhao Yi"
+                      class="w-full h-full rounded-full object-cover border-2 border-white shadow-md zoomable"
+                      onclick="openLightbox(this.src)">
+                     <div class="absolute -bottom-2 -right-2 bg-purple-100 text-purple-600 text-xs font-bold px-2 py-0.5 rounded-full border border-white">AI/Tech</div>
+                  </div>
+                  <div>
+                    <h4 class="text-lg font-bold text-slate-900">Yuhao Yi (易宇豪)</h4>
+                    <p class="text-xs text-slate-500 font-mono mb-2">Researcher, Sichuan Univ</p>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                      <strong>技术实际指导人</strong> (Corresponding Author)。
+                      专注于<strong>计算病理学</strong>与<strong>可信 AI</strong>。
+                      负责 Patho-R1 的核心算法设计（RL 策略、多模态对齐），是将临床需求转化为代码实现的“架构师”。
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 0.2 Lab Context -->
+          <div class="mb-12">
+             <div class="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 group h-48">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/West_China_Hospital_of_Sichuan_University_Inpatient_Building_No.1.jpg/1200px-West_China_Hospital_of_Sichuan_University_Inpatient_Building_No.1.jpg"
+                alt="West China Hospital"
+                class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700 zoomable"
+                onclick="openLightbox(this.src)">
+              <div class="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-transparent flex flex-col justify-center px-8">
+                <h4 class="text-white font-bold text-xl mb-1">West China Hospital Pathology</h4>
+                <p class="text-slate-300 text-sm max-w-md">
+                  拥有数百万级玻片库的“数据金矿”。Patho-R1 的成功，本质上是<strong>华西海量临床数据</strong>与<strong>前沿 AI 算法</strong>的胜利。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 0.3 First Author Deep Dive -->
+          <div>
+            <h4 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+              <i class="fas fa-user-astronaut text-emerald-600"></i> 第一作者 (First Author)
+            </h4>
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row gap-6 items-start">
+               <div class="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 border border-slate-200 shadow-sm bg-slate-50">
+                <img
+                  src="https://ui-avatars.com/api/?name=Wenchuan+Zhang&background=10B981&color=fff&size=256"
+                  alt="Wenchuan Zhang"
+                  class="w-full h-full object-cover zoomable"
+                  onclick="openLightbox(this.src)">
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h5 class="text-xl font-bold text-slate-900">Wenchuan Zhang (张文川)</h5>
+                    <p class="text-sm text-emerald-600 font-medium mb-2">PhD Candidate @ West China Hospital</p>
+                  </div>
+                  <a href="https://scholar.google.com/" target="_blank" class="text-slate-400 hover:text-emerald-600 transition-colors"><i class="fas fa-graduation-cap text-xl"></i></a>
+                </div>
+                
+                <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                  典型的<strong>“医工交叉”</strong>复合型人才。不同于纯计算机背景的学生，他身处临床一线，深刻理解病理医生的痛点。
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                   <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                     <div class="text-xs font-bold text-slate-500 uppercase mb-1">Research Focus</div>
+                     <div class="text-xs text-slate-700 font-medium">Computational Pathology, Bioinformatics, RAG</div>
+                   </div>
+                   <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                     <div class="text-xs font-bold text-slate-500 uppercase mb-1">Key Works</div>
+                     <ul class="text-xs text-slate-700 space-y-1">
+                       <li>• <strong>Patho-AgenticRAG</strong> (Agentic AI for Path)</li>
+                       <li>• <strong>Breast Cancer Risk Model</strong> (Clinical Prediction)</li>
+                     </ul>
+                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 1. 动机与背景 -->
+      <section id="sec-motivation" class="scroll-mt-24">
+        <h2 class="flex items-center gap-4 text-3xl font-bold text-slate-900 mb-8 group">
+          <span
+            class="flex items-center justify-center w-12 h-12 rounded-xl bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+            <i class="fas fa-lightbulb"></i>
+          </span>
+          1. 研究背景与核心动机
+        </h2>
+
+        <div class="grid lg:grid-cols-5 gap-8 mb-12">
+          <div class="lg:col-span-3 space-y-6">
+            <p class="text-slate-600 leading-relaxed">
+              在医疗人工智能领域，<strong>病理学（Pathology）</strong>长期以来都是一块难啃的“硬骨头”。尽管通用视觉语言模型（如 CLIP, LLaVA）在放射学（MRI,
+              CT）等领域取得了显著进展，但在病理学中的表现却不尽如人意。这主要归因于病理诊断的特殊性：它不仅要求模型识别图像中的显性特征（如肿瘤区域），更要求模型具备<strong>细粒度的形态学辨识能力</strong>（如细胞核异型性、核分裂像）以及<strong>严谨的诊断推理逻辑</strong>。
+            </p>
+
+            <div class="bg-red-50 p-6 rounded-2xl border border-red-100 relative overflow-hidden">
+              <div class="absolute top-0 right-0 p-4 opacity-10"><i
+                  class="fas fa-exclamation-triangle text-9xl text-red-500"></i></div>
+              <h3 class="text-lg font-bold text-red-800 mt-0 mb-3 z-10 relative">当前挑战 (Challenges)</h3>
+              <ul class="space-y-3 text-sm text-red-700/90 z-10 relative list-none pl-0">
+                <li class="flex gap-3">
+                  <i class="fas fa-times-circle mt-1 text-red-500"></i>
+                  <span><strong>数据肤浅：</strong>现有数据集（如 Quilt-1M, Twitter 来源）多为简单的图文匹配，缺乏像教科书那样深度的、基于证据的诊断逻辑。</span>
+                </li>
+                <li class="flex gap-3">
+                  <i class="fas fa-times-circle mt-1 text-red-500"></i>
+                  <span><strong>推理缺失：</strong>模型往往只能给出结论（Diagnosis），无法提供可追溯的推理过程（Reasoning Chain），导致临床可信度低。</span>
+                </li>
+                <li class="flex gap-3">
+                  <i class="fas fa-times-circle mt-1 text-red-500"></i>
+                  <span><strong>微小特征：</strong>通用模型难以捕捉 WSI（全切片图像）中亿级像素下的微小病变特征。</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="lg:col-span-2 flex flex-col gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100 hover:shadow-xl transition-shadow">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center"><i
+                    class="fas fa-eye"></i></div>
+                <h4 class="font-bold text-indigo-900 m-0">Patho-CLIP</h4>
+              </div>
+              <p class="text-sm text-slate-600 m-0">
+                基于 <strong>3.5M</strong> 高质量图文对训练的视觉编码器。不仅包含公开数据，还融合了大量教科书级别的细粒度标注，专注于捕捉形态学特征。
+              </p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100 hover:shadow-xl transition-shadow">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center"><i
+                    class="fas fa-brain"></i></div>
+                <h4 class="font-bold text-pink-900 m-0">Patho-R1</h4>
+              </div>
+              <p class="text-sm text-slate-600 m-0">
+                引入<strong>强化学习（RL）</strong>机制，利用 GRPO 和 DAPO 策略，让模型学会像专家一样进行多步推理、自我修正和格式化输出。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <figure class="my-12 group">
+          <div class="overflow-hidden rounded-2xl border border-slate-200 shadow-sm bg-slate-50 p-2">
+            <img src="https://arxiv.org/html/2505.11404v2/x1.png" alt="Patho-R1 Performance Overview"
+              class="w-full h-auto object-cover zoomable" onclick="openLightbox(this.src)">
+          </div>
+          <figcaption class="text-center text-sm text-slate-500 mt-4 px-4 md:px-20 leading-relaxed">
+            <strong>图 1: 核心性能概览。</strong><br>
+            左图展示了 <strong>Patho-CLIP</strong> 在零样本检索任务上相对于 SOTA 模型（如 CONCH, PLIP）的显著优势。右图展示了 <strong>Patho-R1</strong>
+            在多模态推理任务（MCQ, VQA）上的准确率提升，证明了 RL 带来的性能飞跃。
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- 2. 架构设计 -->
+      <section id="sec-architecture" class="scroll-mt-24">
+        <h2 class="flex items-center gap-4 text-3xl font-bold text-slate-900 mb-8 group">
+          <span
+            class="flex items-center justify-center w-12 h-12 rounded-xl bg-purple-100 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+            <i class="fas fa-network-wired"></i>
+          </span>
+          2. 架构设计与训练流水线
+        </h2>
+
+        <p class="text-lg text-slate-600 mb-8">
+          Patho-R1
+          的成功不仅仅依赖于模型本身，更在于其精心设计的<strong>三阶段渐进式训练范式</strong>。这一过程模拟了人类医生的成长路径：从阅读教科书积累知识（CPT），到在导师指导下练习病例分析（SFT），最后通过不断的实战反馈修正诊断逻辑（RL）。
+        </p>
+
+        <!-- Mermaid 整体架构图 -->
+        <div class="my-10 p-8 bg-slate-50 rounded-3xl border border-slate-200 shadow-inner overflow-x-auto">
+          <h4 class="text-center font-bold text-slate-700 mb-6 uppercase tracking-widest text-xs">训练流程全景图</h4>
+          <div class="mermaid text-center">
+            graph TD
+            subgraph Phase1 ["阶段 I: 持续预训练 (CPT)"]
+            direction TB
+            A1[教科书 PDFs] -->|DocLayoutYolo| A2(图文提取)
+            A2 -->|OCR + Qwen-max| A3[富文本数据]
+            A4[公开数据集<br>PubMed, Quilt] --> A5[数据清洗]
+            A3 & A5 --> A6{3.5M 高质量图文对}
+            A6 -->|对比学习| CLIP[Patho-CLIP]
+            A6 -->|自回归训练| Base[Qwen2.5-VL Base]
+            end
+
+            subgraph Phase2 ["阶段 II: 监督微调 (SFT)"]
+            direction TB
+            B1[500k 原始样本] -->|DeepSeek-R1| B2[生成 CoT 推理链]
+            B2 --> B3{数据分层}
+            B3 -->|Easy/Medium/Hard| B4[难度聚类]
+            B3 -->|5大亚专科| B5[领域分类]
+            B4 & B5 --> B6[高质量 SFT 数据集]
+            Base -->|LoRA 微调| SFT_Model[具备初步推理能力的模型]
+            B6 --> SFT_Model
+            end
+
+            subgraph Phase3 ["阶段 III: 强化学习 (RL)"]
+            direction TB
+            C1[10k 诊断 MCQs] --> C2[环境 Environment]
+            SFT_Model -->|作为 Policy| Actor
+            Actor -->|生成回复| C2
+            C2 -->|计算奖励| Reward{Reward Function}
+            Reward -->|R_fmt + R_acc| Update
+            Update -->|GRPO / DAPO| Final[Patho-R1]
+            end
+
+            Phase1 --> Phase2
+            Phase2 --> Phase3
+
+            style Final fill:#dbeafe,stroke:#2563eb,stroke-width:2px
+            style Phase1 fill:#fff,stroke:#cbd5e1,stroke-dasharray: 5, 5
+            style Phase2 fill:#fff,stroke:#cbd5e1,stroke-dasharray: 5, 5
+            style Phase3 fill:#fff,stroke:#cbd5e1,stroke-dasharray: 5, 5
+          </div>
+        </div>
+
+        <figure class="my-12 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+          <img src="https://arxiv.org/html/2505.11404v2/x2.png" alt="Data Pipeline Details"
+            class="w-full rounded-lg zoomable" onclick="openLightbox(this.src)">
+          <figcaption class="text-center text-sm text-slate-500 mt-4">
+            <strong>图 2: 数据处理细节。</strong> 展示了从教科书中提取 In-line
+            Reference（正文中的引用说明）的关键步骤。这一步骤确保模型不仅看到图片的标题，还能理解正文中对图片细节的深度描述。
+          </figcaption>
+        </figure>
+
+        <!-- 2.1 CPT 阶段详解 -->
+        <div class="mb-16">
+          <div class="flex items-center gap-3 mb-6">
+            <div
+              class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold font-serif text-xl">
+              I</div>
+            <h3 class="text-2xl font-bold text-slate-800 m-0">知识注入：持续预训练 (CPT)</h3>
+          </div>
+          <p class="text-slate-600 mb-6">
+            通用的 Qwen2.5-VL 模型缺乏病理学的专业术语和视觉特征理解。我们在 CPT 阶段使用了 <strong>3.5M</strong> 个图文对进行全参数或 LoRA 训练。这一阶段的关键在于数据的来源和质量。
+          </p>
+
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+              <span class="font-bold text-slate-700">数据构成分析</span>
+              <span class="text-xs font-mono text-slate-500">Total: ~3.5 Million Pairs</span>
+            </div>
+            <div class="p-6 grid md:grid-cols-2 gap-8">
+              <div>
+                <h4 class="font-bold text-blue-600 mb-2">教科书与讲义 (0.7M)</h4>
+                <p class="text-sm text-slate-600 mb-2">
+                  这是本文的核心资产。不同于网络爬取的数据，教科书数据具有极高的权威性和系统性。
+                </p>
+                <ul class="text-sm text-slate-600 space-y-2 list-disc pl-4">
+                  <li><strong>提取技术</strong>：使用 DocLayoutYolo 进行版面分析，将页面分割为 Image, Caption, Body Text。</li>
+                  <li><strong>上下文关联</strong>：使用 Qwen-max 提取正文中引用图片（如 "Figure 3.2 shows..."）的段落，作为增强的 Caption。</li>
+                  <li><strong>多图处理</strong>：自动裁剪包含多个子图（Panel A, B...）的复合图像，并将总 Caption 拆分对应。</li>
+                </ul>
+              </div>
+              <div>
+                <h4 class="font-bold text-purple-600 mb-2">公开数据集 (2.8M)</h4>
+                <p class="text-sm text-slate-600 mb-2">
+                  整合了现有的高质量医学数据集，保证数据的多样性和覆盖面。
+                </p>
+                <ul class="text-sm text-slate-600 space-y-2 list-disc pl-4">
+                  <li><strong>PubMed</strong>：来自生物医学文献的插图。</li>
+                  <li><strong>Quilt-1M</strong>：来自 YouTube、Twitter 等社交媒体的病理讨论。</li>
+                  <li><strong>PathGen</strong>：包含丰富的组织形态学描述。</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2.2 SFT 阶段详解 -->
+        <div class="mb-16">
+          <div class="flex items-center gap-3 mb-6">
+            <div
+              class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold font-serif text-xl">
+              II</div>
+            <h3 class="text-2xl font-bold text-slate-800 m-0">推理激发：监督微调 (SFT)</h3>
+          </div>
+          <p class="text-slate-600 mb-6">
+            为了让模型学会“思考”，我们构建了 <strong>500k</strong> 条带有思维链（CoT）的指令微调数据。这里的核心创新在于利用强推理模型（DeepSeek-R1）作为教师，生成结构化的推理步骤。
+          </p>
+
+          <!-- 详细分类表 -->
+          <div class="mb-6">
+            <h4 class="font-bold text-slate-700 mb-3">病理亚领域分类体系</h4>
+            <p class="text-sm text-slate-500 mb-4">为了保证 SFT 数据的多样性，我们首先将数据分类为 11 个细分领域，重点关注前 5 类：</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold">Histopathology
+                (组织病理)</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold">Cytology (细胞学)</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold">Gross Examination
+                (大体)</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold">IHC (免疫组化)</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold">FISH (荧光原位杂交)</span>
+              <span class="px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-xs">X-ray</span>
+              <span class="px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-xs">CT/MRI</span>
+              <span class="px-3 py-1 bg-slate-100 text-slate-500 rounded-full text-xs">Schematic</span>
+            </div>
+          </div>
+
+          <!-- Prompt 模板展示 -->
+          <div class="bg-slate-800 rounded-xl overflow-hidden shadow-lg">
+            <div class="bg-slate-900 px-4 py-3 border-b border-slate-700 flex items-center gap-2">
+              <div class="flex gap-1.5">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+              </div>
+              <span class="text-xs text-slate-400 font-mono ml-2">prompt_template_cot.md</span>
+            </div>
+            <div class="p-6 overflow-x-auto">
+              <pre class="bg-transparent text-slate-300 text-sm font-mono m-0 p-0"><code class="language-markdown">### Instruction for DeepSeek-R1:
+You are a pathology expert. Your task is to generate a single round of diagnostic reasoning dialogue.
+
+### Inputs:
+- **Your observation**: {caption}
+- **Knowledge**: {inline_reference} (Context from textbooks)
+
+### Constraints:
+1. Do not use phrases like "mentioned", "context", or "provided text". Instead, refer to information as being "visible in the image".
+2. The output must follow this format:
+   &lt;think&gt; 
+   [Step-by-step reasoning process: 
+    1. Analyze morphological features (cell size, nuclear atypia).
+    2. Correlate with staining characteristics (H&E, IHC).
+    3. Rule out differential diagnoses.]
+   &lt;/think&gt; 
+   &lt;answer&gt; [Final Conclusion] &lt;/answer&gt;
+
+### Difficulty Level: {level} (Easy/Medium/Hard)
+Generate a reasoning chain appropriate for a {level}-level pathologist examination.
+</code></pre>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 mt-2 text-center">注：我们在附录 A.3 中详细描述了基于 K-means 聚类的难度分级策略。</p>
+        </div>
+
+        <!-- 2.3 RL 阶段详解 -->
+        <div class="mb-16">
+          <div class="flex items-center gap-3 mb-6">
+            <div
+              class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold font-serif text-xl">
+              III</div>
+            <h3 class="text-2xl font-bold text-slate-800 m-0">行为对齐：强化学习 (RL)</h3>
+          </div>
+          <p class="text-slate-600 mb-6">
+            SFT 只能让模型“模仿”推理的形式，而 RL 通过奖励信号让模型学会“正确”的推理逻辑。针对不同规模的模型（3B 和 7B），我们采用了不同的优化策略。
+          </p>
+
+          <!-- 算法对比 -->
+          <div class="grid lg:grid-cols-2 gap-8 mb-10">
+            <!-- GRPO -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-20 h-20 bg-blue-50 rounded-bl-full -mr-4 -mt-4 z-0"></div>
+              <h4 class="font-bold text-blue-700 mb-2 relative z-10">GRPO (Group Relative Policy Optimization)</h4>
+              <span
+                class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded mb-4 font-bold relative z-10">用于
+                7B 模型</span>
+              <p class="text-sm text-slate-600 mb-4 relative z-10">
+                传统的 PPO 需要训练一个巨大的 Value Model（Critic），这在显存受限时非常昂贵。GRPO 摒弃了 Critic，改为对同一个问题采样一组输出（Group），以组内的平均奖励作为
+                Baseline。
+              </p>
+              <div
+                class="bg-slate-50 p-3 rounded border border-slate-200 text-xs font-mono text-slate-600 overflow-x-auto relative z-10">
+                $$ \mathcal{J}_{GRPO} = \mathbb{E} \left[ \frac{1}{G} \sum_{i=1}^{G} \left( \min(...) - \beta D_{KL}
+                \right) \right] $$
+              </div>
+              <p class="text-xs text-slate-500 mt-2 relative z-10">优势：大幅节省显存，适合大模型训练。</p>
+            </div>
+
+            <!-- DAPO -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-20 h-20 bg-purple-50 rounded-bl-full -mr-4 -mt-4 z-0"></div>
+              <h4 class="font-bold text-purple-700 mb-2 relative z-10">DAPO (Decoupled & Dynamic Sampling)</h4>
+              <span
+                class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded mb-4 font-bold relative z-10">用于
+                3B 模型</span>
+              <p class="text-sm text-slate-600 mb-4 relative z-10">
+                针对小模型容易产生幻觉或为了“骗分”而生成冗长废话的问题，DAPO 引入了动态采样和长度惩罚机制。
+              </p>
+              <div
+                class="bg-slate-50 p-3 rounded border border-slate-200 text-xs font-mono text-slate-600 overflow-x-auto relative z-10">
+                $$ R_{DAPO} = \alpha \cdot R_{acc} + (1-\alpha) \cdot R_{len\_penalty} $$
+              </div>
+              <p class="text-xs text-slate-500 mt-2 relative z-10">优势：有效控制生成长度，防止小模型胡言乱语。</p>
+            </div>
+          </div>
+
+          <!-- 奖励函数 Mermaid -->
+          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+            <h4 class="font-bold text-slate-700 mb-4 text-center">RL 奖励计算逻辑</h4>
+            <div class="mermaid text-center">
+              flowchart LR
+              Output["模型输出 Output"] --> CheckFmt{"格式检查"}
+              CheckFmt -->|"包含 think & answer"| R_fmt["格式奖励 R_fmt=1"]
+              CheckFmt -->|"格式错误"| Zero["奖励=0"]
+
+              Output --> Extract["正则提取答案"]
+              Extract --> CheckAcc{"与 Ground Truth 比对"}
+              CheckAcc -->|"完全匹配 (A/B/C...)"| R_acc["准确率奖励 R_acc=1"]
+              CheckAcc -->|"不匹配"| Zero
+
+              R_fmt & R_acc --> Weighted["加权求和"]
+              Weighted -->|"R = 0.1*fmt + 0.9*acc"| FinalReward["最终奖励"]
+
+              style FinalReward fill:#fce7f3,stroke:#db2777
+              style Output fill:#eff6ff,stroke:#2563eb
+            </div>
+            <p class="text-sm text-slate-500 mt-4 text-center px-10">
+              注：对于 DAPO，奖励函数中还会额外加入一个基于长度的软惩罚项（Soft Penalty），如果输出超过预设长度（如 2048 tokens），奖励会线性衰减。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. 实验结果 -->
+      <section id="sec-experiments" class="scroll-mt-24">
+        <h2 class="flex items-center gap-4 text-3xl font-bold text-slate-900 mb-8 group">
+          <span
+            class="flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+            <i class="fas fa-flask"></i>
+          </span>
+          3. 实验结果与深度分析
+        </h2>
+
+        <!-- 3.1 零样本分类 -->
+        <div class="mb-16">
+          <h3 class="text-xl font-bold text-slate-800 mb-4">3.1 Patho-CLIP 的零样本分类能力</h3>
+          <p class="text-slate-600 mb-6">
+            在 5 个公开数据集上评估了 Patho-CLIP 的零样本（Zero-shot）分类能力。这些数据集涵盖了肺癌、结肠癌、前列腺癌等多种病理类型。结果显示，Patho-CLIP 显著优于通用医疗 CLIP 模型。
+          </p>
+
+          <div class="overflow-hidden rounded-xl border border-slate-200 shadow-md mb-4">
+            <table class="w-full text-sm text-left bg-white">
+              <thead class="bg-slate-50 text-slate-700 font-bold uppercase text-xs border-b border-slate-200">
+                <tr>
+                  <th class="px-6 py-4">模型 (Model)</th>
+                  <th class="px-4 py-4 text-center">LC-Lung</th>
+                  <th class="px-4 py-4 text-center">LC-Colon</th>
+                  <th class="px-4 py-4 text-center text-blue-600">WSSSLUAD</th>
+                  <th class="px-4 py-4 text-center">SICAPv2</th>
+                  <th class="px-4 py-4 text-center bg-slate-100">平均准确率</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100">
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="px-6 py-4 font-medium text-slate-900">OpenAI-CLIP-L</td>
+                  <td class="px-4 py-4 text-center">70.34</td>
+                  <td class="px-4 py-4 text-center">70.25</td>
+                  <td class="px-4 py-4 text-center">76.25</td>
+                  <td class="px-4 py-4 text-center">15.41</td>
+                  <td class="px-4 py-4 text-center bg-slate-50 font-bold text-slate-600">51.70</td>
+                </tr>
+                <tr class="hover:bg-slate-50 transition-colors">
+                  <td class="px-6 py-4 font-medium text-slate-900">CONCH (SOTA Baseline)</td>
+                  <td class="px-4 py-4 text-center">88.93</td>
+                  <td class="px-4 py-4 text-center">97.35</td>
+                  <td class="px-4 py-4 text-center">65.14</td>
+                  <td class="px-4 py-4 text-center">47.36</td>
+                  <td class="px-4 py-4 text-center bg-slate-50 font-bold text-slate-600">67.89</td>
+                </tr>
+                <tr class="bg-emerald-50/30 hover:bg-emerald-50/60 transition-colors">
+                  <td class="px-6 py-4 font-bold text-emerald-700 flex items-center gap-2">
+                    Patho-CLIP-L (Ours) <i class="fas fa-crown text-yellow-500 text-xs"></i>
+                  </td>
+                  <td class="px-4 py-4 text-center text-emerald-600 font-bold">93.78</td>
+                  <td class="px-4 py-4 text-center text-emerald-600 font-bold">97.48</td>
+                  <td class="px-4 py-4 text-center text-emerald-600 font-bold">95.89</td>
+                  <td class="px-4 py-4 text-center text-emerald-600 font-bold">55.09</td>
+                  <td class="px-4 py-4 text-center bg-emerald-100/50 text-emerald-800 font-bold">76.14</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-sm text-slate-500 pl-2 border-l-2 border-blue-300">
+            <strong>深度解读：</strong> 值得注意的是 <strong>WSSSLUAD</strong> 数据集。这是一个肺腺癌分割数据集，样本具有极高的组织异质性。CONCH 仅达到了
+            65.14%，而我们的模型达到了 95.89%（<span
+              class="text-green-600 font-bold">↑30.75%</span>）。这直接证明了我们在第一阶段引入大量细粒度形态学描述数据的有效性。
+          </p>
+        </div>
+
+        <!-- 3.2 少样本学习 -->
+        <div class="mb-16">
+          <h3 class="text-xl font-bold text-slate-800 mb-4">3.2 少样本学习 (Few-shot Learning) 的鲁棒性</h3>
+          <p class="text-slate-600 mb-6">
+            临床环境中往往缺乏大规模标注数据。我们测试了仅使用 2, 4, 8, 16 个样本进行线性探测（Linear Probing）时的模型表现。
+          </p>
+          <figure class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white p-2 rounded-xl shadow-sm border border-slate-200">
+              <img src="https://arxiv.org/html/2505.11404v2/x3.png" alt="Few-shot Graph 1"
+                class="w-full h-auto rounded zoomable" onclick="openLightbox(this.src)">
+            </div>
+            <div class="bg-white p-2 rounded-xl shadow-sm border border-slate-200">
+              <img src="https://arxiv.org/html/2505.11404v2/x4.png" alt="Few-shot Graph 2"
+                class="w-full h-auto rounded zoomable" onclick="openLightbox(this.src)">
+            </div>
+            <figcaption class="md:col-span-2 text-center text-sm text-slate-500 mt-2">
+              <strong>图 3：少样本分类准确率随 Shot 数的变化。</strong><br>
+              Patho-CLIP（粉色和紫色曲线）在所有样本量设置下均保持领先。特别是在极少样本（2-shot）情况下，其起始准确率就远高于基线，说明模型的特征空间具有极好的线性可分性。
+            </figcaption>
+          </figure>
+        </div>
+
+        <!-- 3.3 VQA & 推理 -->
+        <div class="mb-16">
+          <h3 class="text-xl font-bold text-slate-800 mb-4">3.3 Patho-R1 的专家级推理能力</h3>
+          <p class="text-slate-600 mb-6">
+            我们在 PathMMU 基准上进行了测试，这是一个包含 8k+ 题目的专家级病理多模态问答数据集。结果表明，RL 训练后的模型不仅答案准确，而且推理过程符合临床逻辑。
+          </p>
+
+          <div class="flex flex-col lg:flex-row gap-8">
+            <!-- 案例分析 -->
+            <div class="flex-1">
+              <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 h-full">
+                <h4 class="font-bold text-slate-700 mb-3 flex items-center"><i class="fas fa-search mr-2"></i> Case
+                  Study: 界面性肝炎诊断</h4>
+                <img src="https://arxiv.org/html/2505.11404v2/x5.png" alt="VQA Reasoning Case"
+                  class="w-full rounded-lg shadow-sm mb-4 zoomable" onclick="openLightbox(this.src)">
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  <strong>图 4 分析：</strong> 对比 LLaVA-Med（仅描述“骨边缘变薄”）和 HuatuoGPT（泛泛而谈），Patho-R1
+                  准确识别了“小梁骨边缘的破骨细胞活性（osteoclastic activity）”，并给出了基于细胞特征的完整推理链。这直接体现了 CoT 训练的价值。
+                </p>
+              </div>
+            </div>
+
+            <!-- 消融实验 -->
+            <div class="flex-1">
+              <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 h-full">
+                <h4 class="font-bold text-slate-700 mb-3 flex items-center"><i class="fas fa-chart-line mr-2"></i> 消融实验:
+                  RL 的贡献</h4>
+                <img src="https://arxiv.org/html/2505.11404v2/x12.png" alt="RL Ablation Curve"
+                  class="w-full rounded-lg shadow-sm mb-4 zoomable" onclick="openLightbox(this.src)">
+                <div class="text-xs text-slate-600 space-y-2">
+                  <p><strong>图 15 解读：</strong> 曲线展示了随着 RL 训练步数（Steps）增加，模型准确率的变化。</p>
+                  <ul class="list-disc pl-4">
+                    <li><strong>SFT Only (起点)：</strong> 准确率约为 60%</li>
+                    <li><strong>GRPO (7B)：</strong> 最终达到 ~82% (<span class="text-green-600 font-bold">↑22%</span>)</li>
+                    <li><strong>DAPO (3B)：</strong> 最终达到 ~74% (<span class="text-green-600 font-bold">↑14%</span>)</li>
+                  </ul>
+                  <p class="mt-2 bg-white p-2 rounded border border-slate-200">
+                    这证明了 RL 并非微调的补充，而是质变的关键。它通过探索（Exploration）让模型找到了比 SFT 数据更优的解题路径。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. 讨论 -->
+      <section id="sec-discussion" class="scroll-mt-24">
+        <h2 class="flex items-center gap-4 text-3xl font-bold text-slate-900 mb-8 group">
+          <span
+            class="flex items-center justify-center w-12 h-12 rounded-xl bg-slate-100 text-slate-600 group-hover:bg-slate-600 group-hover:text-white transition-colors">
+            <i class="fas fa-comments"></i>
+          </span>
+          4. 总结与展望
+        </h2>
+
+        <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-lg mb-10">
+          <p class="text-lg text-slate-700 mb-6">
+            Patho-R1
+            证明了在高度专业化的垂直领域（如病理学），通用的“大数据+大模型”策略往往失效。我们需要的是<strong>高质量的领域数据</strong>（教科书提取）、<strong>结构化的认知引导</strong>（CoT）以及<strong>目标导向的行为强化</strong>（RL）。
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <h4 class="font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2">局限性 (Limitations)</h4>
+              <ul class="text-sm text-slate-600 space-y-3">
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-minus-circle text-red-400 mt-1"></i>
+                  <span><strong>灾难性遗忘：</strong> CPT 注入了新知识，但也导致模型对通用指令（如“写首诗”）的遵循能力下降。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-minus-circle text-red-400 mt-1"></i>
+                  <span><strong>模态局限：</strong> 目前仅限于 H&E 和 IHC 染色图像，无法处理放射学（CT/MRI）或基因组学数据。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-minus-circle text-red-400 mt-1"></i>
+                  <span><strong>计算成本：</strong> RL 训练（尤其是 GRPO）需要同时维护 Actor, Critic, Ref 模型，显存消耗巨大（需 8x A800）。</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-800 mb-3 border-b border-slate-100 pb-2">未来方向 (Future Work)</h4>
+              <ul class="text-sm text-slate-600 space-y-3">
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-alt-circle-right text-blue-400 mt-1"></i>
+                  <span><strong>多智能体协同：</strong> 构建一个“病理科会诊”系统，Patho-R1 负责读片，另一个 Agent 负责查阅文献，第三个 Agent 负责生成报告。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-alt-circle-right text-blue-400 mt-1"></i>
+                  <span><strong>Scaling Law：</strong> 探索在 70B 甚至更大参数模型上，病理推理能力是否会出现“涌现”现象。</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fas fa-arrow-alt-circle-right text-blue-400 mt-1"></i>
+                  <span><strong>多模态融合：</strong> 引入基因测序数据，实现“形态学+基因组学”的综合精准诊断。</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. 参考文献 -->
+      <section id="references" class="mb-20 pt-10 border-t border-slate-200">
+        <h3 class="text-xl font-bold text-slate-800 mb-6">核心参考文献</h3>
+        <ul class="text-xs text-slate-500 space-y-2 font-mono bg-slate-50 p-6 rounded-xl border border-slate-100">
+          <li>[1] OpenAI. "Learning transferable visual models from natural language supervision." (CLIP)</li>
+          <li>[2] DeepSeek-AI. "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning."
+            (GRPO Source)</li>
+          <li>[3] Lu, M. Y., et al. "A visual-language foundation model for computational pathology." (CONCH)</li>
+          <li>[4] Sun, Y., et al. "PathGen-1.6M: 1.6 Million Pathology Image-Text Pairs Generation."</li>
+          <li>[5] Huang, Z., et al. "A visual–language foundation model for pathology image analysis using medical
+            twitter." (PLIP)</li>
+          <!-- 更多文献省略... -->
+        </ul>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- 灯箱组件 -->
+  <div id="lightbox" class="lightbox"
+    onclick="this.classList.remove('active'); setTimeout(()=>this.style.display='none', 300);">
+    <img id="lightbox-img" src="" alt="Full size image" onclick="event.stopPropagation()">
+    <button class="absolute top-6 right-6 text-white/80 hover:text-white text-4xl focus:outline-none">&times;</button>
+  </div>
+
+  <!-- 脚本 -->
+  <script>
+    // 1. 生成目录
+    document.addEventListener('DOMContentLoaded', () => {
+      const tocContent = document.getElementById('toc-content');
+      const headers = document.querySelectorAll('article h2, article h3');
+
+      headers.forEach(header => {
+        // 生成 ID
+        const id = header.id || header.innerText.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\u4e00-\u9fa5-]/g, '');
+        header.id = id;
+
+        const link = document.createElement('a');
+        link.href = `#${id}`;
+        link.innerText = header.innerText.replace(/^[0-9.]+\s*/, ''); // 去除标题中的数字
+        link.className = `toc-link block py-1.5 px-3 rounded-lg hover:bg-slate-100 hover:text-blue-600 transition-all ${header.tagName === 'H3' ? 'pl-8 text-xs' : 'font-bold text-sm text-slate-700'
+          }`;
+
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        });
+
+        tocContent.appendChild(link);
+      });
+
+      // 滚动监听高亮
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active', 'bg-blue-50', 'text-blue-600'));
+            const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+            if (activeLink) activeLink.classList.add('active', 'bg-blue-50', 'text-blue-600');
+          }
+        });
+      }, { rootMargin: '-100px 0px -60% 0px' });
+
+      headers.forEach(h => observer.observe(h));
+
+      // 3. TOC 收缩逻辑
+      const tocContainer = document.getElementById('toc-container');
+      const tocToggle = document.getElementById('toc-toggle');
+      const tocIcon = document.getElementById('toc-toggle-icon');
+      const tocContentWrapper = document.getElementById('toc-content-wrapper');
+      const tocHeaderText = document.getElementById('toc-header-text');
+      let isCollapsed = false;
+
+      tocToggle.addEventListener('click', () => {
+        isCollapsed = !isCollapsed;
+        
+        if (isCollapsed) {
+          // 收缩状态
+          tocContainer.classList.remove('w-72', 'p-5');
+          tocContainer.classList.add('w-12', 'p-3', 'items-center'); // 变窄，居中
+          
+          tocContentWrapper.style.maxHeight = '0px';
+          tocContentWrapper.style.opacity = '0';
+          
+          tocHeaderText.style.opacity = '0';
+          tocHeaderText.style.width = '0';
+          tocHeaderText.style.overflow = 'hidden';
+          
+          tocIcon.classList.add('rotate-180');
+        } else {
+          // 展开状态
+          tocContainer.classList.add('w-72', 'p-5');
+          tocContainer.classList.remove('w-12', 'p-3', 'items-center');
+          
+          tocContentWrapper.style.maxHeight = '70vh';
+          tocContentWrapper.style.opacity = '1';
+          
+          tocHeaderText.style.opacity = '1';
+          tocHeaderText.style.width = 'auto';
+          tocHeaderText.style.overflow = 'visible';
+          
+          tocIcon.classList.remove('rotate-180');
+        }
+      });
+    });
+
+    // 2. 灯箱逻辑
+    function openLightbox(src) {
+      const lightbox = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      lightbox.style.display = 'flex';
+      // 强制重绘以触发 transition
+      requestAnimationFrame(() => {
+        lightbox.classList.add('active');
+        img.src = src;
+      });
+    }
+  </script>
+</body>
+
+</html>
