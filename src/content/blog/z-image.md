@@ -1,0 +1,1389 @@
+---
+title: "Z-Image: 6B 参数的单流 S3-DiT 效率革命"
+description: "Z-Image 通过 S3-DiT 单流架构、3D-RoPE 位置编码和解耦蒸馏技术，以 6B 参数取得了媲美 80B 模型的图像生成效果。"
+pubDate: 2025-12-08
+externalScripts: ["https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"]
+---
+<script>
+mermaid.initialize({ startOnLoad: true, theme: 'default' });
+</script>
+<style>
+/* Custom font for a more academic look if desired, though Tailwind sans is fine */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+body { font-family: 'Inter', sans-serif; }
+/* Animation for the SVG */
+@keyframes dash {
+to {
+stroke-dashoffset: 0;
+}
+}
+
+/* Hide the default layout title block to avoid duplication */
+article > div.mb-8.text-center { display: none !important; }
+</style>
+<!-- Header -->
+<header class="text-center mb-12">
+<div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-indigo-500 uppercase bg-indigo-50 rounded-full border border-indigo-100">
+CVPR 2025 Candidates?
+</div>
+<h1 class="text-4xl md:text-5xl lg:text-6xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-indigo-800 to-slate-900">
+Z-Image: 当 6B 小钢炮<br>跑赢 80B 重型卡车
+</h1>
+<p class="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+一定要 80B 参数才能画出顶级图像吗？Z-Image 用 <strong>"S3-DiT 单流架构"</strong> 告诉你：
+<span class="text-indigo-600 font-semibold">Less is More, Unified is Better.</span>
+</p>
+<div class="flex flex-wrap justify-center gap-3 mt-8">
+<span class="px-3 py-1 text-sm font-medium text-emerald-700 bg-emerald-50 rounded-full border border-emerald-200">6B Params</span>
+<span class="px-3 py-1 text-sm font-medium text-emerald-700 bg-emerald-50 rounded-full border border-emerald-200">$630K Training Cost</span>
+<span class="px-3 py-1 text-sm font-medium text-indigo-700 bg-indigo-50 rounded-full border border-indigo-200">Single-Stream</span>
+<span class="px-3 py-1 text-sm font-medium text-amber-700 bg-amber-50 rounded-full border border-amber-200">Turbo 4-Steps</span>
+</div>
+</header>
+<hr class="border-slate-200 my-12" />
+<!-- Section 1: Intuition -->
+<section class="mb-20">
+
+
+
+
+## <span class="mr-3 text-4xl">🏎️</span> 1. 直觉先行：当“大”不再是唯一的答案
+
+
+<div class="prose prose-slate max-w-none text-lg text-slate-700 leading-relaxed">
+<p class="mb-6">
+大家好，欢迎来到生成式 AI 的“后大模型时代”。如果把 AI 竞赛比作 F1 赛车，过去两年的主旋律只有一句糙话：<strong class="text-indigo-700 bg-indigo-50 px-1 rounded">“力大砖飞” (Scale at all costs)</strong>。
+</p>
+<p class="mb-6">
+无论是 Hunyuan-Image (20B+) 还是 Flux.1 (12B)，大家的思路出奇一致：想要画得更好？那就加参数！想要懂更多概念？那就堆数据！于是我们看到了一个个“显存黑洞”——模型越来越大，大到只有巨头跑得起，大到一张 H800 都要喘半天粗气。
+</p>
+</div>
+<!-- 蓝色直觉块 -->
+<div class="my-10 overflow-hidden rounded-xl border border-indigo-100 bg-indigo-50/50 p-8 shadow-sm transition-all hover:shadow-md">
+<div class="flex items-start gap-5">
+<div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white font-bold text-2xl shadow-indigo-200 shadow-lg">?</div>
+<div class="space-y-4">
+
+
+
+#### 李老师的“灵魂发问”
+
+
+<p class="text-indigo-800/90 m-0 text-lg leading-relaxed">
+但在 2025 年的今天，我们必须停下来问一个反直觉的问题：<br>
+<strong>如果一台 6 缸引擎（6B 参数）经过极致的空气动力学设计（架构优化）和顶级燃油（数据清洗），能不能跑赢那台笨重的 12 缸怪兽？</strong>
+</p>
+<p class="text-indigo-800/90 m-0 text-lg leading-relaxed">
+Z-Image 给出的答案是：<strong>不仅能赢，而且赢得更漂亮、更便宜。</strong>
+</p>
+</div>
+</div>
+</div>
+<div class="grid md:grid-cols-2 gap-8 my-10">
+<div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+
+
+
+
+### <span class="bg-red-100 text-red-600 w-8 h-8 rounded-full flex items-center justify-center mr-2">❌</span> 巨人的困境 (The Goliath Trap)
+
+
+<p class="text-slate-600">
+目前的 SOTA 模型（如 SD3, Flux）普遍采用 <strong>Dual-Stream（双流架构）</strong>。它们就像是一个精神分裂的巨人，左脑（Text Encoder）处理文字，右脑（DiT）处理图像，中间隔着千山万水，只能靠传纸条（Cross-Attention）沟通。
+<br><br>
+<strong>后果：</strong>
+<br>1. <strong>贵：</strong> 动辄 20B 参数，显存爆炸。
+<br>2. <strong>慢：</strong> 信息交互效率低，需要更多步数。
+</p>
+</div>
+<div class="bg-emerald-50/50 p-6 rounded-xl border border-emerald-100 shadow-sm ring-1 ring-emerald-200/50">
+
+
+
+
+### <span class="bg-emerald-100 text-emerald-600 w-8 h-8 rounded-full flex items-center justify-center mr-2">✅</span> 大卫的策略 (The David Strategy)
+
+
+<p class="text-emerald-800">
+Z-Image 选择了 <strong>Single-Stream（单流架构）</strong>。它把文字和图像当成“一家人”，直接拼接成一条序列塞进 Transformer。
+<br><br>
+<strong>优势：</strong>
+<br>1. <strong>密：</strong> 每一层都在进行深度的模态融合。
+<br>2. <strong>省：</strong> 6B 参数就能达到 SOTA 效果，显存占用砍半。
+</p>
+</div>
+</div>
+<!-- Figure 1: The Hook -->
+<figure class="my-12 bg-slate-100 p-2 rounded-xl border border-slate-200 shadow-sm">
+<img src="https://arxiv.org/html/2511.22699v2/figures/showcase_realistic.jpg" alt="Z-Image Realistic Showcase" class="w-full rounded-lg" />
+<figcaption class="mt-3 text-center text-sm text-slate-500 font-medium">
+Figure 1: 既然敢挑战巨头，画质必须过硬。这是 Z-Image-Turbo 的直出效果，无论是皮肤纹理还是光影细节，都达到了照片级水准。
+</figcaption>
+</figure>
+<div class="my-8 border-l-4 border-emerald-400 bg-emerald-50 p-6 rounded-r-lg shadow-sm">
+<p class="font-medium text-emerald-900 m-0 text-lg">
+<strong>📊 震撼业界的数字：$628K</strong><br />
+这不是这篇论文的版面费，而是 Z-Image <strong>整个预训练流程的总成本</strong>。
+相比之下，训练一个同级别的 Llama-3 或 Flux Pro 可能需要数百万美元。
+仅用 314k H800 GPU 小时，Z-Image 就向世界证明：<strong>Efficiency is the new Scale（效率即是新的规模）。</strong>
+</p>
+</div>
+<!-- SVG Visual: The Scale Wall -->
+<figure class="my-12 text-center bg-white p-8 rounded-xl border border-slate-200 shadow-lg transition-transform hover:scale-[1.01]">
+<svg viewBox="0 0 600 320" class="w-full max-w-3xl mx-auto" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern id="grid-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
+<path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f1f5f9" stroke-width="1" />
+</pattern>
+<marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="#94a3b8" />
+</marker>
+<marker id="arrow-indigo" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="#6366f1" />
+</marker>
+</defs>
+<!-- Background -->
+<rect width="100%" height="100%" fill="url(#grid-pattern)" />
+<!-- Axes -->
+<line x1="50" y1="280" x2="550" y2="280" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" />
+<line x1="50" y1="280" x2="50" y2="40" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-gray)" />
+<text x="500" y="300" font-size="12" fill="#64748b" font-weight="bold">模型规模 (Size / Cost)</text>
+<text x="30" y="30" font-size="12" fill="#64748b" font-weight="bold" style="writing-mode: vertical-rl;">生成质量 (Quality)</text>
+<!-- Old Curve -->
+<path d="M 50 280 Q 250 260 350 150 T 520 60" fill="none" stroke="#cbd5e1" stroke-width="4" stroke-dasharray="8 8" />
+<text x="380" y="120" font-size="14" fill="#94a3b8" transform="rotate(-15 380 120)">传统 Scaling Law (越贵越好)</text>
+<!-- 80B Monster -->
+<circle cx="520" cy="60" r="35" fill="#fca5a5" opacity="0.3" />
+<circle cx="520" cy="60" r="15" fill="#ef4444" />
+<text x="520" y="110" text-anchor="middle" font-size="12" fill="#b91c1c" font-weight="bold">80B 巨无霸</text>
+<text x="520" y="125" text-anchor="middle" font-size="10" fill="#b91c1c">(普通人玩不起)</text>
+<!-- Z-Image 6B -->
+<circle cx="150" cy="100" r="35" fill="#c7d2fe" opacity="0.4" />
+<circle cx="150" cy="100" r="15" fill="#4f46e5" />
+<text x="150" y="145" text-anchor="middle" font-size="12" fill="#312e81" font-weight="bold">Z-Image (6B)</text>
+<text x="150" y="160" text-anchor="middle" font-size="10" fill="#4338ca">消费级显卡可跑</text>
+<!-- Jump Arrow -->
+<path d="M 150 260 Q 150 180 145 125" fill="none" stroke="#6366f1" stroke-width="4" marker-end="url(#arrow-indigo)" />
+<text x="70" y="220" font-size="14" fill="#4f46e5" font-weight="bold">效率鸿沟 (Efficiency Gap)</text>
+<!-- Annotation -->
+<text x="220" y="200" font-size="12" fill="#475569" font-style="italic">"S3-DiT 架构红利"</text>
+</svg>
+<figcaption class="mt-6 text-sm text-slate-500 italic">
+图 1.1：效率鸿沟。Z-Image 证明了通过架构创新（蓝色箭头），小模型也能跳出传统曲线，以 1/10 的成本直接摸到天花板。
+</figcaption>
+</figure>
+<p class="text-lg text-slate-700 mb-8">
+Z-Image 的成功不是偶然，而是一场蓄谋已久的<strong>“降维打击”</strong>。它通过逻辑链条 <strong class="text-slate-900">架构统一 (Single-Stream) + 数据纯净 (Data Profiling) + 蒸馏加速 (Turbo)</strong>，把高不可攀的 AI 绘画大模型拉下了神坛。
+<br><br>
+接下来，我们要像剥洋葱一样，一层层揭开它的核心机密。首先，让我们穿越回五年前，看看这一切是怎么开始的。
+</p>
+</section>
+<!-- Sub-chunk: Era 1 - The U-Net Legacy -->
+<section class="mb-16">
+
+
+
+
+
+## 🧬 2. 演化史：从异地恋到心神合一 (The Evolution)
+
+### 第一幕：异地恋的烦恼 (The Cross-Attention Era)
+
+
+<div class="bg-slate-50 p-6 rounded-lg mb-6">
+<p class="text-slate-700 leading-relaxed">
+故事开始于 2022 年。那时的霸主是 <strong>Stable Diffusion 1.5</strong>。
+它的架构设计非常经典，但也极其“分裂”。它由两个完全独立的大脑组成：
+</p>
+<ul class="list-disc list-inside text-slate-700 mt-4 space-y-2">
+<li><strong>左脑 (Text Encoder):</strong> CLIP ViT-L/14。它是一个死记硬背的书呆子，负责把你的 Prompt 压缩成一个 768 维的向量。</li>
+<li><strong>右脑 (Image Generator):</strong> U-Net (860M 参数)。它是一个只会画画的画家，通过 <strong>Cross-Attention</strong> 接收左脑的指令。</li>
+</ul>
+</div>
+<div class="grid md:grid-cols-2 gap-8 mb-8">
+<div>
+
+
+
+#### 🚧 瓶颈：Cross-Attention
+
+
+<p class="text-sm text-slate-600 mb-4">
+这种机制就像<strong>“写信”</strong>。左脑把千言万语压缩成一封只有 77 个 Token 的信。
+右脑读到 "Red Box left of Blue Ball" 时，经常因为信里信息压缩过度，画成 "Red Ball left of Blue Box"。
+这就是著名的<strong>“属性错位” (Attribute Bleeding)</strong> 问题。
+</p>
+
+
+
+#### 🩹 SDXL 的补丁：暴力美学
+
+
+<p class="text-sm text-slate-600">
+2023 年的 <strong>SDXL</strong> 并没有改变“异地恋”的本质，而是选择了<strong>“把信写长”</strong>。
+<br>
+它引入了<strong>双文本编码器 (Dual Text Encoders)</strong>：CLIP + OpenCLIP-G。
+向量维度从 768 暴涨到 2048。
+U-Net 参数量也堆到了 2.6B。
+<br>
+<span class="text-xs bg-slate-200 px-2 py-1 rounded mt-1 inline-block">结果：</span> 
+虽然理解力提升了，但架构依然是分离的。文字和图像从未真正“见过面”。
+</p>
+</div>
+<!-- SVG Visual for Cross-Attention Bottleneck -->
+<figure class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+<svg viewBox="0 0 300 200" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+<!-- Text Brain -->
+<rect x="20" y="40" width="80" height="60" rx="4" fill="#cbd5e1" stroke="#64748b" stroke-width="2" />
+<text x="60" y="75" text-anchor="middle" font-weight="bold" fill="#475569" font-size="10">CLIP</text>
+<text x="60" y="90" text-anchor="middle" font-size="8" fill="#64748b">(768d)</text>
+<!-- Image Brain -->
+<rect x="180" y="20" width="100" height="120" rx="4" fill="#e2e8f0" stroke="#475569" stroke-width="2" />
+<text x="230" y="80" text-anchor="middle" font-weight="bold" fill="#475569" font-size="10">U-Net</text>
+<text x="230" y="95" text-anchor="middle" font-size="8" fill="#64748b">(Pixel Space)</text>
+<!-- The "Mail" -->
+<path d="M 100 70 L 180 70" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 2" marker-end="url(#arrow-grey-1)" />
+<rect x="120" y="60" width="40" height="20" fill="#fff" stroke="#94a3b8" />
+<text x="140" y="74" text-anchor="middle" font-size="8" fill="#64748b">Msg</text>
+<!-- Bottleneck Icon -->
+<circle cx="140" cy="70" r="12" fill="none" stroke="#ef4444" stroke-width="2" />
+<line x1="128" y1="82" x2="152" y2="58" stroke="#ef4444" stroke-width="2" />
+<!-- SDXL Upgrade -->
+<g transform="translate(0, 150)" opacity="0.6">
+<text x="150" y="10" text-anchor="middle" font-size="10" fill="#64748b">SDXL: 更大的信封 (2048d)</text>
+<rect x="100" y="20" width="100" height="10" rx="2" fill="#94a3b8" />
+</g>
+<defs>
+<marker id="arrow-grey-1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="#94a3b8" />
+</marker>
+</defs>
+</svg>
+</figure>
+</div>
+</section>
+<!-- Sub-chunk: Era 2 - Dual Stream -->
+<section class="mb-16">
+
+
+
+
+### 第二幕：昂贵的双人舞 (The Dual-Stream Era)
+
+
+<div class="bg-orange-50 p-6 rounded-lg mb-6 border border-orange-100">
+<p class="text-slate-800 leading-relaxed">
+为了让文字和图像更好地交流，<strong>Stable Diffusion 3 (SD3)</strong> 和 <strong>Flux.1</strong> 开启了“双流”时代。
+它们抛弃了 Cross-Attention，改用更复杂的 Transformer 架构。
+</p>
+</div>
+<div class="space-y-8">
+<!-- SD3: MMDiT -->
+<div>
+
+
+
+#### <span class="bg-orange-200 text-orange-800 px-2 rounded mr-2 text-sm">SD3</span> MM-DiT: 貌合神离
+
+
+<p class="text-sm text-slate-700 mt-2">
+SD3 提出了 <strong>Multimodal Diffusion Transformer (MM-DiT)</strong>。
+<br>
+<strong>机制：</strong> 它有两套独立的权重（Weights），一套给文本，一套给图像。
+虽然它们在 Attention 层会交换信息，但本质上还是两个“人格”。
+这就像两个人坐在一张桌子上办公，偶尔互相看一眼对方的屏幕。
+</p>
+</div>
+<!-- Flux: Double Stream -->
+<div>
+
+
+
+#### <span class="bg-lime-200 text-lime-800 px-2 rounded mr-2 text-sm">Flux.1</span> Hybrid Stream: 先分后合
+
+
+<p class="text-sm text-slate-700 mt-2">
+Flux 更进一步，设计了 <strong>Double-Stream Block</strong> 和 <strong>Single-Stream Block</strong> 的混合体。
+<br>
+1. <strong>前段 (Double):</strong> 文本和图像各跑各的，通过 Concatenation 计算 Attention，但权重不共享。
+<br>
+2. <strong>后段 (Single):</strong> 把两者强行融合，用一套参数处理。
+<br>
+<strong>代价：</strong> Flux 12B 的参数量极其庞大，推理显存需求极高（24GB 起步）。
+</p>
+</div>
+<!-- Hunyuan: MoE -->
+<div>
+
+
+
+#### <span class="bg-red-200 text-red-800 px-2 rounded mr-2 text-sm">Hunyuan</span> Mixture of Experts: 只有土豪玩得起
+
+
+<p class="text-sm text-slate-700 mt-2">
+腾讯的混元 (Hunyuan-Image) 走到了极致。
+<strong>80B 参数！</strong> (你没看错，800亿)。
+为了跑得动，它用了 <strong>MoE (混合专家模型)</strong>。64 个专家网络，每次只激活其中的 ~13B。
+这就像雇佣了一个 64 人的专家团队，每次只叫 10 个人出来干活。
+<br>
+<span class="text-red-600 font-bold text-xs">缺点：</span> 训练成本是天价 (>$2M)。
+</p>
+</div>
+</div>
+<!-- SVG Visual for Dual-Stream Complexity -->
+<figure class="mt-8 bg-white p-6 rounded-xl border border-slate-200 shadow-lg">
+<svg viewBox="0 0 500 240" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+<!-- Background indicating separation -->
+<rect x="20" y="20" width="200" height="200" rx="8" fill="#fff7ed" stroke="#fdba74" stroke-dasharray="4 4"/>
+<rect x="280" y="20" width="200" height="200" rx="8" fill="#ecfccb" stroke="#bef264" stroke-dasharray="4 4"/>
+<!-- Text Stream -->
+<text x="120" y="45" text-anchor="middle" font-weight="bold" fill="#9a3412">Text Stream</text>
+<rect x="50" y="60" width="140" height="140" rx="4" fill="#ffedd5" stroke="#f97316" stroke-width="2"/>
+<text x="120" y="100" text-anchor="middle" font-size="11" fill="#c2410c">Text Params</text>
+<text x="120" y="120" text-anchor="middle" font-size="24">🧠</text>
+<!-- Image Stream -->
+<text x="380" y="45" text-anchor="middle" font-weight="bold" fill="#3f6212">Image Stream</text>
+<rect x="310" y="60" width="140" height="140" rx="4" fill="#d9f99d" stroke="#84cc16" stroke-width="2"/>
+<text x="380" y="100" text-anchor="middle" font-size="11" fill="#4d7c0f">Image Params</text>
+<text x="380" y="120" text-anchor="middle" font-size="24">🎨</text>
+<!-- Interaction Bridges (Expensive) -->
+<path d="M 190 90 L 310 90" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-orange-2)" stroke-dasharray="2 2"/>
+<path d="M 310 150 L 190 150" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-orange-2)" stroke-dasharray="2 2"/>
+<rect x="220" y="80" width="60" height="20" rx="4" fill="#fff" stroke="#f59e0b"/>
+<text x="250" y="94" text-anchor="middle" font-size="9" fill="#d97706">Attn</text>
+<rect x="220" y="140" width="60" height="20" rx="4" fill="#fff" stroke="#f59e0b"/>
+<text x="250" y="154" text-anchor="middle" font-size="9" fill="#d97706">Attn</text>
+<!-- Flux Note -->
+<g transform="translate(180, 200)">
+<rect width="140" height="20" rx="10" fill="#bef264" />
+<text x="70" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#3f6212">Flux: 12B Params!</text>
+</g>
+<defs>
+<marker id="arrow-orange-2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="#f59e0b" />
+</marker>
+</defs>
+</svg>
+<figcaption class="text-center text-xs text-orange-800 mt-2 font-mono">
+图 2.2: Dual-Stream 架构。两个庞大的神经网络并行运行，不仅显存爆炸，而且训练极难收敛。
+</figcaption>
+</figure>
+</section>
+<!-- Sub-chunk: Era 3 - Single Stream Revolution -->
+<section class="mb-16">
+
+
+
+
+### 第三幕：心神合一 (The Single-Stream Revolution)
+
+
+<div class="grid md:grid-cols-2 gap-8 items-center mb-8">
+<div>
+<p class="text-slate-700 mb-4">
+<strong>Z-Image 掀桌子了。</strong>
+为什么一定要把文字和图像分开？为什么不能把它们看作是<strong>同一种语言</strong>？
+</p>
+<p class="text-slate-700 mb-4">
+它继承了 <strong>DiT (Diffusion Transformer)</strong> 和 <strong>SiT (Scalable Interpolant Transformer)</strong> 的衣钵，
+并将其推向了极致：<strong>S3-DiT (Scalable Single-Stream DiT)</strong>。
+</p>
+<div class="bg-slate-900 text-green-400 p-4 rounded-lg font-mono text-sm mb-4 shadow-inner">
+Sequence = Concat([Text_Tokens, Image_Tokens])<br>
+Output = Transformer(Sequence)
+</div>
+<p class="text-slate-700 text-sm">
+<strong>核心魔法：3D-RoPE</strong>
+<br>
+如果把文字和图像混在一起，模型怎么知道谁是谁？
+Z-Image 发明了三维位置编码：
+<br>
+<span class="text-indigo-600 font-bold">x, y</span>: 图像的空间坐标。
+<br>
+<span class="text-purple-600 font-bold">t</span>: 文本的序列位置。
+<br>
+这让模型在同一个大脑里，既有了“空间感”，又有了“语序感”。
+</p>
+</div>
+<!-- S3-DiT SVG -->
+<div class="bg-white p-2 rounded-xl">
+<svg viewBox="0 0 300 320" class="w-full h-auto shadow-lg rounded-xl border border-indigo-100" xmlns="http://www.w3.org/2000/svg">
+<rect width="300" height="320" fill="#fff" rx="8" />
+<!-- Title -->
+<text x="150" y="30" text-anchor="middle" font-weight="bold" fill="#333">S3-DiT Architecture</text>
+<!-- Input -->
+<g transform="translate(50, 50)">
+<rect x="0" y="0" width="80" height="30" fill="#fcd34d" stroke="#d97706" rx="4"/>
+<text x="40" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">Text</text>
+<rect x="85" y="0" width="115" height="30" fill="#93c5fd" stroke="#2563eb" rx="4"/>
+<text x="142" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e40af">Image Patches</text>
+<text x="100" y="45" text-anchor="middle" font-size="10" fill="#64748b">Concat (拼接)</text>
+</g>
+<!-- Transformer Block 1 -->
+<g transform="translate(50, 90)">
+<rect x="0" y="0" width="200" height="50" rx="4" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="100" y="20" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">DiT Block</text>
+<text x="100" y="40" text-anchor="middle" font-size="10" fill="#6366f1">Full Self-Attention</text>
+<!-- Interaction Lines -->
+<path d="M 40 10 Q 100 30 160 10" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity="0.6"/>
+<path d="M 50 40 Q 100 20 150 40" fill="none" stroke="#3b82f6" stroke-width="1.5" opacity="0.6"/>
+</g>
+<!-- Arrow -->
+<path d="M 150 145 L 150 160" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-grey-3)"/>
+<!-- Transformer Block N -->
+<g transform="translate(50, 165)">
+<rect x="0" y="0" width="200" height="50" rx="4" fill="#e0e7ff" stroke="#4f46e5" stroke-width="2"/>
+<text x="100" y="30" text-anchor="middle" font-size="12" font-weight="bold" fill="#3730a3">DiT Block x N</text>
+</g>
+<!-- 3D RoPE Tag -->
+<rect x="180" y="150" width="90" height="24" rx="12" fill="#10b981" />
+<text x="225" y="166" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">✨ 3D-RoPE</text>
+<text x="150" y="260" text-anchor="middle" font-size="11" fill="#475569">
+<tspan x="150" dy="0">每一个层级</tspan>
+<tspan x="150" dy="16">文本与图像都在</tspan>
+<tspan x="150" dy="16">"全联通"互动</tspan>
+</text>
+<defs>
+<marker id="arrow-grey-3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="#94a3b8" />
+</marker>
+</defs>
+</svg>
+</div>
+</div>
+<div class="bg-emerald-50 border border-emerald-200 rounded-xl p-6 mt-4">
+
+
+
+#### 💡 为什么叫 "Z" Image?
+
+
+<p class="text-emerald-800 text-sm">
+虽然论文没有明说，但我们可以猜测：Z 可能代表 <strong>Z-axis (深度/第三维度)</strong>。
+传统的 RoPE (旋转位置编码) 是 2D 的 (x, y)。而 Z-Image 引入了 <strong>3D-RoPE</strong>，
+将文本序列视为第三个维度 $t$，从而在数学上完美统一了时序（文本）和空间（图像）。
+这是 S3-DiT 能够高效运作的数学基石。
+</p>
+</div>
+</section>
+<!-- Sub-chunk: 3.1 Data Pipeline -->
+<section class="mb-16">
+
+
+
+
+
+## 🗺️ 3. 方法论：Z-Image 的核心魔法 (Methodology)
+
+### 3.1 数据工程：原油提炼厂 (The Data Refinery)
+
+
+<div class="bg-emerald-50 p-6 rounded-lg mb-6 border border-emerald-100">
+<p class="text-emerald-900 leading-relaxed">
+Z-Image 的核心哲学是：<strong>“Scaling data quantity is easy; scaling data quality is hard.” (堆量易，提质难)</strong>。
+<br>
+它构建了一个包含四个引擎的庞大清洗系统，我们可以把它想象成一个<strong>“原油提炼厂”</strong>，把充满杂质的互联网数据（原油）一步步提炼成高辛烷值的航空燃油（Golden Data）。
+</p>
+</div>
+<!-- Data Pipeline SVG -->
+<figure class="bg-white p-6 rounded-xl border border-slate-200 shadow-lg mb-8">
+<svg viewBox="0 0 800 320" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow-green-data-2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="#059669" />
+</marker>
+</defs>
+<!-- Raw Data Input -->
+<g transform="translate(50, 160)">
+<circle r="40" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2" stroke-dasharray="4 2"/>
+<text x="0" y="-5" text-anchor="middle" font-size="12" fill="#6b7280" font-weight="bold">Raw Data</text>
+<text x="0" y="15" text-anchor="middle" font-size="10" fill="#9ca3af">Impure / Noisy</text>
+</g>
+<!-- Pipeline Flow -->
+<path d="M 100 160 L 140 160" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green-data-2)" />
+<!-- Engine 1: Profiling (Filter) -->
+<g transform="translate(140, 110)">
+<rect width="120" height="100" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+<text x="60" y="30" text-anchor="middle" font-weight="bold" fill="#065f46">Engine 1: Profiling</text>
+<text x="60" y="55" text-anchor="middle" font-size="11" fill="#047857">画像与过滤</text>
+<!-- Icon -->
+<path d="M 40 70 L 60 90 L 80 60" fill="none" stroke="#059669" stroke-width="2" />
+</g>
+<!-- Arrow -->
+<path d="M 260 160 L 290 160" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green-data-2)" />
+<!-- Engine 2: Vector (De-duplicate) -->
+<g transform="translate(290, 110)">
+<rect width="120" height="100" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="2"/>
+<text x="60" y="30" text-anchor="middle" font-weight="bold" fill="#065f46">Engine 2: Vector</text>
+<text x="60" y="55" text-anchor="middle" font-size="11" fill="#047857">向量排重</text>
+<!-- Icon: Clusters -->
+<circle cx="50" cy="75" r="3" fill="#059669" />
+<circle cx="70" cy="75" r="3" fill="#059669" />
+<circle cx="60" cy="85" r="3" fill="#059669" />
+</g>
+<!-- Arrow -->
+<path d="M 410 160 L 440 160" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green-data-2)" />
+<!-- Engine 3: Graph (Knowledge) -->
+<g transform="translate(440, 110)">
+<rect width="120" height="100" rx="8" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
+<text x="60" y="30" text-anchor="middle" font-weight="bold" fill="#065f46">Engine 3: Graph</text>
+<text x="60" y="55" text-anchor="middle" font-size="11" fill="#047857">知识图谱</text>
+<!-- Icon: Network -->
+<line x1="50" y1="80" x2="70" y2="70" stroke="#059669" />
+<line x1="70" y1="70" x2="90" y2="80" stroke="#059669" />
+<circle cx="50" cy="80" r="3" fill="#065f46" />
+<circle cx="70" cy="70" r="3" fill="#065f46" />
+<circle cx="90" cy="80" r="3" fill="#065f46" />
+</g>
+<!-- Arrow -->
+<path d="M 560 160 L 590 160" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green-data-2)" />
+<!-- Engine 4: Active Curation -->
+<g transform="translate(590, 110)">
+<rect width="120" height="100" rx="8" fill="#6ee7b7" stroke="#059669" stroke-width="2"/>
+<text x="60" y="30" text-anchor="middle" font-weight="bold" fill="#065f46">Engine 4: Active</text>
+<text x="60" y="55" text-anchor="middle" font-size="11" fill="#047857">主动策展</text>
+<!-- Icon: Target -->
+<circle cx="60" cy="75" r="10" fill="none" stroke="#065f46" stroke-width="2" />
+<circle cx="60" cy="75" r="4" fill="#065f46" />
+</g>
+<!-- Final Arrow -->
+<path d="M 710 160 L 740 160" stroke="#059669" stroke-width="2" marker-end="url(#arrow-green-data-2)" />
+<!-- Gold Output -->
+<g transform="translate(740, 160)">
+<circle r="40" fill="#10b981" stroke="#064e3b" stroke-width="3"/>
+<text x="0" y="-5" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Golden</text>
+<text x="0" y="15" text-anchor="middle" font-size="10" fill="#d1fae5">High Octane</text>
+</g>
+</svg>
+<figcaption class="mt-4 text-center text-sm text-slate-500">
+图 3.1: Z-Image 的数据提纯管线。从左到右，每一级都在提升数据密度。
+</figcaption>
+</figure>
+<div class="grid md:grid-cols-2 gap-6">
+<div class="bg-slate-50 p-5 rounded-lg border-l-4 border-slate-400">
+
+
+
+#### 1. Profiling (画像) = 粗滤网
+
+
+<p class="text-sm text-slate-600 mt-2">
+测量数据的“生命体征”：分辨率、美学评分、噪声水平。
+就像把含水量太高或杂质太多的原油直接剔除。
+</p>
+</div>
+<div class="bg-indigo-50 p-5 rounded-lg border-l-4 border-indigo-400">
+
+
+
+#### 2. Vector (向量) = 同质化去除
+
+
+<p class="text-sm text-indigo-800 mt-2">
+利用 Embedding 向量聚类。互联网上 90% 的“梗图”是重复的。
+必须防止模型“过拟合”到这些重复样本上。
+</p>
+</div>
+<div class="bg-amber-50 p-5 rounded-lg border-l-4 border-amber-400">
+
+
+
+#### 3. Graph (图谱) = 知识编织
+
+
+<p class="text-sm text-amber-800 mt-2">
+构建概念树（Ontology）。
+确保模型不仅看过“狗”，还看过“哈士奇”、“柴犬”、“金毛”。
+这是为了解决<strong>长尾分布 (Long-tail)</strong> 问题。
+</p>
+</div>
+<div class="bg-rose-50 p-5 rounded-lg border-l-4 border-rose-400">
+
+
+
+#### 4. Active Curation (主动策展)
+
+
+<p class="text-sm text-rose-800 mt-2">
+<strong>最强一招。</strong> 
+系统会先试着生成，发现画不好“松鼠鳜鱼”，就<strong>针对性</strong>地去网上抓取 500 张松鼠鳜鱼的图来“补课”。
+这叫“缺啥补啥”。
+</p>
+</div>
+</div>
+<!-- Restored Original Figures -->
+<div class="mt-12 space-y-8">
+<!-- Figure 5: Active Curation -->
+<figure class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+<div class="overflow-hidden rounded-lg">
+<img src="https://arxiv.org/html/2511.22699v2/x6.png" alt="Active Curation Engine Overview" class="w-full h-auto hover:scale-105 transition-transform duration-500" />
+</div>
+<figcaption class="mt-3 text-center text-sm text-slate-500">
+<span class="font-bold text-slate-700">Figure 5 (Original):</span> 主动策展引擎概览。
+注意右上角的 "Bad Case"（如画错的松鼠鳜鱼）会触发反馈回路，指导检索系统去寻找特定的补充数据。
+</figcaption>
+</figure>
+<!-- Figure 6: Human-in-the-loop -->
+<figure class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+<div class="overflow-hidden rounded-lg">
+<img src="https://arxiv.org/html/2511.22699v2/x7.png" alt="Human-in-the-Loop Cycle" class="w-full h-auto hover:scale-105 transition-transform duration-500" />
+</div>
+<figcaption class="mt-3 text-center text-sm text-slate-500">
+<span class="font-bold text-slate-700">Figure 6 (Original):</span> 人机回环 (Human-in-the-Loop)。
+为了保证数据绝对纯净，Z-Image 引入了人类专家作为最后的守门员，不断修正 AI 的标注。
+</figcaption>
+</figure>
+</div>
+<!-- Deep Dive: Figure 8 Components -->
+<div class="mt-12 bg-slate-50 p-6 rounded-xl border border-slate-200">
+
+
+
+#### <span class="mr-2">🔍</span> 深度解剖：超级标注器 (Z-Captioner)
+
+
+<p class="text-slate-700 text-sm mb-6">
+Z-Image 的秘密武器还有一个强大的 <strong>VLM 标注器</strong>。它不仅能写出“这是一个苹果”，还能识别图片里的文字 (OCR) 和深层常识 (World Knowledge)。
+</p>
+<div class="grid md:grid-cols-2 gap-6">
+<div class="text-center">
+<div class="bg-white p-2 rounded-lg shadow-sm border border-slate-100 mb-2">
+<img src="https://arxiv.org/html/2511.22699v2/figures/world_knowledge.png" class="w-full rounded" alt="World Knowledge" />
+</div>
+<p class="text-xs text-slate-500 font-bold">世界知识识别 (World Knowledge)</p>
+<p class="text-[10px] text-slate-400">认出 "Big Ben" 而不是 "Clock Tower"</p>
+</div>
+<div class="text-center">
+<div class="bg-white p-2 rounded-lg shadow-sm border border-slate-100 mb-2">
+<img src="https://arxiv.org/html/2511.22699v2/figures/ocr_show.png" class="w-full rounded" alt="OCR Augmentation" />
+</div>
+<p class="text-xs text-slate-500 font-bold">OCR 文字提取</p>
+<p class="text-[10px] text-slate-400">精准提取画面中的文本信息</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Sub-chunk: 3.2 Curriculum Learning -->
+<section class="mb-16">
+
+
+
+
+### 3.2 课程学习：精英教育三部曲 (The Elite Education)
+
+
+<div class="bg-purple-50 p-6 rounded-lg mb-6 border border-purple-100">
+<p class="text-purple-900 leading-relaxed">
+传统的训练是一股脑把数据喂进去。Z-Image 采用了一种<strong>“Omni-Pre-training” (全能预训练)</strong> 的课程表。
+这就像人类的教育体系：小学学常识，中学学技能，大学搞科研。
+</p>
+</div>
+<!-- Curriculum SVG -->
+<figure class="bg-white p-6 rounded-xl border border-slate-200 shadow-lg mb-8">
+<svg viewBox="0 0 600 250" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+<!-- X Axis: Time/Compute -->
+<line x1="50" y1="200" x2="550" y2="200" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-grey-curr)" />
+<text x="550" y="220" text-anchor="middle" font-size="12" fill="#64748b">Training Steps</text>
+<!-- Stage 1: Elementary -->
+<g transform="translate(60, 100)">
+<rect width="120" height="100" rx="8" fill="#e0e7ff" stroke="#4338ca" stroke-width="2"/>
+<text x="60" y="30" text-anchor="middle" font-weight="bold" fill="#3730a3">Stage 1</text>
+<text x="60" y="50" text-anchor="middle" font-size="10" fill="#4338ca">Low-Res (256px)</text>
+<text x="60" y="70" text-anchor="middle" font-size="10" fill="#4338ca">Static Bucket</text>
+<!-- Metaphor -->
+<text x="60" y="130" text-anchor="middle" font-size="12" fill="#4338ca">"小学: 学构图"</text>
+</g>
+<!-- Arrow -->
+<path d="M 190 150 L 220 150" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-grey-curr)" />
+<!-- Stage 2: Secondary -->
+<g transform="translate(230, 80)">
+<rect width="140" height="120" rx="8" fill="#f3e8ff" stroke="#7e22ce" stroke-width="2"/>
+<text x="70" y="30" text-anchor="middle" font-weight="bold" fill="#581c87">Stage 2: Omni</text>
+<text x="70" y="50" text-anchor="middle" font-size="10" fill="#7e22ce">Multi-Res + I2I</text>
+<text x="70" y="70" text-anchor="middle" font-size="10" fill="#7e22ce">In-painting</text>
+<!-- Metaphor -->
+<text x="70" y="150" text-anchor="middle" font-size="12" fill="#7e22ce">"中学: 学技能"</text>
+</g>
+<!-- Arrow -->
+<path d="M 380 150 L 410 150" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow-grey-curr)" />
+<!-- Stage 3: University -->
+<g transform="translate(420, 60)">
+<rect width="140" height="140" rx="8" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+<text x="70" y="30" text-anchor="middle" font-weight="bold" fill="#831843">Stage 3: Fine-Tune</text>
+<text x="70" y="50" text-anchor="middle" font-size="10" fill="#be185d">High-Res (1024+)</text>
+<text x="70" y="70" text-anchor="middle" font-size="10" fill="#be185d">PE-Enhanced Data</text>
+<text x="70" y="90" text-anchor="middle" font-size="10" fill="#be185d">Aes Score > 6.0</text>
+<!-- Metaphor -->
+<text x="70" y="170" text-anchor="middle" font-size="12" fill="#be185d">"大学: 搞创作"</text>
+</g>
+<defs>
+<marker id="arrow-grey-curr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="#94a3b8" />
+</marker>
+</defs>
+</svg>
+</figure>
+<div class="relative pl-8 border-l-2 border-slate-200 space-y-8">
+<!-- Stage 1 -->
+<div class="relative">
+<div class="absolute -left-10 bg-indigo-200 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold text-indigo-700">1</div>
+
+
+
+#### 阶段一：Low-Resolution Bootstrapping
+
+
+<div class="flex items-center gap-4 mt-2">
+<div class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-bold">Cost Saver</div>
+</div>
+<p class="text-slate-600 mt-2 text-sm">
+<strong>核心逻辑：</strong> 学习“猫有两只耳朵”不需要 4K 画质。在 256x256 的低分辨率下，模型可以极快地看过海量数据，学会物体关系。
+这就像小学教育，先识字，不求书法漂亮。
+</p>
+</div>
+<!-- Stage 2 -->
+<div class="relative">
+<div class="absolute -left-10 bg-purple-200 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold text-purple-700">2</div>
+
+
+
+#### 阶段二：Omni-Pre-training (Multi-Task)
+
+
+<p class="text-slate-600 mt-2 text-sm">
+开始引入多分辨率桶 (Bucket)。关键是加入了 <strong>Joint I2I (图生图)</strong> 任务。
+让模型看“修图前”和“修图后”的对比，学会“把红苹果变成青苹果”这种动态指令。
+</p>
+</div>
+<!-- Stage 3 -->
+<div class="relative">
+<div class="absolute -left-10 bg-rose-200 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold text-rose-700">3</div>
+
+
+
+#### 阶段三：High-Quality Polish
+
+
+<p class="text-slate-600 mt-2 text-sm">
+引入 <strong>Prompt Enhancer (提示词增强器)</strong> 生成的合成数据。
+<br>这是为了解决 6B 模型“想象力匮乏”的问题。PE 会把简单的 "A cat" 扩写成一段华丽的描写，教 S3-DiT 画出那种 ArtStation 风格的精美图片。
+</p>
+</div>
+</div>
+</section>
+<!-- Sub-chunk: 3.3 Mechanisms (3D-RoPE) -->
+<section class="mb-20">
+
+
+
+
+### 3.3 核心机制：时空导航系统 (3D-RoPE)
+
+
+<div class="bg-slate-900 rounded-xl p-6 text-slate-300 mb-8">
+
+
+
+#### <span class="mr-2">⚙️</span> 工程师笔记：如何在 Transformer 里装 GPS？
+
+
+<p class="mb-4 text-sm leading-relaxed">
+在一个 Transformer 里同时处理一维文本 ($T$) 和二维图像 ($H, W$)，位置编码是个大难题。
+<br>
+传统的 RoPE (Rotary Positional Embedding) 是 1D 或 2D 的。Z-Image 必须发明 <strong>3D-RoPE</strong>，才能让模型不“迷路”。
+</p>
+<!-- 3D-RoPE Explanation SVG -->
+<div class="bg-slate-800 p-4 rounded-lg border border-slate-700 my-4">
+<svg viewBox="0 0 500 200" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+<!-- Text Token (Time) -->
+<g transform="translate(50, 50)">
+<rect width="60" height="60" fill="#fcd34d" rx="4" opacity="0.8"/>
+<text x="30" y="35" text-anchor="middle" font-weight="bold" fill="#78350f">Token</text>
+<!-- Axis -->
+<line x1="30" y1="60" x2="30" y2="90" stroke="#fcd34d" stroke-width="2" marker-end="url(#arrow-yellow)" />
+<text x="30" y="105" text-anchor="middle" font-size="10" fill="#fcd34d">Time (t)</text>
+</g>
+<!-- Plus -->
+<text x="140" y="85" text-anchor="middle" font-size="20" fill="#94a3b8">+</text>
+<!-- Image Patch (Space) -->
+<g transform="translate(180, 50)">
+<rect width="60" height="60" fill="#93c5fd" rx="4" opacity="0.8"/>
+<text x="30" y="35" text-anchor="middle" font-weight="bold" fill="#1e3a8a">Patch</text>
+<!-- Axis X -->
+<line x1="60" y1="30" x2="90" y2="30" stroke="#93c5fd" stroke-width="2" marker-end="url(#arrow-blue)" />
+<text x="100" y="35" text-anchor="middle" font-size="10" fill="#93c5fd">x</text>
+<!-- Axis Y -->
+<line x1="30" y1="60" x2="30" y2="90" stroke="#93c5fd" stroke-width="2" marker-end="url(#arrow-blue)" />
+<text x="30" y="105" text-anchor="middle" font-size="10" fill="#93c5fd">y</text>
+</g>
+<!-- Arrow -->
+<path d="M 280 80 L 320 80" stroke="#fff" stroke-width="2" marker-end="url(#arrow-white)" />
+<!-- 3D RoPE Result -->
+<g transform="translate(350, 40)">
+<cube width="80" height="80" depth="20" /> <!-- Abstract representation -->
+<path d="M 20 20 L 60 20 L 40 50 Z" fill="none" stroke="#10b981" stroke-width="2" />
+<circle cx="40" cy="35" r="30" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="4 2" />
+<text x="40" y="85" text-anchor="middle" font-weight="bold" fill="#10b981">3D Rotation</text>
+<text x="40" y="100" text-anchor="middle" font-size="10" fill="#a7f3d0">Rot(x, y, t)</text>
+</g>
+<defs>
+<marker id="arrow-yellow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" fill="#fcd34d">
+<path d="M0,0 L0,6 L6,3 z" />
+</marker>
+<marker id="arrow-blue" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" fill="#93c5fd">
+<path d="M0,0 L0,6 L6,3 z" />
+</marker>
+<marker id="arrow-white" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" fill="#fff">
+<path d="M0,0 L0,6 L6,3 z" />
+</marker>
+</defs>
+</svg>
+</div>
+<div class="grid grid-cols-2 gap-4 text-xs font-mono">
+<div class="bg-slate-800 p-3 rounded border border-slate-700">
+<span class="text-green-400 font-bold">Dim 1 & 2 (Spatial)</span>
+<p class="mt-1 text-slate-400">
+编码图像的 (x, y) 坐标。
+<br>让模型知道“猫头”在“猫身”的上面。
+</p>
+</div>
+<div class="bg-slate-800 p-3 rounded border border-slate-700">
+<span class="text-purple-400 font-bold">Dim 3 (Temporal)</span>
+<p class="mt-1 text-slate-400">
+编码文本序列的 t 位置。
+<br>让模型知道“Red”是修饰“Apple”的。
+</p>
+</div>
+</div>
+<p class="mt-4 text-sm italic text-slate-400 border-t border-slate-700 pt-3">
+<strong>技术总结：</strong> 3D-RoPE 成功地解耦了空间和时间，让 Image Tokens 可以自由地在 2D 空间延展，而 Text Tokens 在时间轴上延展，两者互不干扰却能紧密互动。
+</p>
+</div>
+</section>
+<!-- Sub-chunk: 4.1 Performance (David vs Goliath) -->
+<section class="mb-16">
+
+
+
+
+## <span class="mr-3 text-4xl">🥊</span> 4. 实验验证：大卫 vs 歌利亚
+
+
+<div class="bg-indigo-50 p-6 rounded-lg mb-8 border border-indigo-100">
+<p class="text-indigo-900 leading-relaxed">
+Z-Image (6B) 面对的是一群体重是它 3-10 倍的对手：Hunyuan (80B) 和 Flux.1 (12B)。
+这不是一场公平的决斗，而是一场<strong>“效率”</strong>的屠杀。
+<br>
+在 <strong>GenEval</strong> 和 <strong>DPG-Bench</strong> 等权威基准测试中，Z-Image 证明了：
+<span class="bg-indigo-200 px-1 rounded font-bold">Scaling Law 并不是唯一的真理。</span>
+</p>
+</div>
+<!-- David vs Goliath Scatter Plot SVG -->
+<figure class="bg-white p-6 rounded-xl border border-slate-200 shadow-lg mb-8">
+<svg viewBox="0 0 600 380" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+<!-- Grid -->
+<g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4">
+<line x1="50" y1="330" x2="550" y2="330" /> <!-- X axis -->
+<line x1="50" y1="50" x2="50" y2="330" />   <!-- Y axis -->
+<line x1="50" y1="260" x2="550" y2="260" />
+<line x1="50" y1="190" x2="550" y2="190" />
+<line x1="50" y1="120" x2="550" y2="120" />
+</g>
+<!-- Axis Labels -->
+<text x="300" y="365" text-anchor="middle" font-size="12" fill="#64748b" font-weight="bold">Model Size (Billions of Parameters)</text>
+<text x="20" y="190" text-anchor="middle" font-size="12" fill="#64748b" font-weight="bold" transform="rotate(-90 20,190)">GenEval Alignment Score</text>
+<!-- Zones -->
+<path d="M 50 330 L 550 50" stroke="#cbd5e1" stroke-width="240" stroke-opacity="0.05" />
+<text x="520" y="40" text-anchor="end" font-size="10" fill="#cbd5e1" font-weight="bold">Inefficiency Zone</text>
+<!-- Data Points -->
+<!-- SDXL -->
+<g transform="translate(100, 280)">
+<circle r="8" fill="#94a3b8" />
+<text x="0" y="20" text-anchor="middle" font-size="10" fill="#64748b">SDXL (2.6B)</text>
+</g>
+<!-- SD3 Medium -->
+<g transform="translate(140, 250)">
+<circle r="10" fill="#94a3b8" />
+<text x="0" y="22" text-anchor="middle" font-size="10" fill="#64748b">SD3-Med</text>
+</g>
+<!-- Flux.1 (Goliath 1) -->
+<g transform="translate(250, 100)">
+<circle r="18" fill="#facc15" stroke="#ca8a04" stroke-width="2" />
+<text x="0" y="32" text-anchor="middle" font-size="11" font-weight="bold" fill="#854d0e">Flux.1 (12B)</text>
+<text x="0" y="0" text-anchor="middle" font-size="10" fill="#ca8a04">💰 High Cost</text>
+</g>
+<!-- Hunyuan (Goliath 2) -->
+<g transform="translate(500, 110)">
+<circle r="40" fill="#f87171" stroke="#b91c1c" stroke-width="2" opacity="0.8"/>
+<text x="0" y="55" text-anchor="middle" font-size="11" font-weight="bold" fill="#7f1d1d">Hunyuan (80B)</text>
+<text x="0" y="5" text-anchor="middle" font-size="24">🦖</text>
+</g>
+<!-- Z-Image (The Hero) -->
+<g transform="translate(170, 70)">
+<circle r="14" fill="#4f46e5" stroke="#312e81" stroke-width="3" />
+<text x="0" y="-22" text-anchor="middle" font-size="14" font-weight="bold" fill="#4f46e5">Z-Image (6B)</text>
+<text x="0" y="5" text-anchor="middle" font-size="12" fill="#fff">⚡️</text>
+<!-- Highlight Ring -->
+<circle r="22" fill="none" stroke="#6366f1" stroke-width="1" stroke-dasharray="2 2">
+<animate attributeName="r" from="14" to="28" dur="1.5s" repeatCount="indefinite" />
+<animate attributeName="opacity" from="1" to="0" dur="1.5s" repeatCount="indefinite" />
+</circle>
+</g>
+<!-- Comparison Line -->
+<line x1="170" y1="70" x2="250" y2="100" stroke="#4f46e5" stroke-width="1" stroke-dasharray="2 2" />
+<text x="210" y="80" text-anchor="middle" font-size="10" fill="#4f46e5" transform="rotate(15 210,80)">Better & Smaller</text>
+</svg>
+<figcaption class="text-center text-xs text-slate-500 mt-2">
+图 4.1: 参数量 vs 生成质量。Z-Image 位于“左上角”黄金区域（参数少，分数高），完胜笨重的 Hunyuan 和昂贵的 Flux。
+</figcaption>
+</figure>
+<div class="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+<table class="w-full text-left text-sm text-slate-600">
+<thead class="bg-slate-100 text-slate-900 font-bold uppercase">
+<tr>
+<th class="px-6 py-3">模型 (Model)</th>
+<th class="px-6 py-3">参数 (Params)</th>
+<th class="px-6 py-3">架构 (Arch)</th>
+<th class="px-6 py-3 text-right">训练成本 (Est.)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 bg-white">
+<tr class="hover:bg-red-50">
+<td class="px-6 py-3 font-medium text-slate-800">Hunyuan-Image</td>
+<td class="px-6 py-3 font-mono">80B (MoE)</td>
+<td class="px-6 py-3">Dual-Stream</td>
+<td class="px-6 py-3 text-right text-red-600 font-mono">>$2,000,000</td>
+</tr>
+<tr class="hover:bg-yellow-50">
+<td class="px-6 py-3 font-medium text-slate-800">Flux.1 [Pro]</td>
+<td class="px-6 py-3 font-mono">12B</td>
+<td class="px-6 py-3">Hybrid</td>
+<td class="px-6 py-3 text-right text-orange-600 font-mono">>$1,000,000</td>
+</tr>
+<tr class="bg-indigo-50 border-l-4 border-indigo-500">
+<td class="px-6 py-3 font-bold text-indigo-900">Z-Image</td>
+<td class="px-6 py-3 font-mono font-bold text-indigo-700">6B</td>
+<td class="px-6 py-3 font-bold text-indigo-700">S3-DiT</td>
+<td class="px-6 py-3 text-right text-emerald-600 font-mono font-bold">$628,000</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Restored Figure 4: Comparison Showcase -->
+<div class="mt-12">
+
+
+
+#### 4.1.2 实战：眼见为实 (Visual Evidence)
+
+
+<p class="text-slate-700 text-sm mb-4">
+仅仅看跑分是不够的。下图展示了 Z-Image (最右侧) 与其他 SOTA 模型的直观对比。
+可以看到在<strong>光影质感</strong>和<strong>细节纹理</strong>上，6B 的 Z-Image 完全不输 80B 的巨头。
+</p>
+<figure class="bg-slate-900 p-2 rounded-xl border border-slate-700 shadow-2xl">
+<div class="overflow-hidden rounded-lg">
+<!-- Using x5.png which is Figure 4 -->
+<img src="https://arxiv.org/html/2511.22699v2/x5.png" alt="Comparison with SOTA Models" class="w-full h-auto" />
+</div>
+<figcaption class="mt-3 text-center text-xs text-slate-400">
+<span class="font-bold text-indigo-400">Figure 4 (Original):</span> 
+Z-Image-Turbo (Rightmost) vs Competitors (SD3, Flux, Hunyuan, etc.).
+</figcaption>
+</figure>
+</div>
+</section>
+<!-- Sub-chunk: 4.2 Capabilities (Literate & Obedient) -->
+<section class="mb-16">
+
+
+
+
+### 4.2 能力展示：能文能武的六边形战士
+
+
+<div class="grid md:grid-cols-2 gap-8 mb-12">
+<!-- Feature 1: Text Rendering -->
+<div>
+
+
+
+#### <span class="bg-purple-200 p-1 rounded mr-2">🔤</span> “文盲”的终结：双语渲染
+
+
+<p class="text-slate-700 text-sm mb-4 leading-relaxed">
+Z-Image 最令人震惊的能力是它可以像排版软件一样精准地“写字”。
+不仅是英文，连结构复杂的<strong>中文汉字</strong>都能写对。
+</p>
+<div class="bg-purple-50 p-4 rounded-lg border border-purple-100 mb-4">
+<strong class="text-purple-800 text-sm block mb-2">💡 Why it works?</strong>
+<ul class="list-disc list-inside text-xs text-purple-700 space-y-1">
+<li><strong>Single-Stream 优势:</strong> 文字 Token 直接作为图像 Token 的“邻居”。Attention 机制让像素点直接“看到”字母的笔画结构。</li>
+<li><strong>OCR 数据集:</strong> 它是“看着书长大的”。训练数据中包含了大量带文字的海报、书籍封面。</li>
+</ul>
+</div>
+<!-- Restored Figure 2: Text Showcase -->
+<figure class="mt-4 bg-white p-2 rounded-lg border border-purple-100 shadow-sm">
+<img src="https://arxiv.org/html/2511.22699v2/figures/showcase_text.jpg" alt="Bilingual Text Rendering" class="w-full rounded" />
+<figcaption class="text-center text-[10px] text-purple-400 mt-1">Figure 2: 中英文混排展示</figcaption>
+</figure>
+</div>
+<!-- Text Rendering SVG Visualization -->
+<figure class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+<svg viewBox="0 0 300 200" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+<!-- Text Tokens -->
+<g transform="translate(20, 40)">
+<rect width="40" height="20" fill="#fcd34d" rx="2" />
+<text x="20" y="14" text-anchor="middle" font-size="8" font-weight="bold">"CO"</text>
+<rect x="45" y="0" width="40" height="20" fill="#fcd34d" rx="2" />
+<text x="65" y="14" text-anchor="middle" font-size="8" font-weight="bold">"FFEE"</text>
+</g>
+<!-- Image Grid -->
+<g transform="translate(150, 20)">
+<rect width="120" height="160" fill="#fff" stroke="#94a3b8" />
+<!-- The generated pixels -->
+<rect x="20" y="60" width="80" height="40" fill="#e2e8f0" rx="4" /> 
+<!-- Letters on cup -->
+<text x="60" y="85" text-anchor="middle" font-family="serif" font-weight="bold" font-size="16" fill="#334155">COFFEE</text>
+</g>
+<!-- Attention Beams -->
+<path d="M 40 60 Q 80 100 170 85" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.6" fill="none" />
+<path d="M 65 60 Q 90 120 190 85" stroke="#f59e0b" stroke-width="2" stroke-opacity="0.6" fill="none" />
+<text x="100" y="140" text-anchor="middle" font-size="10" fill="#d97706" font-style="italic">Direct Attention</text>
+</svg>
+<figcaption class="text-center text-xs text-slate-400 mt-2">
+图 4.2.1: 像素直接 attend 到字符 Token，实现精准渲染。
+</figcaption>
+</figure>
+</div>
+<!-- Feature 2: Instruction Editing -->
+<div class="mb-8">
+
+
+
+#### <span class="bg-cyan-200 p-1 rounded mr-2">🎨</span> 听话的画笔：Z-Image-Edit
+
+
+<div class="bg-cyan-50 p-6 rounded-lg border-l-4 border-cyan-500">
+<p class="text-cyan-900 text-sm mb-4">
+得益于 Omni-Pre-training 中的多任务学习，Z-Image 不仅能画，还能改。
+它可以执行复杂的<strong>自然语言指令</strong>，而不需要像 SDXL 那样依赖 ControlNet 等外挂。
+</p>
+<div class="grid grid-cols-2 gap-4 text-xs font-mono text-cyan-800 mb-4">
+<div class="bg-white p-2 rounded shadow-sm">
+<strong>Input:</strong> "Make the cat look like a tiger"
+<br><span class="text-slate-400">-> 纹理替换，结构保留</span>
+</div>
+<div class="bg-white p-2 rounded shadow-sm">
+<strong>Input:</strong> "Add a red hat on the head"
+<br><span class="text-slate-400">-> 物体添加，空间感知</span>
+</div>
+</div>
+<!-- Restored Figure 3: Editing Showcase -->
+<figure class="bg-white p-2 rounded-lg border border-cyan-100 shadow-sm">
+<img src="https://arxiv.org/html/2511.22699v2/figures/showcase_editing.jpg" alt="Instruction-based Editing" class="w-full rounded" />
+<figcaption class="text-center text-[10px] text-cyan-600 mt-1">Figure 3: 精准的指令跟随编辑 (换背景、换材质、加物体)</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<!-- Sub-chunk: 4.3 Turbo Speed (Distillation) -->
+<section class="mb-20">
+
+
+
+
+### 4.3 唯快不破：解耦蒸馏 (Decoupled DMD)
+
+
+<div class="bg-amber-50 p-6 rounded-lg mb-8 border border-amber-100">
+<p class="text-amber-900 leading-relaxed">
+Z-Image-Turbo 将推理步数从 50 步压缩到了 <strong>4-8 步</strong>，实现了亚秒级出图。
+<br>
+这背后的黑科技是 <strong>Decoupled DMD (解耦分布匹配蒸馏)</strong>。
+传统的蒸馏往往会让画面变糊（因为强行拟合均值）。Z-Image 的解法是把“画得准”和“画得美”拆开来练。
+</p>
+</div>
+<!-- Distillation Comparison SVG -->
+<figure class="bg-white p-6 rounded-xl border border-slate-200 shadow-lg mb-8">
+<svg viewBox="0 0 600 280" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+<!-- Traditional DMD -->
+<g transform="translate(50, 40)">
+<text x="100" y="0" text-anchor="middle" font-weight="bold" fill="#64748b">Traditional Distillation</text>
+<!-- Box -->
+<rect x="0" y="20" width="200" height="80" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-dasharray="4 2"/>
+<!-- Conflicting Goals -->
+<text x="100" y="50" text-anchor="middle" font-size="12" fill="#475569">Loss = L_real + L_prompt</text>
+<text x="100" y="70" text-anchor="middle" font-size="10" fill="#ef4444">Coupled (打架!)</text>
+<!-- Result Icon -->
+<circle cx="100" cy="140" r="20" fill="#cbd5e1" />
+<text x="100" y="175" text-anchor="middle" font-size="10" fill="#64748b">Blurry Result</text>
+</g>
+<!-- Arrow -->
+<path d="M 280 80 L 320 80" stroke="#cbd5e1" stroke-width="2" marker-end="url(#arrow-grey-dmd)" />
+<!-- Decoupled DMD (Z-Image) -->
+<g transform="translate(350, 40)">
+<text x="100" y="0" text-anchor="middle" font-weight="bold" fill="#059669">Decoupled DMD</text>
+<!-- Stream 1: CFG Augmentation -->
+<rect x="0" y="20" width="200" height="40" rx="4" fill="#dcfce7" stroke="#22c55e"/>
+<text x="100" y="45" text-anchor="middle" font-size="11" fill="#15803d">1. CFG Augmentation (听话)</text>
+<!-- Plus -->
+<text x="100" y="75" text-anchor="middle" font-size="14" fill="#94a3b8">+</text>
+<!-- Stream 2: Distribution Matching -->
+<rect x="0" y="80" width="200" height="40" rx="4" fill="#dbeafe" stroke="#3b82f6"/>
+<text x="100" y="105" text-anchor="middle" font-size="11" fill="#1e40af">2. Distribution Matching (真实)</text>
+<!-- Result Icon -->
+<circle cx="100" cy="150" r="25" fill="#10b981" stroke="#047857" stroke-width="2"/>
+<text x="100" y="155" text-anchor="middle" font-size="20">✨</text>
+<text x="100" y="190" text-anchor="middle" font-size="10" fill="#047857" font-weight="bold">Crisp & Sharp!</text>
+</g>
+<defs>
+<marker id="arrow-grey-dmd" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="#cbd5e1" />
+</marker>
+</defs>
+</svg>
+<figcaption class="text-center text-xs text-slate-500 mt-2">
+图 4.3: 解耦蒸馏。将“语义对齐”和“图像质量”拆分开来优化，互不干扰，实现了 Turbo 模式下的画质飞跃。
+</figcaption>
+</figure>
+<!-- Speed Chart -->
+<div class="space-y-4 max-w-lg mx-auto bg-slate-50 p-6 rounded-xl border border-slate-200">
+
+
+
+#### Inference Latency (H800 GPU)
+
+
+<!-- Bar 1 -->
+<div>
+<div class="flex justify-between text-xs text-slate-500 mb-1">
+<span>Flux.1 (50 Steps)</span>
+<span>5.0s</span>
+</div>
+<div class="w-full bg-slate-200 rounded-full h-3">
+<div class="bg-slate-400 h-3 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- Bar 2 -->
+<div>
+<div class="flex justify-between text-xs text-slate-500 mb-1">
+<span>Z-Image Base (28 Steps)</span>
+<span>2.8s</span>
+</div>
+<div class="w-full bg-slate-200 rounded-full h-3">
+<div class="bg-indigo-400 h-3 rounded-full" style="width: 56%"></div>
+</div>
+</div>
+<!-- Bar 3 (Turbo) -->
+<div>
+<div class="flex justify-between text-sm font-bold text-emerald-700 mb-1">
+<span>Z-Image Turbo (8 Steps)</span>
+<span>0.8s ⚡️</span>
+</div>
+<div class="w-full bg-slate-200 rounded-full h-4 shadow-lg shadow-emerald-100">
+<div class="bg-gradient-to-r from-emerald-400 to-emerald-600 h-4 rounded-full" style="width: 16%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 5: Epilogue -->
+<section class="mb-20">
+
+
+
+
+## <span class="mr-3 text-4xl">🛑</span> 5. 祛魅与展望：医疗 AI 的新基石？
+
+
+<p class="text-lg text-slate-700 mb-8 leading-relaxed">
+看完 Z-Image 的华丽表演，我们必须冷静下来。
+对于像我们这样的科研人员（尤其是 Bio-AI 方向），这个模型到底意味着什么？是又一个生成二次元美女的玩具，还是下一代科学模拟器的原型？
+</p>
+<!-- The Disenchantment (Limitations) -->
+<div class="mb-12 bg-rose-50 border-l-4 border-rose-500 p-6 rounded-r-lg">
+
+
+
+
+### ⚠️ 警惕：Prompt Enhancer 的副作用
+
+
+<p class="text-rose-800 text-sm leading-relaxed mb-4">
+Z-Image 为了弥补 6B 参数的“想象力不足”，引入了 <strong>Prompt Enhancer (PE)</strong> 来扩写提示词。
+<br>
+在艺术创作中，这是优点。你输入“医生”，它扩写成“帅气的未来派医生...”。
+<br>
+<strong>但在科学研究中，这是灾难。</strong> 如果病理学家输入“浸润性导管癌 3 级”，PE 可能会为了画面“丰富度”而虚构出淋巴结转移的特征。
+</p>
+<div class="bg-white p-3 rounded border border-rose-200 text-rose-700 font-mono text-xs">
+<strong>建议：</strong> 科研用途请务必<strong>绕过 PE 模块</strong>，直接使用 S3-DiT 原生推理，以保证指令的精确执行。
+</div>
+</div>
+<!-- The Future: Z-WSI -->
+<div class="mb-12">
+
+
+
+
+### 🚀 脑洞：Z-WSI (Whole Slide Imaging)
+
+
+<p class="text-slate-700 mb-4">
+Z-Image 的 <strong>Single-Stream (拼接)</strong> 架构其实为病理学提供了一个绝佳的思路。
+目前的病理 AI 还在用“切片+多示例学习”的笨办法。
+</p>
+<!-- SVG: Z-WSI Concept -->
+<figure class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 mb-6">
+<svg viewBox="0 0 500 180" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+<!-- Background Pipe -->
+<rect x="20" y="60" width="460" height="60" rx="30" fill="#e0e7ff" stroke="#818cf8" stroke-width="2" />
+<!-- Text Report Tokens -->
+<g transform="translate(50, 75)">
+<rect width="80" height="30" rx="4" fill="#fcd34d" stroke="#d97706" />
+<text x="40" y="20" text-anchor="middle" font-size="10" font-weight="bold" fill="#92400e">"Tumor..."</text>
+<text x="40" y="-10" text-anchor="middle" font-size="10" fill="#92400e">Report</text>
+</g>
+<!-- Plus Sign -->
+<text x="145" y="95" text-anchor="middle" font-size="20" fill="#6366f1" font-weight="bold">+</text>
+<!-- WSI Patches -->
+<g transform="translate(160, 75)">
+<rect width="30" height="30" fill="#fca5a5" stroke="#b91c1c" />
+<rect width="30" height="30" x="35" fill="#fca5a5" stroke="#b91c1c" />
+<rect width="30" height="30" x="70" fill="#fca5a5" stroke="#b91c1c" />
+<text x="50" y="20" text-anchor="middle" font-size="8" fill="#7f1d1d">WSI</text>
+<text x="50" y="-10" text-anchor="middle" font-size="10" fill="#7f1d1d">Gigapixel Slide</text>
+</g>
+<!-- Arrow -->
+<path d="M 280 90 L 320 90" stroke="#4f46e5" stroke-width="2" marker-end="url(#arrow-indigo)" />
+<!-- Single Brain -->
+<g transform="translate(330, 40)">
+<path d="M 0 50 Q 50 0 100 50 Q 50 100 0 50" fill="#4f46e5" opacity="0.1" />
+<path d="M 10 50 Q 50 20 90 50 Q 50 80 10 50" fill="#4f46e5" opacity="0.2" />
+<rect x="20" y="30" width="60" height="40" rx="4" fill="#4338ca" />
+<text x="50" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Z-WSI</text>
+</g>
+<text x="250" y="160" text-anchor="middle" font-size="11" fill="#4338ca" font-style="italic">
+"Unified Multi-Modal Attention"
+</text>
+<defs>
+<marker id="arrow-indigo" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="#4f46e5" />
+</marker>
+</defs>
+</svg>
+<figcaption class="text-center text-xs text-indigo-800 mt-2">
+图 5.1: 假如我们将 Z-Image 的理念用于病理学：病理报告与 WSI 切片在同一个 Transformer 中“共舞”。
+</figcaption>
+</figure>
+<div class="bg-indigo-50 p-5 rounded-xl border border-indigo-100">
+
+
+
+#### 核心思路：
+
+
+<ul class="space-y-3 text-sm text-indigo-800">
+<li class="flex items-start">
+<span class="mr-2">🔹</span>
+<span><strong>输入序列：</strong> [病理报告文本] + [WSI 巨型切片 Tokens]</span>
+</li>
+<li class="flex items-start">
+<span class="mr-2">🔹</span>
+<span><strong>训练目标：</strong> 让模型学会“读报告画片子”。</span>
+</li>
+<li class="flex items-start">
+<span class="mr-2">🔹</span>
+<span><strong>应用：</strong> 生成极其罕见的癌症亚型数据，解决医疗长尾问题。</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Implementation Checklist -->
+<div class="mb-12">
+
+
+
+
+### 🛠️ 工程师实战指南
+
+
+<div class="bg-slate-900 rounded-xl overflow-hidden shadow-2xl">
+<div class="flex items-center justify-between px-4 py-2 bg-slate-800 border-b border-slate-700">
+<span class="text-xs text-slate-400 font-mono">inference.py</span>
+<span class="text-xs text-green-400 font-mono">Run on RTX 4090</span>
+</div>
+<pre class="p-6 overflow-x-auto text-sm font-mono leading-relaxed text-slate-300"><code><span class="text-purple-400">import</span> torch
+<span class="text-purple-400">from</span> z_image_pipeline <span class="text-purple-400">import</span> ZImagePipeline
+
+<span class="text-slate-500"># 1. 加载 Turbo 模型 (bf16 省显存)</span>
+pipe = ZImagePipeline.from_pretrained(
+<span class="text-green-400">"alibaba/z-image-turbo-6b"</span>, 
+torch_dtype=torch.bfloat16
+).to(<span class="text-green-400">"cuda"</span>)
+
+<span class="text-slate-500"># 2. 医疗微调小贴士 (Hypothetical)</span>
+<span class="text-slate-500"># pipe.transformer.text_embedder.requires_grad_(False)  # 冻结文本理解</span>
+<span class="text-slate-500"># pipe.transformer.visual_embedder.train()            # 只训练视觉</span>
+
+<span class="text-slate-500"># 3. 极速推理 (8 Steps)</span>
+prompt = <span class="text-green-400">"A high-res histology slide of lung adenocarcinoma"</span>
+image = pipe(
+prompt, 
+num_inference_steps=<span class="text-orange-400">8</span>,  <span class="text-slate-500"># Turbo 模式</span>
+guidance_scale=<span class="text-orange-400">3.5</span>
+).images[0]
+
+image.save(<span class="text-green-400">"lung_cancer_synth.png"</span>)</code></pre>
+</div>
+</div>
+<!-- Final Takeaway (Triangle of Success SVG) -->
+<div class="bg-slate-50 p-8 rounded-2xl text-center border border-slate-200">
+
+
+
+#### 📚 李老师的划重点 (Take Home Message)
+
+
+<div class="flex justify-center mb-6">
+<svg viewBox="0 0 400 300" class="w-full max-w-md h-auto" xmlns="http://www.w3.org/2000/svg">
+<!-- Triangle -->
+<path d="M 200 20 L 350 250 L 50 250 Z" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 4" />
+<!-- Top Node: Architecture -->
+<g transform="translate(200, 20)">
+<circle r="30" fill="#e0e7ff" stroke="#4338ca" stroke-width="2" />
+<text x="0" y="5" text-anchor="middle" font-size="20">🏛️</text>
+<text x="0" y="-40" text-anchor="middle" font-weight="bold" fill="#4338ca">Architecture</text>
+<text x="0" y="45" text-anchor="middle" font-size="10" fill="#6366f1">Single-Stream</text>
+</g>
+<!-- Right Node: Data -->
+<g transform="translate(350, 250)">
+<circle r="30" fill="#ecfdf5" stroke="#059669" stroke-width="2" />
+<text x="0" y="5" text-anchor="middle" font-size="20">💎</text>
+<text x="0" y="45" text-anchor="middle" font-weight="bold" fill="#047857">Data</text>
+<text x="0" y="60" text-anchor="middle" font-size="10" fill="#059669">Quality > Quantity</text>
+</g>
+<!-- Left Node: Training -->
+<g transform="translate(50, 250)">
+<circle r="30" fill="#fff7ed" stroke="#ea580c" stroke-width="2" />
+<text x="0" y="5" text-anchor="middle" font-size="20">🎓</text>
+<text x="0" y="45" text-anchor="middle" font-weight="bold" fill="#c2410c">Training</text>
+<text x="0" y="60" text-anchor="middle" font-size="10" fill="#ea580c">Curriculum Learning</text>
+</g>
+<!-- Center: Z-Image -->
+<g transform="translate(200, 160)">
+<circle r="40" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+<text x="0" y="5" text-anchor="middle" font-weight="bold" font-size="14" fill="#334155">Z-Image</text>
+<text x="0" y="20" text-anchor="middle" font-size="10" fill="#64748b">Efficient Foundation</text>
+</g>
+</svg>
+</div>
+<p class="text-slate-600 text-sm max-w-2xl mx-auto">
+Z-Image 的成功不是单点的突破，而是 <strong>架构精简、数据提纯、训练科学化</strong> 的系统性胜利。
+这才是我们应该学习的“第一性原理”。
+</p>
+</div>
+</section>
+<footer class="mt-20 pt-10 border-t border-slate-200 text-center text-slate-400 text-sm mb-10">
+<p class="mb-2">Generated by <strong>Gemini Agent</strong> based on "Z-Image: An Efficient Image Generation Foundation Model..."</p>
+<p>仅供学术交流，请勿用于临床诊断。</p>
