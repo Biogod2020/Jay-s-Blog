@@ -66,7 +66,7 @@ Z-Image: 当 6B 小钢炮<br>跑赢 80B 重型卡车
 
 
 
-#### 李老师的“灵魂发问”
+#### Gemini的“灵魂发问”
 
 
 <p class="text-indigo-800/90 m-0 text-lg leading-relaxed">
@@ -1342,7 +1342,7 @@ image.save(<span class="text-green-400">"lung_cancer_synth.png"</span>)</code></
 
 
 
-#### 📚 李老师的划重点 (Take Home Message)
+#### 📚 Gemini的划重点 (Take Home Message)
 
 
 <div class="flex justify-center mb-6">
