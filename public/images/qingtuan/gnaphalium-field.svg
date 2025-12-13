@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-label="田野里的鼠曲草（示意图）">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#e0f2fe"/>
+      <stop offset="100%" stop-color="#f0fdf4"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#bbf7d0"/>
+      <stop offset="100%" stop-color="#86efac"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="0.6"/>
+    </filter>
+  </defs>
+  <rect width="900" height="600" fill="url(#sky)"/>
+  <rect y="360" width="900" height="240" fill="url(#ground)"/>
+  <g opacity="0.18">
+    <path d="M0 420c120-60 240-60 360 0s240 60 360 0 120-60 180 0v180H0Z" fill="#16a34a"/>
+  </g>
+  <g transform="translate(0,0)">
+    <g transform="translate(160,390)">
+      <path d="M0 150c40-110 70-160 120-230" stroke="#15803d" stroke-width="14" stroke-linecap="round"/>
+      <g fill="#22c55e" opacity="0.95">
+        <path d="M40 70c-30-30-60-35-95-22 25 33 55 49 95 22Z"/>
+        <path d="M88 40c-18-36-45-55-86-60 8 42 31 66 86 60Z"/>
+        <path d="M110 105c32-28 66-33 104-18-28 30-60 44-104 18Z"/>
+        <path d="M145 70c24-34 54-50 96-52-14 41-40 63-96 52Z"/>
+      </g>
+      <g filter="url(#soft)" opacity="0.55">
+        <circle cx="118" cy="-40" r="44" fill="#f8fafc"/>
+        <circle cx="96" cy="-30" r="28" fill="#f1f5f9"/>
+        <circle cx="140" cy="-30" r="28" fill="#f1f5f9"/>
+      </g>
+    </g>
+    <g transform="translate(470,390) scale(1.05)">
+      <path d="M0 150c35-95 70-155 110-220" stroke="#166534" stroke-width="14" stroke-linecap="round"/>
+      <g fill="#16a34a" opacity="0.95">
+        <path d="M35 85c-26-28-55-34-88-22 22 31 50 47 88 22Z"/>
+        <path d="M86 50c-16-34-40-52-76-58 7 39 27 62 76 58Z"/>
+        <path d="M108 108c30-26 61-31 96-16-26 28-55 41-96 16Z"/>
+        <path d="M138 78c22-32 50-47 88-50-12 38-36 59-88 50Z"/>
+      </g>
+      <g filter="url(#soft)" opacity="0.6">
+        <circle cx="108" cy="-36" r="40" fill="#ffffff"/>
+        <circle cx="90" cy="-28" r="26" fill="#f1f5f9"/>
+        <circle cx="130" cy="-28" r="26" fill="#f1f5f9"/>
+      </g>
+    </g>
+  </g>
+</svg>

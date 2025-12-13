@@ -84,3 +84,167 @@ h2, h3 {
   border-radius: 4px;
   box-shadow: 12px 0 0 #cbd5e1, 24px 0 0 #cbd5e1; /* dots */
 }
+
+/* =========================================
+   Advanced Markdown Styling (Global Override)
+   ========================================= */
+
+/* 1. Enhanced Headings */
+.prose h2 {
+  position: relative;
+  font-size: 1.875rem; /* 3xl */
+  line-height: 2.25rem;
+  font-weight: 800;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  /* Gradient Text Effect */
+  background: linear-gradient(135deg, #334155 0%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(79, 70, 229, 0.1);
+}
+
+.dark .prose h2 {
+  background: linear-gradient(135deg, #e2e8f0 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border-bottom-color: rgba(129, 140, 248, 0.2);
+}
+
+.prose h3 {
+  font-size: 1.5rem; /* 2xl */
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+.prose h3::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 24px;
+  background-color: #4f46e5;
+  margin-right: 0.75rem;
+  border-radius: 2px;
+}
+.dark .prose h3 {
+  color: #f1f5f9;
+}
+.dark .prose h3::before {
+  background-color: #818cf8;
+}
+
+/* 2. Blockquotes as "Glass Cards" / Abstracts */
+.prose blockquote {
+  font-style: normal;
+  font-weight: 400;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-left: 4px solid #4f46e5; /* Primary accent */
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(8px);
+}
+.prose blockquote p:first-of-type::before {
+  content: none;
+}
+.prose blockquote p:last-of-type::after {
+  content: none;
+}
+.dark .prose blockquote {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+  border-left-color: #818cf8;
+  color: #cbd5e1;
+}
+
+/* 3. Images as Featured Cards */
+.prose img {
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  object-fit: cover;
+}
+.prose img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* 4. Tables with Modern Card Style */
+.prose table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+.dark .prose table {
+  border-color: #334155;
+}
+
+.prose thead {
+  background-color: #f8fafc;
+  color: #475569;
+}
+.dark .prose thead {
+  background-color: #1e293b;
+  color: #cbd5e1;
+}
+
+.prose th {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e2e8f0;
+}
+.dark .prose th {
+  border-bottom-color: #334155;
+}
+
+.prose td {
+  padding: 1rem 1.5rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.95rem;
+}
+.dark .prose td {
+  background-color: #0f172a; /* darker background for rows */
+  border-bottom-color: #1e293b;
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+.prose tr:hover td {
+  background-color: #f8fafc;
+}
+.dark .prose tr:hover td {
+  background-color: #1e293b;
+}
+
+/* 5. Strong Tags / Key Concepts */
+.prose strong {
+  color: #0f172a;
+  font-weight: 700;
+  background: linear-gradient(120deg, transparent 60%, rgba(253, 224, 71, 0.3) 0%); /* Yellow highlight effect */
+  padding: 0 2px;
+}
+.dark .prose strong {
+  color: #f1f5f9;
+  background: linear-gradient(120deg, transparent 60%, rgba(253, 224, 71, 0.15) 0%);
+}
