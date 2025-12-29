@@ -2,6 +2,9 @@
 dist/
 .astro/
 scripts/
+!scripts/convert_wechat.py
+!scripts/convert_json_to_md.py
+
 
 # dependencies
 node_modules/

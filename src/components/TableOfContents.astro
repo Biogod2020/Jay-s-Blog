@@ -183,6 +183,94 @@ headings.forEach((h) => {
 </style>
 
 <script>
+  // --- Dynamic TOC Generation (Fallback for HTML content) ---
+  function generateDynamicTOC() {
+    const tocList = document.getElementById('toc-list');
+    const mobileTocList = document.querySelector('#toc-mobile-menu ul');
+    
+    // Check if TOC is empty (no server-rendered items)
+    if (tocList && tocList.children.length === 0) {
+      const article = document.querySelector('article');
+      if (!article) return;
+      
+      // Find all h2 and h3 with ids
+      const headings = article.querySelectorAll('h2[id], h3[id], h2, h3');
+      
+      // Ensure headings have IDs
+      headings.forEach((h, index) => {
+        if (!h.id) {
+          // Generate slug from text
+          h.id = h.textContent?.trim().toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, '-').replace(/^-|-$/g, '') || `heading-${index}`;
+        }
+      });
+      
+      // Build TOC structure
+      let currentH2: HTMLElement | null = null;
+      let currentSublist: HTMLElement | null = null;
+      
+      headings.forEach((h) => {
+        const text = h.textContent?.trim() || '';
+        const slug = h.id;
+        const isH2 = h.tagName === 'H2';
+        
+        if (isH2) {
+          // Create H2 item
+          const li = document.createElement('li');
+          li.className = 'toc-group';
+          li.innerHTML = `
+            <a href="#${slug}" class="toc-link block py-2 pl-4 text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200 truncate" data-slug="${slug}" data-depth="2" title="${text}">${text}</a>
+          `;
+          tocList.appendChild(li);
+          currentH2 = li;
+          
+          // Create sublist for potential H3s
+          currentSublist = document.createElement('ul');
+          currentSublist.className = 'toc-sublist overflow-hidden transition-all duration-300 ease-in-out max-h-0 opacity-50';
+          currentSublist.setAttribute('data-parent', slug);
+          li.appendChild(currentSublist);
+          
+          // Mobile TOC
+          if (mobileTocList) {
+            const mobileLi = document.createElement('li');
+            mobileLi.innerHTML = `
+              <a href="#${slug}" class="toc-link-mobile block py-2 text-base font-medium text-gray-700 dark:text-gray-300 border-l-2 border-transparent pl-3 transition-colors" data-slug="${slug}">${text}</a>
+            `;
+            mobileTocList.appendChild(mobileLi);
+          }
+        } else if (h.tagName === 'H3' && currentSublist) {
+          // Create H3 sub-item
+          const subLi = document.createElement('li');
+          subLi.innerHTML = `
+            <a href="#${slug}" class="toc-link block py-1.5 pl-8 text-xs text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors duration-200 truncate" data-slug="${slug}" data-depth="3" title="${text}">${text}</a>
+          `;
+          currentSublist.appendChild(subLi);
+          
+          // Mobile TOC
+          if (mobileTocList) {
+            const mobileLi = document.createElement('li');
+            mobileLi.innerHTML = `
+              <a href="#${slug}" class="toc-link-mobile block py-1.5 pl-7 text-sm text-gray-500 dark:text-gray-400 border-l-2 border-transparent transition-colors" data-slug="${slug}">${text}</a>
+            `;
+            // Find parent ul or create one
+            let parentUl = mobileTocList.querySelector(`li:last-child ul`);
+            if (!parentUl) {
+              parentUl = document.createElement('ul');
+              parentUl.className = 'mt-1 mb-2 space-y-1';
+              mobileTocList.querySelector('li:last-child')?.appendChild(parentUl);
+            }
+            parentUl?.appendChild(mobileLi);
+          }
+        }
+      });
+      
+      // Re-initialize scroll spy after dynamic generation
+      initScrollSpy();
+    }
+  }
+  
+  // Call on DOM ready
+  generateDynamicTOC();
+
   // --- Desktop Toggle Logic ---
   const wrapper = document.getElementById('toc-desktop-wrapper');
   const nav = document.getElementById('toc-desktop-nav');
@@ -224,10 +312,11 @@ headings.forEach((h) => {
 
 
   // --- Core TOC Logic (Scroll Spy) ---
-  const desktopLinks = document.querySelectorAll('.toc-link');
-  const mobileLinks = document.querySelectorAll('.toc-link-mobile');
-  const sections = document.querySelectorAll('h2[id], h3[id]');
-  const marker = document.getElementById('toc-marker');
+  function initScrollSpy() {
+    const desktopLinks = document.querySelectorAll('.toc-link');
+    const mobileLinks = document.querySelectorAll('.toc-link-mobile');
+    const sections = document.querySelectorAll('h2[id], h3[id]');
+    const marker = document.getElementById('toc-marker');
   const sublists = document.querySelectorAll('.toc-sublist');
   
   function updateDesktopTOC(slug: string) {
@@ -297,7 +386,12 @@ headings.forEach((h) => {
   }, { rootMargin: '-10% 0px -80% 0px' });
 
   sections.forEach(section => observer.observe(section));
+  } // End of initScrollSpy function
 
+  // Initialize scroll spy if TOC has items
+  if (document.querySelectorAll('.toc-link').length > 0) {
+    initScrollSpy();
+  }
 
   // --- Mobile Menu Logic ---
   const mToggleBtn = document.getElementById('toc-mobile-toggle');
@@ -324,7 +418,7 @@ headings.forEach((h) => {
   mToggleBtn?.addEventListener('click', toggleMenu);
   mCloseBtn?.addEventListener('click', toggleMenu);
   mBackdrop?.addEventListener('click', toggleMenu);
-  mobileLinks.forEach(link => {
+  document.querySelectorAll('.toc-link-mobile').forEach(link => {
     link.addEventListener('click', () => { if(isMenuOpen) toggleMenu(); });
   });
 </script>

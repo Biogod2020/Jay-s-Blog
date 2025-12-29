@@ -1,0 +1,76 @@
+        <!-- Slide 02.5: Theoretical Foundation (Zipf's Law) -->
+        <section class="max-w-6xl mx-auto min-h-[90vh] flex flex-col justify-center">
+            
+            <div class="flex items-center mb-10">
+                 <span class="text-6xl font-black text-slate-200 mr-6">02.5</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800">理论基石：大算力时代的"联姻"</h2>
+                    <p class="text-slate-500 font-medium mt-1">Foundation: The Mathematical Isomorphism</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center h-full">
+                
+                <!-- Left: The Insight -->
+                <div class="space-y-8">
+                    <div class="relative">
+                         <h3 class="text-2xl font-bold text-slate-800 leading-tight">
+                             前提：为什么 <span class="text-indigo-600">ChatGPT</span> (文本模型) <br>
+                             能读懂 <span class="text-emerald-600">生物信号</span> (癌细胞)？
+                         </h3>
+                         <div class="w-20 h-1 bg-gradient-to-r from-indigo-500 to-emerald-500 mt-4 rounded-full"></div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl border-l-4 border-indigo-500 shadow-sm">
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl">🧬</div>
+                            <div>
+                                <h4 class="font-bold text-slate-800 text-lg mb-2">基因即语言 (Gene as Language)</h4>
+                                <p class="text-slate-600 leading-relaxed text-base">
+                                    我们发现了一个惊人的数学巧合：**生物学也是一门语言学**。
+                                    基因表达量的秩次分布与人类自然语言的词频分布，在统计规律上是**完全同构**的。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 text-sm text-slate-500 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <p class="italic text-slate-700">
+                            "这种数学上的同构性，是大语言模型 (LLM) 能够跨界进入生物学领域的<strong>入场券</strong>。"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right: Visual Proof -->
+                <div class="sota-card bg-white border border-slate-200 flex flex-col items-center p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-bl-lg">Evidence</div>
+                    
+                    <h4 class="font-bold text-slate-700 mb-6 w-full border-b border-slate-100 pb-2 flex justify-between items-center">
+                        <span>齐普夫定律 (Zipf's Law)</span>
+                        <span class="font-mono text-xs text-slate-400 font-normal">P(r) ∝ 1/r^α</span>
+                    </h4>
+
+                    <div class="w-full relative h-[300px] mb-4 group">
+                        <!-- Image -->
+                        <img src="./assets/zipfs_law.png" class="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" alt="Zipf's Law">
+                        
+                        <!-- Overlay Annotations -->
+                        <div class="absolute bottom-4 left-4 bg-indigo-600/90 text-white text-xs px-2 py-1 rounded backdrop-blur-sm shadow-md">
+                            Word Frequency
+                        </div>
+                        <div class="absolute top-4 right-4 bg-emerald-600/90 text-white text-xs px-2 py-1 rounded backdrop-blur-sm shadow-md">
+                            Gene Expression
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-slate-600 text-center bg-slate-50 p-3 rounded-lg w-full">
+                        <span class="text-emerald-600 font-bold">完美重合</span>：证明了我们可以直接复用 NLP 领域成熟的大模型架构来解码生命奥秘。
+                    </p>
+                </div>
+
+            </div>
+
+        </section>

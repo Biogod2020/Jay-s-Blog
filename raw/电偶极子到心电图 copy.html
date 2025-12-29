@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心电图物理原理：从电偶极子到心脏向量</title>
+    
+    <!-- 引入 Tailwind CSS (SOTA级原子化CSS框架) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 引入 MathJax 用于渲染漂亮的数学公式 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <!-- 引入 Google Fonts 提升排版质感 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Noto Serif SC"', 'serif'],
+                        mono: ['"Roboto Mono"', 'monospace'],
+                    },
+                    colors: {
+                        medical: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        heart: {
+                            red: '#e11d48',
+                            dark: '#881337',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'flow': 'flow 2s linear infinite',
+                        'depolarize': 'depolarize 4s infinite',
+                        'rotate-vector': 'rotateVector 4s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        flow: {
+                            '0%': { strokeDashoffset: '24' },
+                            '100%': { strokeDashoffset: '0' },
+                        },
+                        depolarize: {
+                            '0%': { width: '0%' },
+                            '50%': { width: '100%' },
+                            '100%': { width: '100%' }, // Hold
+                        },
+                        rotateVector: {
+                            '0%': { transform: 'rotate(-45deg)' },
+                            '100%': { transform: 'rotate(45deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 自定义一些细节样式 */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+        
+        .math-block {
+            overflow-x: auto;
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0.5rem;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        /* SVG 动画相关 */
+        .field-line {
+            fill: none;
+            stroke: #94a3b8;
+            stroke-width: 1;
+            stroke-dasharray: 4, 4;
+            opacity: 0.6;
+        }
+
+        .charge-plus {
+            fill: url(#grad-plus);
+            filter: drop-shadow(0 0 5px rgba(225, 29, 72, 0.5));
+        }
+
+        .charge-minus {
+            fill: url(#grad-minus);
+            filter: drop-shadow(0 0 5px rgba(14, 165, 233, 0.5));
+        }
+        
+        .vector-arrow {
+            marker-end: url(#arrowhead);
+        }
+
+        /* 网格背景 */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+        }
+    </style>
+    <!-- 1. 配置 MathJax：开启单美元符号支持 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // 允许使用 $...$ 和 \(...\) 作为行内公式
+                displayMath: [['$$', '$$'], ['\\[', '\\]']], // 允许使用 $$...$$ 作为块级公式
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    
+    <!-- 2. 然后再加载 MathJax 库 -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-serif antialiased selection:bg-medical-200 selection:text-medical-900">
+
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-3">
+                    <div class="bg-heart-red text-white p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-slate-800">ECG Physics <span class="text-medical-500 text-sm font-normal ml-1">For Med Students</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                    <a href="#intro" class="hover:text-medical-600 transition-colors">前言</a>
+                    <a href="#dipole" class="hover:text-medical-600 transition-colors">电偶极子</a>
+                    <a href="#heart" class="hover:text-medical-600 transition-colors">心脏除极</a>
+                    <a href="#projection" class="hover:text-medical-600 transition-colors">向量投影</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 头部 Hero Section -->
+    <header id="intro" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
+        <div class="inline-block px-4 py-1.5 mb-6 rounded-full bg-blue-50 text-blue-700 text-sm font-semibold border border-blue-100">
+            第一章：物理基础篇
+        </div>
+        <h1 class="text-5xl md:text-6xl font-bold text-slate-900 mb-8 leading-tight">
+            从<span class="text-transparent bg-clip-text bg-gradient-to-r from-medical-500 to-blue-600">电偶极子</span><br>看懂心电图
+        </h1>
+        <p class="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+            作为医学生，你可能背过“P波代表心房除极”，但你是否想过：<strong>为什么心肌细胞的化学变化会变成纸上的折线？</strong> 
+            答案藏在高中物理的电场理论中。让我们用物理学的视角，重新认识心脏。
+        </p>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-32">
+
+        <!-- SECTION 1: 物理概念 -->
+        <section id="dipole" class="mb-24 relative">
+            <div class="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-medical-500 to-transparent rounded-full opacity-50"></div>
+            
+            <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center">
+                <span class="text-medical-500 mr-3">01.</span> 什么是电偶极子 (Electric Dipole)？
+            </h2>
+            
+            <div class="prose prose-lg prose-slate max-w-none text-slate-600">
+                <p>
+                    在高中物理中，我们学过电荷。所谓<strong>电偶极子</strong>，就是由两个<strong>电量相等（\(q\)）、符号相反（\(+,- \））</strong>的点电荷，相距极小距离（\(d\)）组成的系统。
+                </p>
+                <p>
+                    这就像是一个微型的电池，一头正，一头负。在物理学中，我们用一个矢量（向量）来描述它，称为<strong>电偶极矩（Electric Dipole Moment）</strong>，符号为 \(\vec{P}\)。
+                </p>
+
+                <!-- 公式块 -->
+                <div class="math-block my-8 shadow-sm">
+                    <p class="font-mono text-sm text-slate-400 mb-2">Definition Formula</p>
+                    $$ \vec{P} = q \cdot \vec{d} $$
+                    <ul class="list-disc pl-5 mt-4 text-base space-y-1">
+                        <li>\(\vec{P}\)：电偶极矩向量，表示强弱和方向。</li>
+                        <li>\(q\)：电荷量（决定强度）。</li>
+                        <li>\(\vec{d}\)：距离向量。</li>
+                    </ul>
+                    <div class="mt-4 p-3 bg-yellow-50 text-yellow-800 text-sm rounded border border-yellow-200">
+                        <strong>⚠️ 注意方向约定：</strong><br>
+                        在物理学中，方向定义为从负电荷指向正电荷（\( - \to + \)）。<br>
+                        而在心电向量图中，我们也遵循这个约定：向量箭头指向正电荷端（即电源的正极）。
+                    </div>
+                </div>
+
+                <!-- SVG 交互示意图：静态偶极子场 -->
+                <div class="my-10 bg-white rounded-2xl shadow-lg border border-slate-100 p-6 overflow-hidden relative">
+                    <h3 class="text-center text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">电偶极子电场模型</h3>
+                    <div class="flex justify-center">
+                        <svg width="400" height="300" viewBox="-200 -150 400 300" class="overflow-visible">
+                            <defs>
+                                <radialGradient id="grad-plus" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+                                    <stop offset="0%" style="stop-color:#ff99aa;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#e11d48;stop-opacity:1" />
+                                </radialGradient>
+                                <radialGradient id="grad-minus" cx="50%" cy="50%" r="50%" fx="30%" fy="30%">
+                                    <stop offset="0%" style="stop-color:#bae6fd;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#0284c7;stop-opacity:1" />
+                                </radialGradient>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#334155" />
+                                </marker>
+                            </defs>
+
+                            <!-- 电场线 (贝塞尔曲线模拟) -->
+                            <g class="field-lines">
+                                <!-- 上半部分场线 -->
+                                <path d="M -80 0 Q -40 -60 0 -60 Q 40 -60 80 0" class="field-line" />
+                                <path d="M -80 0 Q -50 -100 0 -100 Q 50 -100 80 0" class="field-line" />
+                                <path d="M -80 0 Q -60 -160 0 -160 Q 60 -160 80 0" class="field-line" />
+                                <!-- 下半部分场线 -->
+                                <path d="M -80 0 Q -40 60 0 60 Q 40 60 80 0" class="field-line" />
+                                <path d="M -80 0 Q -50 100 0 100 Q 50 100 80 0" class="field-line" />
+                                <path d="M -80 0 Q -60 160 0 160 Q 60 160 80 0" class="field-line" />
+                            </g>
+
+                            <!-- 电荷 -->
+                            <circle cx="-80" cy="0" r="20" class="charge-minus animate-pulse-slow" />
+                            <text x="-80" y="5" text-anchor="middle" fill="white" font-weight="bold" font-family="sans-serif">-</text>
+
+                            <circle cx="80" cy="0" r="20" class="charge-plus animate-pulse-slow" />
+                            <text x="80" y="5" text-anchor="middle" fill="white" font-weight="bold" font-family="sans-serif">+</text>
+
+                            <!-- 偶极子向量 P -->
+                            <line x1="-50" y1="0" x2="50" y2="0" stroke="#334155" stroke-width="3" class="vector-arrow" />
+                            <text x="0" y="25" text-anchor="middle" class="text-xs font-mono font-bold fill-slate-700">\(\vec{P}\)</text>
+
+                            <!-- 标注 -->
+                            <text x="-140" y="-120" class="text-xs fill-slate-400">电势低 (Low Potential)</text>
+                            <text x="80" y="-120" class="text-xs fill-slate-400">电势高 (High Potential)</text>
+                        </svg>
+                    </div>
+                    <p class="text-sm text-slate-500 text-center mt-4">
+                        图1：一个简单的电偶极子。空间中任意一点的电势取决于它相对于这个偶极子的位置。
+                    </p>
+                </div>
+
+                <h4 class="font-bold text-slate-800 text-lg mt-8">为什么这对医学很重要？</h4>
+                <p>
+                    因为电偶极子会在周围的空间（对于人体来说，就是导电的体液和组织）产生<strong>电场</strong>。
+                    如果我们在这个电场中放入两个电极（比如放在你的手腕和脚腕上），这两个电极之间就会产生<strong>电势差（电压）</strong>。
+                    <br><br>
+                    <strong>心电图机，本质上就是一个超高灵敏度的电压表，在测量体表两点间的电势差。</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 1.5: 测量原理与数学推导 -->
+        <section id="measurement" class="mb-24 relative">
+            <div class="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 to-transparent rounded-full opacity-50"></div>
+            
+            <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center">
+                <span class="text-indigo-500 mr-3">1.5</span> 深度推导：电压表是如何“看”到向量的？
+            </h2>
+            
+            <div class="prose prose-lg prose-slate max-w-none text-slate-600">
+                <p>
+                    作为医学生，你可能直观地理解“心电向量指向哪，哪里的波就高”。但要真正掌握心电图的量化分析（例如判断电轴偏移），我们需要从物理学的<strong>叠加原理</strong>开始，一步步推导出那个著名的投影公式。
+                </p>
+                <div class="bg-indigo-50 border-l-4 border-indigo-400 p-6 my-8 rounded-r-xl">
+                    <h4 class="text-indigo-900 font-bold mt-0 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" /><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" /></svg>
+                        推导第一步：从场强到电势
+                    </h4>
+                    <p class="mb-4">
+                        1. <strong>电场强度 (E)</strong>：一个电荷量为 \(q\) 的点电荷在距离为 \(r\) 处产生的场强大小为：
+                        $$ E = k \cdot \frac{q}{r^2} $$
+                        这代表了该点单位正电荷受到的电场力。
+                    </p>
+                    <p class="mb-4">
+                        2. <strong>电势 (V)</strong>：电势定义为将单位正电荷从该点移至无穷远处时，电场力所做的功。通过积分可得：
+                        $$ V = \int_r^\infty E \, dr = \int_r^\infty k \frac{q}{r^2} \, dr = k \cdot \frac{q}{r} $$
+                    </p>
+                    <p>
+                        <strong>核心结论：</strong> 电势是一个<strong>标量</strong>（只有大小，没有方向）。这意味着空间中某一点的总电势，就是周围所有电荷产生的电势的<strong>代数和（直接相加减）</strong>，这为我们后续分析偶极子提供了极大的便利。
+                    </p>
+                </div>
+
+                <h3 class="text-xl font-bold text-slate-800 mt-12 mb-4">第一阶段：建立几何模型</h3>
+                <p>
+                    考虑一个电偶极子，负电荷 \(-q\) 位于 \(L\)，正电荷 \(+q\) 位于 \(R\)，两者中心距离为 \(d\)。我们要测量距离中心为 \(r\) 的 \(A\) 点的电势。
+                </p>
+
+                <!-- SVG 1: 几何模型 -->
+                <div class="my-10 bg-white rounded-2xl shadow-md border border-slate-100 p-6">
+                    <h4 class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">图 2-1: 电偶极子空间几何关系</h4>
+                    <div class="flex justify-center">
+                        <svg width="400" height="260" viewBox="0 0 400 260" class="overflow-visible">
+                            <!-- 中心参考系 -->
+                            <line x1="50" y1="200" x2="350" y2="200" stroke="#e2e8f0" stroke-width="1" />
+                            <circle cx="200" cy="200" r="3" fill="#94a3b8" />
+                            <text x="200" y="220" text-anchor="middle" class="text-xs fill-slate-400">中心 O</text>
+
+                            <!-- 偶极子 -->
+                            <line x1="160" y1="200" x2="240" y2="200" stroke="#334155" stroke-width="2" />
+                            <circle cx="160" cy="200" r="8" class="charge-minus" />
+                            <circle cx="240" cy="200" r="8" class="charge-plus" />
+                            <text x="160" y="185" text-anchor="middle" class="text-[10px] fill-slate-500">-q</text>
+                            <text x="240" y="185" text-anchor="middle" class="text-[10px] fill-slate-500">+q</text>
+
+                            <!-- 测量点 A -->
+                            <circle cx="320" cy="60" r="4" fill="#0ea5e9" />
+                            <text x="330" y="55" class="font-bold fill-medical-600">A (测量点)</text>
+
+                            <!-- 距离连线 -->
+                            <line x1="160" y1="200" x2="320" y2="60" stroke="#94a3b8" stroke-dasharray="4" />
+                            <text x="220" y="120" class="text-xs fill-slate-400" transform="rotate(-40, 220, 120)">r₂ (到负极)</text>
+                            
+                            <line x1="240" y1="200" x2="320" y2="60" stroke="#94a3b8" stroke-dasharray="4" />
+                            <text x="290" y="140" class="text-xs fill-slate-400" transform="rotate(-60, 290, 140)">r₁ (到正极)</text>
+
+                            <line x1="200" y1="200" x2="320" y2="60" stroke="#0ea5e9" stroke-width="2" />
+                            <text x="250" y="110" class="text-sm font-bold fill-medical-500" transform="rotate(-50, 250, 110)">r</text>
+
+                            <!-- 角度 theta -->
+                            <path d="M 240 200 A 40 40 0 0 0 225 170" fill="none" stroke="#64748b" stroke-width="2" />
+                            <text x="245" y="180" class="text-sm font-serif fill-slate-600">θ</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-slate-800 mt-12 mb-4">第二阶段：数学近似（远场近似）</h3>
+                <p>
+                    在心电图中，心脏的大小（\(d\)）远小于人体半径（\(r\)）。当 \(r \gg d\) 时，我们可以进行几何近似。
+                </p>
+                <div class="math-block bg-white border border-slate-200 shadow-sm">
+                    <p>根据叠加原理，\(A\) 点的电势 \(V_A\) 为：</p>
+                    $$ V_A = V_+ + V_- = k \cdot \frac{q}{r_1} + k \cdot \frac{-q}{r_2} = kq \left( \frac{1}{r_1} - \frac{1}{r_2} \right) $$
+                    <p class="mt-4">当 \(r\) 很大时，三条连线几乎平行。从图 2-2 可以看出：</p>
+                    <ul class="list-none pl-0 space-y-2">
+                        <li>\( r_1 \approx r - \frac{d}{2}\cos\theta \)</li>
+                        <li>\( r_2 \approx r + \frac{d}{2}\cos\theta \)</li>
+                    </ul>
+                    <p class="mt-4">代入公式并化简（忽略极小项）：</p>
+                    $$ \frac{1}{r_1} - \frac{1}{r_2} \approx \frac{r_2 - r_1}{r^2} \approx \frac{d \cos\theta}{r^2} $$
+                </div>
+
+                <!-- SVG 2: 近似原理 -->
+                <div class="my-10 bg-slate-50 rounded-2xl p-8 border border-slate-200">
+                    <h4 class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">图 2-2: 远场近似的几何本质</h4>
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="flex-1">
+                            <svg width="250" height="200" viewBox="0 0 250 200" class="overflow-visible mx-auto">
+                                <!-- 局部放大图 -->
+                                <line x1="50" y1="100" x2="200" y2="100" stroke="#334155" stroke-width="3" />
+                                <circle cx="50" cy="100" r="10" class="charge-minus" />
+                                <circle cx="200" cy="100" r="10" class="charge-plus" />
+                                
+                                <!-- 平行线模拟 -->
+                                <line x1="50" y1="100" x2="230" y2="20" stroke="#94a3b8" stroke-dasharray="4" />
+                                <line x1="200" y1="100" x2="250" y2="78" stroke="#94a3b8" stroke-dasharray="4" />
+                                
+                                <!-- 垂直投影 -->
+                                <line x1="200" y1="100" x2="180" y2="42" stroke="#ef4444" stroke-width="2" />
+                                <rect x="180" y="42" width="8" height="8" fill="none" stroke="#ef4444" stroke-width="1" transform="rotate(25, 180, 42)"/>
+                                
+                                <text x="110" y="60" class="text-xs fill-red-600 font-bold">路径差 ≈ d·cosθ</text>
+                                <text x="125" y="120" class="text-sm fill-slate-500">距离 d</text>
+                            </svg>
+                        </div>
+                        <div class="flex-1 text-sm text-slate-500 leading-relaxed italic">
+                            “当测量点足够远时，从正负电荷出发的两条光线几乎平行。正电荷离 A 点更近，近出的距离恰好是 \(d\) 在连线方向上的投影，即 \(d \cos\theta\)。”
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-slate-800 mt-12 mb-4">最终结论：投影定律</h3>
+                <p>
+                    将 \(P = qd\) 代入，我们得到了心电图最核心的物理方程：
+                </p>
+                <div class="math-block bg-medical-900 text-white border-none py-10 px-8 rounded-2xl shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" /></svg>
+                    </div>
+                    <p class="text-medical-300 font-mono text-xs mb-4 uppercase tracking-widest">The Core ECG Equation</p>
+                    <div class="text-3xl md:text-4xl font-bold mb-6">
+                        $$ V \propto \frac{P \cdot \cos\theta}{r^2} $$
+                    </div>
+                    <p class="text-slate-300 text-base leading-relaxed">
+                        在临床心电图中，探查电极与心脏的距离 \(r\) 基本固定。因此，<strong>导联检测到的电压（波幅）直接取决于心
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: 生理联系 -->
+        <section id="heart" class="mb-24 relative">
+            <div class="absolute -left-4 top-0 bottom-0 w-1 bg-gradient-to-b from-heart-red to-transparent rounded-full opacity-50"></div>
+            
+            <h2 class="text-3xl font-bold text-slate-800 mb-6 flex items-center">
+                <span class="text-heart-red mr-3">02.</span> 心脏：无数个移动的电偶极子
+            </h2>
+            
+            <div class="prose prose-lg prose-slate max-w-none text-slate-600">
+                <p class="lead">
+                    要把湿漉漉的心脏组织和刚才那个干燥的物理模型联系起来，我们需要一场思维实验。
+                    让我们把目光聚焦到单个心肌细胞上，探讨第一个核心问题：<strong>为什么一个生物细胞在物理学家眼里等效于一个电偶极子？</strong>
+                </p>
+
+                <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4">2.1 微观视角：对称性的破缺</h3>
+                
+                <p>
+                    首先，我们需要考察细胞在不同状态下的电荷分布。这与其说是生物学问题，不如说是一个<strong>静电场边界问题</strong>。
+                </p>
+
+                <!-- Step 1: Resting -->
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 my-8">
+                    <div class="flex flex-col md:flex-row gap-8 items-center">
+                        <div class="flex-1">
+                            <h4 class="text-lg font-bold text-slate-800 mb-3 flex items-center">
+                                <span class="w-2 h-2 bg-slate-400 rounded-full mr-2"></span>
+                                状态一：静息态 (The Silent Sphere)
+                            </h4>
+                            <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                                想象一个处于静息状态的心肌细胞。由于钠钾泵的跨膜转运，细胞膜外均匀覆盖着正电荷，膜内均匀覆盖着负电荷。
+                            </p>
+                            
+                            <div class="space-y-4">
+                                <div class="text-sm text-slate-600">
+                                    <span class="font-bold text-slate-800">物理推导：</span>
+                                    根据<strong>高斯定律 (Gauss's Law)</strong>，穿过闭合曲面的电通量与面内净电荷成正比。对于静息细胞，我们可以将其简化为两个同心的均匀带电球壳：
+                                    <ul class="list-disc pl-5 mt-2 space-y-1 text-slate-500">
+                                        <li>外壳（正电荷）在外部产生的场，等效于电荷集中在球心。</li>
+                                        <li>内壳（等量负电荷）在外部产生的场，也等效于电荷集中在球心。</li>
+                                    </ul>
+                                    <p class="mt-2">两者矢量叠加：\( \vec{E}_{total} = \vec{E}_+ + \vec{E}_- = 0 \)。</p>
+                                </div>
+                                
+                                <div class="bg-medical-50/50 text-medical-700 p-4 rounded-xl text-sm font-medium border border-medical-100">
+                                    结论：由于电荷分布具有完美的球对称性，其“净偶极矩”为零。此时细胞对外不显电性，心电图机记录到的是一条平坦的直线。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-64 flex justify-center shrink-0">
+                            <svg viewBox="0 0 200 200" class="w-48 h-48">
+                                <!-- Cell Body -->
+                                <circle cx="100" cy="100" r="60" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" />
+                                <!-- Inner Charges (-) -->
+                                <g fill="#ef4444" font-size="12" font-family="Arial" font-weight="bold" text-anchor="middle">
+                                    <text x="100" y="60">-</text><text x="100" y="148">-</text>
+                                    <text x="60" y="104">-</text><text x="140" y="104">-</text>
+                                    <text x="72" y="75">-</text><text x="128" y="75">-</text>
+                                    <text x="72" y="130">-</text><text x="128" y="130">-</text>
+                                </g>
+                                <!-- Outer Charges (+) -->
+                                <g fill="#3b82f6" font-size="12" font-family="Arial" font-weight="bold" text-anchor="middle">
+                                    <text x="100" y="30">+</text><text x="100" y="178">+</text>
+                                    <text x="30" y="104">+</text><text x="170" y="104">+</text>
+                                    <text x="50" y="55">+</text><text x="150" y="55">+</text>
+                                    <text x="50" y="150">+</text><text x="150" y="150">+</text>
+                                </g>
+                                <!-- Zero Field Indicator -->
+                                <text x="100" y="105" fill="#94a3b8" font-size="10" text-anchor="middle" font-style="italic">V = 0</text>
+                                <path d="M100,85 L100,115 M85,100 L115,100" stroke="#e2e8f0" stroke-width="1" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Depolarizing -->
+<!-- SECTION 2.2: 深度物理推导 (Extended Version) -->
+<section id="heart-depth" class="mt-16 border-t border-slate-200 pt-16">
+    <div class="prose prose-lg prose-slate max-w-none text-slate-600">
+
+        <!-- 章节头 -->
+        <div class="flex items-center gap-4 mb-10">
+            <span
+                class="px-4 py-1.5 bg-slate-900 text-white text-xs font-bold uppercase tracking-widest rounded-full shadow-lg">Deep
+                Dive</span>
+            <span class="h-px bg-gradient-to-r from-slate-900 to-transparent flex-grow"></span>
+        </div>
+
+        <h3 class="text-4xl font-bold text-slate-900 mt-0 mb-8 leading-tight font-serif">
+            2.2 核心解密：心肌纤维如何演变为物理偶极子？
+        </h3>
+
+        <p class="lead text-xl text-slate-500 mb-12 border-l-4 border-medical-500 pl-6 italic">
+            "心脏不是一节电池，它是千万节微型电池的集合。要读懂心电图，我们必须把目光聚焦在细胞膜内外那厚度仅 7nm 的战场上，理解电荷是如何在‘内’与‘外’的矛盾中创造出电场的。"
+        </p>
+
+<!-- PART 1: 解决内外电荷矛盾 (Refined) -->
+<div class="mb-24 border-b border-slate-200 pb-16">
+    <h4 class="text-3xl font-bold text-slate-800 mb-8 font-serif">
+        Q1. 核心悖论：细胞内也有偶极子，为什么没把细胞外的信号抵消掉？
+    </h4>
+
+    <div class="prose prose-lg prose-slate text-slate-600 max-w-none">
+        <p>
+            这是一个困扰很多人的物理难题。让我们先看事实：
+        </p>
+        <ul class="list-disc pl-5 space-y-2">
+            <li><strong>细胞内 (Intracellular)：</strong> 正电荷向波前移动，形成内部电流 \(I_{in}\)。</li>
+            <li><strong>细胞外 (Extracellular)：</strong> 正电荷绕过膜外回流，形成外部电流 \(I_{ext}\)。</li>
+        </ul>
+        <p>
+            根据基尔霍夫定律，\(I_{in} = -I_{ext}\)。这意味着内部偶极子 \(\vec{P}_{in}\) 和外部偶极子 \(\vec{P}_{out}\) 大小相等、方向相反。
+            <br>
+            <strong>推论：</strong> 总偶极矩 \(\vec{P}_{total} = \vec{P}_{in} + \vec{P}_{out} = 0\)。
+        </p>
+        <p class="font-bold text-slate-800">
+            既然总和为零，为什么心电图机还能画出波形？
+        </p>
+
+        <h5 class="text-xl font-bold text-slate-800 mt-12 mb-6">物理推导：观测位置决定一切</h5>
+
+        <p>
+            这里的关键在于<strong>心电图机测量的不是“总偶极矩”，而是“体表两点的电势差”。</strong>
+            我们需要建立一个<strong>容积导体电路模型 (Volume Conductor Circuit Model)</strong> 来解释。
+        </p>
+
+        <!-- 数学推导块 -->
+        <div class="my-8 pl-6 border-l-4 border-slate-800">
+            <p class="font-serif italic text-slate-500 mb-4">Step-by-Step Derivation:</p>
+
+            <p class="mb-2"><strong class="text-slate-900">1. 欧姆定律场方程：</strong></p>
+            <p>在导电介质中，电场 \( \vec{E} \) 由电流密度 \( \vec{J} \) 和电阻率 \( \rho \) 决定：</p>
+            $$ \vec{E} = \rho \cdot \vec{J} $$
+
+            <p class="mb-2 mt-6"><strong class="text-slate-900">2. 绝缘层的隔离作用：</strong></p>
+            <p>细胞膜（Membrane）是一个高电阻绝缘层。它将空间物理上切割为两个独立的“导线”：</p>
+            <ul class="list-disc pl-5 text-sm mb-4">
+                <li><strong>内部电阻 \(R_{in}\)：</strong> 电流 \(I_{in}\) 流过，产生压降 \(\Delta V_{in} = I_{in} \cdot R_{in}\)。
+                </li>
+                <li><strong>外部电阻 \(R_{ext}\)（人体组织）：</strong> 电流 \(I_{ext}\) 流过，产生压降 \(\Delta V_{ext} = I_{ext} \cdot
+                    R_{ext}\)。</li>
+            </ul>
+
+            <p class="mb-2 mt-6"><strong class="text-slate-900">3. 测量探针的位置：</strong></p>
+            <p>我们的电极贴在体表，也就是<strong>外部电阻 \(R_{ext}\) 的两端</strong>。</p>
+            $$ V_{measured} = \Phi(A) - \Phi(B) = \int_A^B \vec{E}_{ext} \cdot d\vec{l} = I_{ext} \cdot R_{ext} $$
+
+            <p class="mt-4 text-slate-800 font-bold bg-yellow-50 inline-block px-2 py-1">
+                结论：虽然 \(\vec{P}_{in} + \vec{P}_{out} = 0\)，但我们只能接触到外部回路。内部的电压变化 \(\Delta V_{in}\)
+                被绝缘膜“锁”在了细胞里，我们的探针探测不到它。
+            </p>
+        </div>
+
+        <!-- 配合公式的 SVG 图解 -->
+        <div class="my-12">
+            <h5 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 text-center">Visual Proof: The
+                Circuit Model</h5>
+            <div class="flex justify-center">
+<div class="my-12 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+    <div class="bg-white px-4 py-2 border-b border-slate-200 flex justify-between items-center">
+        <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">Figure: The Volume Conductor Circuit
+            Model</span>
+    </div>
+
+    <div class="flex justify-center p-6">
+        <svg width="700" height="400" viewBox="0 0 700 400" class="overflow-visible">
+            <defs>
+                <!-- 定义绝缘层纹理 -->
+                <pattern id="insulator-hatch" patternUnits="userSpaceOnUse" width="8" height="8"
+                    patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="8" stroke="#94a3b8" stroke-width="1" opacity="0.5" />
+                </pattern>
+
+                <!-- 定义电流箭头 -->
+                <marker id="arrow-current" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                    <path d="M2,2 L10,6 L2,10 L2,2" fill="#f59e0b" />
+                </marker>
+
+                <!-- 定义探针端点 -->
+                <marker id="probe-dot" markerWidth="8" markerHeight="8" refX="4" refY="4">
+                    <circle cx="4" cy="4" r="3" fill="#334155" />
+                </marker>
+            </defs>
+
+            <!-- 1. 背景：细胞外液 (Extracellular Space) -->
+            <rect x="0" y="0" width="700" height="400" fill="none" /> <!-- 占位 -->
+            <text x="680" y="30" text-anchor="end" font-size="14" font-weight="bold" fill="#cbd5e1">EXTRACELLULAR FLUID
+                (Conductive Medium)</text>
+
+            <!-- 2. 心肌细胞主体 -->
+            <g transform="translate(50, 140)">
+                <!-- 内部细胞质 -->
+                <rect x="0" y="15" width="600" height="100" fill="#f1f5f9" stroke="none" />
+
+                <!-- 细胞膜 (上下两层绝缘体) -->
+                <rect x="0" y="0" width="600" height="15" fill="url(#insulator-hatch)" stroke="#475569"
+                    stroke-width="2" />
+                <rect x="0" y="115" width="600" height="15" fill="url(#insulator-hatch)" stroke="#475569"
+                    stroke-width="2" />
+
+                <!-- 绝缘体标签 -->
+                <text x="610" y="12" font-size="10" fill="#64748b" font-style="italic">High Resistance Membrane</text>
+
+                <!-- 内部电流源 (I_in) -->
+                <line x1="100" y1="65" x2="500" y2="65" stroke="#94a3b8" stroke-width="3" stroke-dasharray="8 4"
+                    marker-end="url(#arrow-current)" />
+                <text x="300" y="85" text-anchor="middle" font-size="12" font-weight="bold" fill="#64748b">I_in
+                    (Internal Flow)</text>
+
+                <!-- 内部电荷分布 (电动势来源) -->
+                <!-- 左侧：已除极 (内+) -->
+                <text x="80" y="50" font-family="monospace" font-weight="bold" fill="#ef4444"
+                    opacity="0.4">++++++</text>
+                <!-- 右侧：静息 (内-) -->
+                <text x="450" y="50" font-family="monospace" font-weight="bold" fill="#3b82f6"
+                    opacity="0.4">------</text>
+            </g>
+
+            <!-- 3. 外部电路回路 -->
+            <g>
+                <!-- 外部电流路径 (I_ext) -->
+                <path d="M 550 140 C 550 60, 150 60, 150 140" fill="none" stroke="#f59e0b" stroke-width="3"
+                    marker-end="url(#arrow-current)" />
+                <text x="350" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#d97706">I_ext (Return
+                    Current)</text>
+
+                <!-- 等效电阻 R_ext -->
+                <g transform="translate(290, 45)">
+                    <rect x="-20" y="-10" width="140" height="40" fill="#fff" opacity="0.8" />
+                    <path d="M 0 0 L 10 -10 L 20 10 L 30 -10 L 40 10 L 50 -10 L 60 10 L 70 -10 L 80 10 L 90 -10 L 100 0"
+                        stroke="#d97706" stroke-width="3" fill="none" />
+                    <text x="50" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97706">Tissue
+                        Resistance (R_ext)</text>
+                </g>
+
+                <!-- 电荷分布 (外部) -->
+                <!-- 左侧：外部变负 -->
+                <circle cx="150" cy="120" r="15" fill="#fff" stroke="#ef4444" stroke-width="2" />
+                <text x="150" y="125" text-anchor="middle" font-weight="bold" fill="#ef4444">-</text>
+                <!-- 右侧：外部仍正 -->
+                <circle cx="550" cy="120" r="15" fill="#fff" stroke="#3b82f6" stroke-width="2" />
+                <text x="550" y="125" text-anchor="middle" font-weight="bold" fill="#3b82f6">+</text>
+            </g>
+
+            <!-- 4. 电压表 (观察者) -->
+            <g transform="translate(350, 0)">
+                <!-- 电压表表头 -->
+                <circle cx="0" cy="0" r="28" fill="white" stroke="#1e293b" stroke-width="3" />
+                <text x="0" y="6" text-anchor="middle" font-size="20" font-weight="bold" fill="#1e293b">V</text>
+                <text x="0" y="42" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e293b">ECG
+                    Machine</text>
+
+                <!-- 探针连线 -->
+                <path d="M -28 0 C -100 0, -160 20, -180 80" fill="none" stroke="#1e293b" stroke-width="2"
+                    marker-end="url(#probe-dot)" />
+                <path d="M 28 0 C 100 0, 160 20, 180 80" fill="none" stroke="#1e293b" stroke-width="2"
+                    marker-end="url(#probe-dot)" />
+
+                <!-- 探针测量点标注 -->
+                <text x="-195" y="90" text-anchor="end" font-size="12" font-weight="bold" fill="#1e293b">Point A</text>
+                <text x="195" y="90" text-anchor="start" font-size="12" font-weight="bold" fill="#1e293b">Point B</text>
+            </g>
+
+            <!-- 5. 屏蔽效应说明 -->
+            <g transform="translate(350, 290)">
+                <rect x="-180" y="0" width="360" height="60" rx="8" fill="#f1f5f9" stroke="#cbd5e1" />
+                <text x="0" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#334155">KEY CONCEPT:
+                    The Shielding Effect</text>
+                <text x="0" y="45" text-anchor="middle" font-size="11" fill="#64748b">
+                    The membrane forces current to flow OUTSIDE to complete the loop.
+                </text>
+                <text x="0" y="58" text-anchor="middle" font-size="11" fill="#64748b">
+                    We measure the voltage drop across the <tspan fill="#d97706" font-weight="bold">External Resistance
+                    </tspan>.
+                </text>
+            </g>
+        </svg>
+    </div>
+</div>
+            </div>
+            <p class="text-sm text-slate-500 text-center mt-2">
+                图解：电压表探头（V）跨接在外部电阻 \(R_{ext}\) 两端。它测量的是外部回流电流 \(I_{ext}\) 产生的压降。内部电流 \(I_{in}\)
+                虽然存在且相反，但被绝缘膜物理隔离，无法被体表电极直接“看见”。
+            </p>
+        </div>
+
+        <p>
+            <strong>总结：</strong> 所谓的“屏蔽效应”并不是指电场消失了，而是指<strong>探测路径的隔离</strong>。
+            心电图机就像一个站在房子外面的人，他只能测量“流出房子又流回房子的电流”在墙外产生的电压，而无法直接测量房子内部电线的电压。
+        </p>
+    </div>
+</div>
+
+<!-- PART 2: 偶极子的产生机制 (Advanced & Rigorous) -->
+<div class="mb-24 border-b border-slate-200 pb-16">
+    <h4 class="text-3xl font-bold text-slate-800 mb-8 font-serif">
+        Q2. 机制解密：动作电位如何构建“移动的电池”？
+    </h4>
+
+    <div class="prose prose-lg prose-slate text-slate-600 max-w-none">
+        <p>
+            在 Q1 中我们确立了<strong>“观察者位于细胞外”</strong>这一基石。现在，我们要用更严谨的物理语言，来描述动作电位（Action Potential）发生时，细胞膜外究竟发生了什么。
+        </p>
+        <p>
+            这不仅仅是离子的流动，这是一个<strong>电势场重构</strong>的过程。
+        </p>
+
+        <h5 class="text-xl font-bold text-slate-800 mt-10 mb-6">第一阶段：构建“源”与“汇” (Source and Sink)</h5>
+        <p>
+            假设一根心肌纤维正在进行除极，波前由左向右推进。根据<strong>线性容积导体理论 (Linear Core Conductor Theory)</strong>，我们可以将膜外的电位分布 $\Phi_e$
+            定义为两个区域的对抗：
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
+            <!-- 左侧：Current Sink -->
+            <div class="relative bg-red-50 p-6 rounded-xl border border-red-200 overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg class="w-20 h-20 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+                <h6 class="text-red-900 font-bold text-lg mb-2 flex items-center">
+                    <span class="w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                    区域 A：电流汇 (Sink)
+                </h6>
+                <p class="text-sm text-red-800 mb-4 font-medium">已除极区 (Depolarized Zone)</p>
+
+                <ul class="text-sm text-slate-700 space-y-2">
+                    <li><strong>离子事件：</strong> 0期除极，\(Na^+\) 通道开放，大量阳离子内流。</li>
+                    <li><strong>物理推导：</strong> 膜外失去了正电荷，导致该处的膜外电势 \(\Phi_{sink}\) <strong>显著降低</strong>。</li>
+                    <li><strong>状态：</strong> 相对负电位 \((-)\)</li>
+                </ul>
+            </div>
+
+            <!-- 右侧：Current Source -->
+            <div class="relative bg-blue-50 p-6 rounded-xl border border-blue-200 overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg class="w-20 h-20 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M5 15l7-7 7 7" />
+                    </svg>
+                </div>
+                <h6 class="text-blue-900 font-bold text-lg mb-2 flex items-center">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
+                    区域 B：电流源 (Source)
+                </h6>
+                <p class="text-sm text-blue-800 mb-4 font-medium">静息区 (Resting Zone)</p>
+
+                <ul class="text-sm text-slate-700 space-y-2">
+                    <li><strong>离子事件：</strong> 处于 4期静息态，膜外富集 \(Na^+\) 和 \(Ca^{2+}\)。</li>
+                    <li><strong>物理推导：</strong> 保持原有的阳离子浓度，膜外电势 \(\Phi_{source}\) <strong>维持高位</strong>。</li>
+                    <li><strong>状态：</strong> 相对正电位 \((+)\)</li>
+                </ul>
+            </div>
+        </div>
+
+        <p>
+            <strong>关键结论：</strong> 在波前（Wavefront）的位置，膜外空间出现了一个陡峭的<strong>电势梯度 (Potential Gradient)</strong>。
+            $$ \Delta \Phi = \Phi_{source} - \Phi_{sink} > 0 $$
+        </p>
+
+        <!-- SVG 2: 严谨物理模型 -->
+        <div class="my-12">
+            <h5 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 text-center">Figure 2.2: The
+                Equivalent Dipole Generator</h5>
+            <div class="flex justify-center bg-white rounded-xl border border-slate-200 p-4 shadow-sm overflow-hidden">
+                <svg width="700" height="400" viewBox="0 0 700 400" class="overflow-visible">
+                    <defs>
+                        <!-- 渐变：模拟电势降落 -->
+                        <linearGradient id="grad-potential" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="40%" style="stop-color:#fee2e2;stop-opacity:1" /> <!-- Low Potential -->
+                            <stop offset="60%" style="stop-color:#dbeafe;stop-opacity:1" /> <!-- High Potential -->
+                        </linearGradient>
+                        <marker id="arrow-solid" markerWidth="10" markerHeight="10" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#0f172a" />
+                        </marker>
+                    </defs>
+
+                    <!-- 1. 细胞膜外电势分布图 -->
+                    <g transform="translate(50, 50)">
+                        <text x="0" y="-20" font-size="12" font-weight="bold" fill="#64748b">1. 膜外电荷分布 (Charge
+                            Distribution)</text>
+
+                        <!-- 细胞管 -->
+                        <rect x="0" y="0" width="600" height="80" rx="40" fill="white" stroke="#94a3b8"
+                            stroke-width="2" />
+
+                        <!-- 内部颜色填充 -->
+                        <rect x="5" y="5" width="590" height="70" rx="35" fill="url(#grad-potential)" opacity="0.3" />
+
+                        <!-- 波前 -->
+                        <line x1="300" y1="-10" x2="300" y2="90" stroke="#0f172a" stroke-width="2"
+                            stroke-dasharray="6 4" />
+                        <text x="300" y="110" text-anchor="middle" font-size="12" font-weight="bold"
+                            fill="#0f172a">Wavefront</text>
+
+                        <!-- 左侧：负电位区 -->
+                        <g fill="#ef4444" font-family="monospace" font-weight="bold" font-size="18">
+                            <text x="150" y="-5" text-anchor="middle">- - -</text>
+                            <text x="150" y="100" text-anchor="middle">- - -</text>
+                            <text x="150" y="45" text-anchor="middle" font-sans="true" font-size="12" fill="#b91c1c">Low
+                                \(\Phi\)</text>
+                        </g>
+
+                        <!-- 右侧：正电位区 -->
+                        <g fill="#3b82f6" font-family="monospace" font-weight="bold" font-size="18">
+                            <text x="450" y="-5" text-anchor="middle">+ + +</text>
+                            <text x="450" y="100" text-anchor="middle">+ + +</text>
+                            <text x="450" y="45" text-anchor="middle" font-sans="true" font-size="12"
+                                fill="#1d4ed8">High \(\Phi\)</text>
+                        </g>
+                    </g>
+
+                    <!-- 2. 等效偶极子生成 -->
+                    <g transform="translate(50, 220)">
+                        <text x="0" y="-20" font-size="12" font-weight="bold" fill="#64748b">2. 等效物理模型 (Equivalent
+                            Model)</text>
+
+                        <!-- 虚线连接 -->
+                        <path d="M 150 -50 L 150 40" stroke="#cbd5e1" stroke-dasharray="4" />
+                        <path d="M 450 -50 L 450 40" stroke="#cbd5e1" stroke-dasharray="4" />
+
+                        <!-- 偶极子符号 -->
+                        <g transform="translate(0, 40)">
+                            <!-- 负极 -->
+                            <circle cx="150" cy="0" r="20" fill="#ef4444" />
+                            <text x="150" y="5" text-anchor="middle" fill="white" font-weight="bold"
+                                font-size="18">-</text>
+                            <text x="150" y="35" text-anchor="middle" font-size="10" fill="#ef4444"
+                                font-weight="bold">Sink (-q)</text>
+
+                            <!-- 正极 -->
+                            <circle cx="450" cy="0" r="20" fill="#3b82f6" />
+                            <text x="450" y="5" text-anchor="middle" fill="white" font-weight="bold"
+                                font-size="18">+</text>
+                            <text x="450" y="35" text-anchor="middle" font-size="10" fill="#3b82f6"
+                                font-weight="bold">Source (+q)</text>
+
+                            <!-- 向量箭头 -->
+                            <line x1="180" y1="0" x2="420" y2="0" stroke="#0f172a" stroke-width="4"
+                                marker-end="url(#arrow-solid)" />
+
+                            <!-- 向量标签 -->
+                            <rect x="260" y="-15" width="80" height="30" fill="white" rx="4" />
+                            <text x="300" y="5" text-anchor="middle" font-weight="bold" font-size="16"
+                                fill="#0f172a">\(\vec{P} = q\vec{d}\)</text>
+                        </g>
+                    </g>
+
+                    <!-- 3. 方向结论 -->
+                    <g transform="translate(50, 340)">
+                        <text x="300" y="20" text-anchor="middle" font-size="14" font-weight="bold" fill="#059669">
+                            结论：向量方向 ( \(\rightarrow\) ) 与除极波前进方向 ( \(\rightarrow\) ) 一致
+                        </text>
+                    </g>
+                </svg>
+            </div>
+            <p class="text-sm text-slate-500 mt-3 px-4 leading-relaxed text-center italic">
+                图注：上图展示了膜外电势的物理分布。注意，电偶极子 \(\vec{P}\) 的物理定义是从负电荷中心指向正电荷中心，这恰好与波的传播方向重合。
+            </p>
+        </div>
+
+        <h5 class="text-xl font-bold text-slate-800 mt-10 mb-6">第二阶段：逻辑推导——为什么向量指向“前方”？</h5>
+        <p>
+            这也许是心电图最核心、也最容易混淆的法则。很多学生死记硬背“除极向正”，但我们可以通过三步推导来彻底理顺它：
+        </p>
+
+        <div class="space-y-6">
+            <!-- 步骤 1 -->
+            <div class="flex">
+                <div class="flex-shrink-0 mr-4">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-slate-300 text-slate-500 font-mono font-bold">1</span>
+                </div>
+                <div>
+                    <h6 class="text-base font-bold text-slate-900">物理定义 (Physics Definition)</h6>
+                    <p class="text-sm">
+                        根据定义，电偶极矩向量 \(\vec{P}\) 的方向永远是<strong>从负极指向正极</strong> \(( - \to + )\) 。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 步骤 2 -->
+            <div class="flex">
+                <div class="flex-shrink-0 mr-4">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full border-2 border-slate-300 text-slate-500 font-mono font-bold">2</span>
+                </div>
+                <div>
+                    <h6 class="text-base font-bold text-slate-900">生理现状 (Physiological State)</h6>
+                    <p class="text-sm">
+                        在除极过程中：
+                        <br>• <strong>波的后方（左侧）</strong>是已除极区，膜外电位低（负极）。
+                        <br>• <strong>波的前方（右侧）</strong>是未除极区，膜外电位高（正极）。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 步骤 3 -->
+            <div class="flex">
+                <div class="flex-shrink-0 mr-4">
+                    <span
+                        class="flex items-center justify-center w-8 h-8 rounded-full bg-green-100 text-green-600 font-mono font-bold">3</span>
+                </div>
+                <div>
+                    <h6 class="text-base font-bold text-green-700">必然推论 (Conclusion)</h6>
+                    <p class="text-sm text-slate-800">
+                        因此，向量 \(\vec{P}\) 必须从后方（负）指向前方（正）。
+                        <br>
+                        <strong>即：除极心电向量的方向 \(\equiv\) 除极波传播的方向。</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 p-4 bg-slate-50 border-l-4 border-slate-400 text-sm text-slate-600">
+            <strong>💡 思考题：</strong> 如果是复极（Repolarization）过程呢？
+            <br>
+            复极时，波的后方先恢复静息（变正），前方依然除极（负）。此时“前负后正”，向量由负指向正，即<strong>指向后方</strong>。
+            这就是为什么虽然复极波传播方向和除极波一致，但产生的电向量方向相反（导致 T 波方向的复杂性）。
+        </div>
+
+    </div>
+</div>
+
+<!-- PART 3: 电势分布与投影定律 (Refined & Connected) -->
+<!-- PART 3: 宏观场分布与投影定律 (Final Detailed Version) -->
+<div class="mb-32 border-b border-slate-200 pb-20">
+    <h4 class="text-3xl font-bold text-slate-800 mb-10 font-serif leading-relaxed">
+        Q3. 宏观物理场：从微观叠加到体表投影
+    </h4>
+
+    <div class="prose prose-lg prose-slate text-slate-600 max-w-none">
+        <p class="lead text-xl text-slate-500 mb-12">
+            我们已经制造出了单个细胞的电偶极子。现在，让我们把视野拉大到整个心脏。
+            心脏由数十亿个心肌细胞组成，当它们协同工作时，如何在这具充满导电体液的躯壳（容积导体）表面，产生可被仪器捕捉的电压波动？
+        </p>
+
+        <!-- 1. 理论之魂：为何电势叠加能简化为向量运算？ -->
+        <div class="mb-32">
+            <h5 class="text-3xl font-bold text-slate-900 mt-0 mb-10 font-serif">
+                1. 理论之魂：为何叠加的结果依然符合“核心公式”？
+            </h5>
+
+            <div class="flex flex-col lg:flex-row gap-16 items-start">
+                <div class="flex-1 space-y-10">
+                    <p class="text-xl text-slate-600 leading-relaxed italic border-l-4 border-medical-500 pl-6">
+                        “心脏由数十亿个细胞组成。你可能会好奇：如果每个细胞都是一个微小的‘电池’，那么体表测得的电位是这些小电池的乱序叠加吗？还是说，它们在数学上有一种奇妙的‘凝聚力’？”
+                    </p>
+
+                    <div class="prose prose-lg prose-slate text-slate-600">
+                        <p>
+                            答案就在叠加原理中。首先，我们来看单个单元的贡献。对于任何一个微观心肌偶极子 $p_i$，它在体表产生的电势 $V_i$ 遵循：
+                        </p>
+                        
+                        <!-- 重点公式引入 -->
+                        <div class="my-8 py-10 bg-slate-900 rounded-[2rem] shadow-2xl relative overflow-hidden group">
+                            <!-- 装饰性元素：模拟图像中的闪电/心电符号 -->
+                            <div class="absolute top-4 right-6 opacity-20 group-hover:opacity-40 transition-opacity">
+                                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" class="text-white">
+                                    <path d="M13 10V3L4 14H11V21L20 10H13Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            
+                            <div class="text-indigo-400 text-center text-xs font-mono tracking-[0.3em] uppercase mb-4">The Core ECG Equation</div>
+                            <div class="text-center text-white text-4xl md:text-5xl font-bold mb-8">
+                                $$ V \propto \frac{P \cdot \cos\theta}{r^2} $$
+                            </div>
+                            <div class="px-8 text-center text-slate-400 text-sm leading-relaxed max-w-md mx-auto">
+                                在临床心电图中，探查电极与心脏的距离 $r$ 基本固定。因此，导联检测到的电压（波幅）直接取决于心脏的总电偶极矩 $P$ 在导联轴上的投影。
+                            </div>
+                        </div>
+
+                        <h6 class="text-2xl font-bold text-slate-800 mt-12 mb-6">证明：从标量和到向量投影</h6>
+                        <ol class="space-y-6">
+                            <li class="pl-4 border-l-2 border-indigo-100">
+                                <strong>代数叠加：</strong> 根据物理学原理，体表某点的总电势 $V$ 等于所有微观细胞电势的代数和：
+                                <br>
+                                <span class="text-indigo-600 font-serif text-lg">$$ V = \sum V_i \propto \frac{1}{r^2} \sum (p_i \cdot \cos\theta_i) $$</span>
+                            </li>
+                            <li class="pl-4 border-l-2 border-indigo-100">
+                                <strong>几何美学：</strong> $p_i \cdot \cos\theta_i$ 是微观向量 $\vec{p}_i$ 在我们观测方向上的“影子”（投影）。
+                            </li>
+                            <li class="pl-4 border-l-2 border-indigo-100 font-bold text-slate-900">
+                                <strong>核心推论：</strong> 向量代数的线性性质告诉我们，<strong>“所有影子的长度之和，恰好等于‘总和向量’ $\vec{P}$ 的影子长度”</strong>。
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="flex-1 w-full lg:sticky lg:top-24 mt-12">
+                    <!-- 深度视觉实验：从分力到合力的几何统一 -->
+                    <div class="lg:flex items-stretch gap-12">
+                        
+                        <!-- 左侧：数学描述与引导 -->
+                        <div class="p-4 lg:w-96 flex flex-col justify-start">
+                            <div>
+                                <h6 class="text-sm font-bold text-indigo-500 uppercase tracking-widest mb-8">Visual Proof Logic</h6>
+                                <p class="text-base text-slate-600 mb-10 leading-relaxed">
+                                    此图展示了<strong>向量求和 (Vector Sum)</strong> 与 <strong>电势叠加 (Potential Sum)</strong> 在几何上的等效性。
+                                </p>
+                                <div class="space-y-8">
+                                    <div class="flex items-start gap-4">
+                                        <span class="w-3 h-3 rounded-full bg-blue-500 mt-1.5 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
+                                        <p class="text-sm text-slate-700 font-semibold uppercase tracking-wider">蓝色向量</p>
+                                    </div>
+                                    <p class="text-sm text-slate-500 -mt-6 ml-7">千万个心肌细胞产生的微观偶极子 $\vec{p}_i$</p>
+
+                                    <div class="flex items-start gap-4">
+                                        <span class="w-3 h-3 rounded-full bg-slate-900 mt-1.5 shadow-[0_0_10px_rgba(0,0,0,0.3)]"></span>
+                                        <p class="text-sm text-slate-700 font-semibold uppercase tracking-wider">黑色向量</p>
+                                    </div>
+                                    <p class="text-sm text-slate-500 -mt-6 ml-7">最终合成的心脏总向量 $\vec{P}$</p>
+
+                                    <div class="flex items-start gap-4">
+                                        <span class="w-3 h-3 rounded-full bg-rose-500 mt-1.5 shadow-[0_0_10px_rgba(244,63,94,0.5)]"></span>
+                                        <p class="text-sm text-slate-700 font-semibold uppercase tracking-wider">红色投影</p>
+                                    </div>
+                                    <p class="text-sm text-slate-500 -mt-6 ml-7">体表记录到的电势大小（即波幅 $V$）</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-12 p-6 bg-indigo-50/50 rounded-3xl border border-indigo-100/50 shadow-sm">
+                                <p class="text-xs text-indigo-400 font-mono mb-3 uppercase tracking-widest">Key Deduction</p>
+                                <p class="text-base font-bold text-indigo-900 leading-relaxed italic">
+                                    "所有小箭头的影子叠加，恰好等于总箭头的‘合影’。"
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 右侧：混合渲染绘图区 -->
+                        <div class="relative flex-grow h-[500px] md:h-[650px] bg-white rounded-[3rem] border border-slate-100 shadow-[0_30px_100px_rgba(0,0,0,0.05)] p-8 overflow-hidden overflow-x-auto">
+                            <!-- SVG 背景层：仅绘制线条与几何体 -->
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none min-w-[700px]" viewBox="0 0 800 650" preserveAspectRatio="xMidYMid meet">
+                                <defs>
+                                    <marker id="arr-blue" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                                        <path d="M0,0 L10,5 L0,10" fill="#3b82f6" />
+                                    </marker>
+                                    <marker id="arr-black" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto">
+                                        <path d="M0,0 L12,6 L0,12" fill="#0f172a" />
+                                    </marker>
+                                </defs>
+
+                                <!-- 导联轴背景线 -->
+                                <line x1="50" y1="550" x2="750" y2="150" stroke="#f8fafc" stroke-width="60" stroke-linecap="round" />
+                                <line x1="50" y1="550" x2="750" y2="150" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="15 10" />
+                                
+                                <!-- 坐标原点 (150, 520) -->
+                                <g transform="translate(150, 520)">
+                                    <!-- 微观向量链 -->
+                                    <line x1="0" y1="0" x2="140" y2="-140" stroke="#3b82f6" stroke-width="4" marker-end="url(#arr-blue)" />
+                                    <line x1="140" y1="-140" x2="300" y2="-200" stroke="#60a5fa" stroke-width="4" marker-end="url(#arr-blue)" />
+                                    <line x1="300" y1="-200" x2="420" y2="-400" stroke="#3b82f6" stroke-width="4" marker-end="url(#arr-blue)" />
+
+                                    <!-- 总向量 P -->
+                                    <line x1="0" y1="0" x2="420" y2="-400" stroke="#0f172a" stroke-width="6" marker-end="url(#arr-black)" />
+
+                                    <!-- 投影辅助虚线 (垂线) -->
+                                    <line x1="420" y1="-400" x2="520" y2="-200" stroke="#94a3b8" stroke-width="2" stroke-dasharray="8 6" />
+                                    
+                                    <!-- 总投影能量条 -->
+                                    <line x1="0" y1="0" x2="520" y2="-200" stroke="#f43f5e" stroke-width="16" stroke-linecap="round" opacity="0.9" />
+                                </g>
+                            </svg>
+
+                            <!-- HTML/Tailwind 文本层：绝对定位确保文字清晰且不遮挡 -->
+                            <div class="absolute inset-0 pointer-events-none min-w-[700px]">
+                                <!-- 导联轴标签 -->
+                                <div class="absolute right-[12%] top-[26%] text-slate-400 font-black text-base transform -rotate-[26.5deg] tracking-widest">
+                                    导联轴 (LEAD AXIS)
+                                </div>
+
+                                <!-- 向量标签 -->
+                                <div style="left: 230px; top: 430px;" class="absolute text-blue-600 font-bold text-2xl px-3 py-1.5 bg-white/90 rounded-xl shadow-md border border-blue-50">
+                                    $\vec{p}_1$
+                                </div>
+                                <div style="left: 380px; top: 380px;" class="absolute text-blue-500 font-bold text-2xl px-3 py-1.5 bg-white/90 rounded-xl shadow-md border border-blue-50">
+                                    $\vec{p}_2$
+                                </div>
+                                <div style="left: 500px; top: 250px;" class="absolute text-blue-600 font-bold text-2xl px-3 py-1.5 bg-white/90 rounded-xl shadow-md border border-blue-50">
+                                    $\vec{p}_3$
+                                </div>
+
+                                <!-- 总向量标签 -->
+                                <div style="left: 240px; top: 160px;" class="absolute text-slate-900 bg-white/95 px-6 py-4 rounded-[2rem] border-2 border-slate-900/5 shadow-2xl pointer-events-auto">
+                                    <div class="text-xs text-slate-400 uppercase font-mono mb-2 tracking-widest">Heart Total Vector</div>
+                                    <div class="text-4xl font-black">$\vec{P} = \sum \vec{p}_i$</div>
+                                </div>
+
+                                <!-- 投影结论标签 -->
+                                <div style="left: 420px; top: 480px;" class="absolute -translate-x-1/2 flex flex-col items-center">
+                                    <div class="h-12 w-px bg-rose-200 mb-3"></div>
+                                    <div class="bg-rose-500 text-white px-8 py-4 rounded-3xl shadow-[0_20px_40px_rgba(244,63,94,0.3)] pointer-events-auto">
+                                        <div class="text-xs text-rose-100 uppercase font-bold mb-1 tracking-widest">Measured Amplitude</div>
+                                        <div class="text-3xl font-black">$V \propto P \cdot \cos\theta$</div>
+                                    </div>
+                                    <div class="mt-4 text-xs text-rose-400 font-bold uppercase tracking-tighter text-center">
+                                        Equivalent to the cumulative shadow
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 承上启下的深度总结 -->
+                <div class="mt-24 mb-16">
+                    <div class="flex items-start md:items-center gap-6 mb-10">
+                        <div class="w-14 h-14 rounded-2xl bg-indigo-50 flex-shrink-0 flex items-center justify-center text-indigo-600">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        </div>
+                        <div>
+                            <h5 class="text-2xl font-bold text-slate-800 mb-2">
+                                结论：体表电压的本质
+                            </h5>
+                            <p class="text-base text-slate-500">
+                                The Essence of Surface Potential
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pl-4 md:pl-20 space-y-10">
+                        <p class="text-lg text-slate-700 leading-relaxed md:w-3/4">
+                            这意味着，尽管心脏由数以亿计的心肌细胞组成，但在物理观测的尺度上，我们并不需要追踪每一个细胞的去极化细节。
+                            <strong>心脏在任何给定瞬间的电活动，都可以被简化为一个唯一的“综合电偶极子” $\vec{P}$。</strong>
+                        </p>
+
+                        <!-- 公式展示区：无容器风格 -->
+                        <div class="flex flex-col gap-6 py-4">
+                            <!-- 公式 1: 叠加原理 -->
+                            <div class="flex items-center gap-4 group">
+                                <span class="text-sm font-bold text-slate-300 uppercase tracking-widest w-24 text-right group-hover:text-indigo-400 transition-colors">Summation</span>
+                                <div class="h-px w-8 bg-slate-200 group-hover:bg-indigo-200 transition-colors"></div>
+                                <span class="text-2xl font-serif text-slate-800">
+                                    $$ \vec{P}(t) = \sum_{i=1}^{N} \vec{p}_i(t) $$
+                                </span>
+                            </div>
+                            
+                            <!-- 公式 2: 投影原理 -->
+                            <div class="flex items-center gap-4 group">
+                                <span class="text-sm font-bold text-slate-300 uppercase tracking-widest w-24 text-right group-hover:text-rose-400 transition-colors">Projection</span>
+                                <div class="h-px w-8 bg-slate-200 group-hover:bg-rose-200 transition-colors"></div>
+                                <span class="text-2xl font-serif text-slate-800">
+                                    $$ V(t) \propto \vec{P}(t) \cdot \cos\theta(t) $$
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-10 pt-4">
+                            <div>
+                                <div class="text-indigo-600 font-bold text-xs uppercase tracking-widest mb-3">物理实在</div>
+                                <p class="text-slate-600 text-base leading-relaxed">
+                                    我们在体表测量到的电位差，并非杂乱无章的信号叠加，而是这个<b>宏观向量 $\vec{P}$</b> 在空间中产生的电场分布。
+                                </p>
+                            </div>
+                            <div>
+                                <div class="text-rose-600 font-bold text-xs uppercase tracking-widest mb-3">诊断逻辑</div>
+                                <p class="text-slate-600 text-base leading-relaxed">
+                                    心电图上的每一个波形起伏，本质上都是这个综合向量在<b>导联轴方向</b>上的几何投影随时间的变化过程。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 text-slate-400 text-sm italic font-serif">
+                            “从数亿个细胞到一个向量，这是大自然在生物物理学上最完美的简化。”
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+ 
+        <!-- 3. 极简图解：波形即投影 -->
+        <div class="mb-16">
+            <h5 class="text-2xl font-bold text-slate-800 mt-0 mb-6 flex items-center">
+                <span class="w-1.5 h-8 bg-indigo-500 rounded-full mr-4"></span>
+                3. 极简图解：波形即投影 (The Waveform Essence)
+            </h5>
+
+            <div class="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden p-8 md:p-12 text-center">
+                <!-- 
+                    [NANOBANANA PROMPT REFERENCE]
+                    "A minimalist explanatory diagram of ECG physics. Left side: A vector arrow (Heart Vector) pointing at 60 degrees inside a circle. A horizontal axis (Lead I) sits below it. A dashed line drops from the arrow tip to the axis, defining a 'shadow' length. Right side: An ECG graph paper strip where a curve is being drawn. A dotted guideline connects the end of the 'shadow' directly to the peak of the ECG wave (R-wave), visually proving that 'Height = Projection'. Style: Clean medical infographic, flat design, white background, blue vector, red projection, black waveform."
+                -->
+                
+                <!-- 占位/替代 SVG 图示：直接解释“波高=投影长” -->
+                <img src="images/心电轴与心电图.png">               
+
+                <p class="mt-8 text-slate-600 text-lg leading-relaxed max-w-2xl mx-auto">
+                    这就是心电图的全部秘密：<br>
+                    <span class="font-bold text-indigo-700">波的起伏，只是心脏这个“向量光束”在导联轴上投下的“影子长短”的实时记录。</span>
+                </p>
+                <p class="mt-2 text-xs text-slate-400 font-mono">
+                    * Concept Prompt: "Minimalist ECG vector projection diagram..."
+                </p>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- 4. 总结与临床联系 -->
+        <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-10 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-10 opacity-5">
+                <svg class="w-64 h-64 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" />
+                </svg>
+            </div>
+
+            <h4 class="text-2xl font-serif text-white mb-6 relative z-10">
+                📚 最终结论：心电图究竟在看什么？
+            </h4>
+
+            <div class="space-y-6 text-slate-300 relative z-10 leading-relaxed">
+                <p>
+                    至此，我们完成了从离子通道到体表心电图的完整物理推导。当我们看着心电图纸上的波形时，我们实际上是在阅读<strong>“电偶极子向量在时间轴上的投影变化”</strong>。
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-medical-400 mr-3 mt-1" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>
+                            <strong>波的高度 (Amplitude)：</strong> 反映了 \(|\vec{H}| \cdot
+                            \cos\theta\)。它不仅取决于心脏肌肉量的多少（\(|\vec{H}|\)），更取决于这个导联“看”心脏的角度（\(\cos\theta\)）。
+                        </span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 text-medical-400 mr-3 mt-1" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>
+                            <strong>波的方向 (Polarity)：</strong>
+                            只要波是向上的，就说明除极波正在<strong>朝向</strong>这个导联的正极移动；只要波是向下的，就说明除极波正在<strong>背离</strong>它。
+                        </span>
+                    </li>
+                </ul>
+                <p class="mt-4 pt-4 border-t border-slate-700 text-sm italic text-slate-400">
+                    这便是心电图判断“电轴左偏/右偏”的物理基石：通过观察不同导联波形的正负，反推出心脏向量 \(\vec{H}\) 在胸腔中的真实指向。
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- END OF REVISED SECTION 2.2 -->
+
+
+ 
+        </section>
+
+
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-white text-lg font-bold mb-4">学习总结</h3>
+                <ul class="space-y-2 text-sm">
+                    <li>1. 电偶极子由一对正负电荷构成，方向由负指正。</li>
+                    <li>2. 只有正在发生电位改变的边界处才产生电偶极子。</li>
+                    <li>3. 心电图记录的是心脏综合向量在导联轴上的投影。</li>
+                    <li>4. 向量指向探查电极(正极) &rarr; 正向波。</li>
+                </ul>
+            </div>
+            <div class="text-right flex flex-col justify-between">
+                <div>
+                    <span class="text-xs font-mono bg-slate-800 px-2 py-1 rounded">Physics x Medicine</span>
+                </div>
+                <p class="text-xs mt-4">
+                    Designed for Medical Education.<br>
+                    &copy; 2025 Open Tutorial Project.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

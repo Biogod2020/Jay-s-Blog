@@ -1,0 +1,143 @@
+        <!-- Slide 02.6: Mechanism - The Pipeline (Light Mode & Large Fonts) -->
+        <section class="max-w-6xl mx-auto min-h-[90vh] flex flex-col justify-center">
+            
+            <style>
+                /* Pipeline Flow Animation */
+                @keyframes pipe-flow {
+                    0% { stroke-dashoffset: 1000; }
+                    100% { stroke-dashoffset: 0; }
+                }
+
+                /* Atomic Pop-in */
+                @keyframes pop-in {
+                    0% { transform: scale(0.5); opacity: 0; }
+                    80% { transform: scale(1.1); opacity: 1; }
+                    100% { transform: scale(1); opacity: 1; }
+                }
+                .atomic-step {
+                    animation: pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+                    opacity: 0; /* Initially hidden */
+                }
+                
+                /* Scanning Laser for Step 1 */
+                @keyframes scanner-y {
+                    0% { top: 0%; opacity: 0.5; }
+                    50% { opacity: 1; }
+                    100% { top: 100%; opacity: 0.5; }
+                }
+                .laser-scan {
+                    width: 100%;
+                    height: 4px;
+                    background: #ef4444;
+                    position: absolute;
+                    box-shadow: 0 0 10px #ef4444;
+                    animation: scanner-y 2s linear infinite;
+                }
+            </style>
+
+            <div class="flex items-center mb-10 relative z-10">
+                <span class="text-6xl font-black text-slate-200 mr-6">02.7</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800">机制：从识别到推理</h2>
+                    <p class="text-slate-500 font-medium mt-1">Mechanism: From Recognition to Reasoning</p>
+                </div>
+            </div>
+
+            <!-- The Visual Pipeline (Light Theme) -->
+            <div class="relative bg-white rounded-3xl p-10 shadow-xl border border-slate-200 overflow-hidden min-h-[500px] flex items-center justify-between gap-6">
+                
+                <!-- Background Grid (Subtle) -->
+                <div class="absolute inset-0 opacity-30 pointer-events-none">
+                    <svg width="100%" height="100%">
+                        <pattern id="grid-light" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#cbd5e1" stroke-width="0.5"/>
+                        </pattern>
+                        <rect width="100%" height="100%" fill="url(#grid-light)" />
+                    </svg>
+                </div>
+
+                <!-- STEP 1: TOKENIZATION -->
+                <div class="atomic-step relative z-10 w-1/4 bg-slate-50 border border-slate-200 rounded-3xl p-6 text-center group shadow-md hover:shadow-lg transition" style="animation-delay: 0.2s">
+                    <div class="text-sm font-black text-blue-500 uppercase mb-3 tracking-widest bg-blue-50 inline-block px-3 py-1 rounded-full">Step 1</div>
+                    <h3 class="font-black text-slate-800 text-2xl mb-4">切片化</h3>
+                    <div class="text-xs uppercase text-slate-400 font-bold mb-4">Patching</div>
+                    
+                    <div class="relative w-36 h-36 mx-auto rounded-xl overflow-hidden border-4 border-white shadow-lg mb-6">
+                        <img src="path_image.jpg" class="w-full h-full object-cover">
+                        <div class="laser-scan"></div>
+                        <!-- Grid Overlay -->
+                        <div class="absolute inset-0 grid grid-cols-4 grid-rows-4">
+                            <div class="border border-white/50"></div><div class="border border-white/50"></div><div class="border border-white/50"></div><div class="border border-white/50"></div>
+                            <div class="border border-white/50"></div><div class="border border-white/50"></div><div class="border border-white/50"></div><div class="border border-white/50"></div>
+                            <div class="border border-white/50"></div><div class="border border-white/50"></div><div class="border border-white/50"></div><div class="border border-white/50"></div>
+                            <div class="border border-white/50"></div><div class="border border-white/50"></div><div class="border border-white/50"></div><div class="border border-white/50"></div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm font-medium text-slate-600 leading-relaxed">
+                        将 10亿像素的大图拆解为<br>数万个 <strong>“视觉单词”</strong>。
+                    </p>
+                </div>
+
+                <!-- ARROW 1 -->
+                <div class="text-blue-300 text-4xl animate-pulse">➜</div>
+
+                <!-- STEP 2: ENCODING -->
+                <div class="atomic-step relative z-10 w-1/4 bg-slate-50 border border-slate-200 rounded-3xl p-6 text-center group shadow-md hover:shadow-lg transition" style="animation-delay: 0.6s">
+                    <div class="text-sm font-black text-purple-500 uppercase mb-3 tracking-widest bg-purple-50 inline-block px-3 py-1 rounded-full">Step 2</div>
+                    <h3 class="font-black text-slate-800 text-2xl mb-4">特征编码</h3>
+                    <div class="text-xs uppercase text-slate-400 font-bold mb-4">Encoding</div>
+                    
+                    <div class="w-36 h-36 mx-auto bg-white rounded-xl flex flex-col items-center justify-center border-2 border-purple-100 mb-6 relative overflow-hidden shadow-inner">
+                        <!-- Matrix Rain efffect darker for light theme -->
+                        <div class="text-[10px] font-mono text-purple-900/30 leading-none absolute inset-0 p-2 break-all font-bold">
+                            01010011101010101...
+                            [0.2, 0.9, -0.1, ...]
+                            Feature_Vector_2048
+                        </div>
+                        <div class="z-10 bg-purple-600 text-white w-14 h-14 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-xl">V</div>
+                    </div>
+
+                    <p class="text-sm font-medium text-slate-600 leading-relaxed">
+                        转化为计算机能懂的<br><strong>“数学向量” (Vectors)</strong>。
+                    </p>
+                </div>
+
+                <!-- ARROW 2 -->
+                <div class="text-purple-300 text-4xl animate-pulse">➜</div>
+
+                <!-- STEP 3: REASONING -->
+                <div class="atomic-step relative z-10 w-1/4 bg-slate-50 border border-slate-200 rounded-3xl p-6 text-center group shadow-md hover:shadow-lg transition" style="animation-delay: 1.0s">
+                    <div class="text-sm font-black text-emerald-500 uppercase mb-3 tracking-widest bg-emerald-50 inline-block px-3 py-1 rounded-full">Step 3</div>
+                    <h3 class="font-black text-slate-800 text-2xl mb-4">逻辑推理</h3>
+                    <div class="text-xs uppercase text-slate-400 font-bold mb-4">LLM Reasoning</div>
+                    
+                    <div class="w-36 h-36 mx-auto bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl flex items-center justify-center border-2 border-emerald-100 mb-6 relative shadow-inner">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🤖</div>
+                            <div class="text-xs text-emerald-700 font-bold font-mono typing-effect bg-white/50 px-2 py-1 rounded">
+                                Diagnosis:<br>Invasive Carcinoma
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-sm font-medium text-slate-600 leading-relaxed">
+                        结合医学知识库，<br>输出<strong>自然语言诊断</strong>。
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Bottom Note -->
+            <div class="mt-8 text-center">
+                <div class="inline-block bg-white border border-indigo-100 rounded-full px-8 py-3 shadow-sm">
+                    <span class="text-indigo-600 font-bold text-base">💡 核心术语 (Key Terms)：</span>
+                    <span class="text-slate-700 text-base ml-3 font-medium">Token (图块)</span>
+                    <span class="text-slate-300 mx-3">•</span>
+                    <span class="text-slate-700 text-base font-medium">Embedding (向量)</span>
+                    <span class="text-slate-300 mx-3">•</span>
+                    <span class="text-slate-700 text-base font-medium">Attention (注意力)</span>
+                </div>
+            </div>
+
+        </section>

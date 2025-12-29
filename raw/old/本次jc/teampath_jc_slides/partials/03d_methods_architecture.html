@@ -1,0 +1,84 @@
+        <!-- Methods -->
+        <section class="max-w-6xl mx-auto min-h-[90vh] flex flex-col justify-center">
+            
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center">
+                    <span class="text-6xl font-black text-slate-200 mr-6">06</span>
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-800">技术内核：智能分流与强化学习</h2>
+                        <span class="text-sm font-bold text-indigo-500 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wider">技术架构解析</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Architecture Grid -->
+            <div class="grid md:grid-cols-12 gap-6 h-full">
+                
+                <!-- The Router (Left) -->
+                <div class="md:col-span-4 sota-card bg-slate-800 text-white border-slate-700">
+                    <h3 class="text-xl font-bold text-indigo-300 mb-4">🧠 智能分流器 (The Router)</h3>
+                    <p class="text-sm text-slate-400 mb-6">
+                        基于 LLM 的智能分流系统。<br>
+                        准确率 > 80%
+                    </p>
+                    
+                    <div class="space-y-3">
+                        <div class="p-3 bg-slate-700 rounded-lg border border-slate-600 text-sm">
+                            <div class="font-bold text-white mb-1">路径 1: 深度推理 (Reasoning)</div>
+                            <div class="text-xs text-slate-400">RL (GRPO) • 复杂诊断</div>
+                        </div>
+                         <div class="p-3 bg-slate-700 rounded-lg border border-slate-600 text-sm opacity-60">
+                            <div class="font-bold text-white mb-1">路径 2: 快速生成 (Generation)</div>
+                            <div class="text-xs text-slate-400">SFT • 简单摘要</div>
+                        </div>
+                         <div class="p-3 bg-slate-700 rounded-lg border border-slate-600 text-sm opacity-60">
+                            <div class="font-bold text-white mb-1">路径 3: 人机协作 (Collaboration)</div>
+                            <div class="text-xs text-slate-400">TTS • 人机交互</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRPO Formula (Right) -->
+                <div class="md:col-span-8 sota-card bg-white">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4">强化学习核心：Group Relative Policy Optimization</h3>
+                    
+                    <p class="text-slate-600 mb-6 text-sm">
+                        为了消除对 Critic Model 的依赖（降低计算成本），我们采用 <strong>GRPO</strong>。其核心思想是计算"组内相对优势"。
+                    </p>
+
+                    <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 font-mono text-sm text-slate-800 overflow-x-auto mb-6">
+                        J_{GRPO}(\theta)=\mathbb{E}\left[\frac{1}{G}\sum_{i=1}^{G}\hat{A}_{i,t}\frac{\pi_{\theta}(o_{i,t}|...)}{\pi_{\theta_{old}}(o_{i,t}|...)} - \beta D_{KL}\right]
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <div class="font-bold text-slate-800 text-sm mb-1">Advantage Function</div>
+                            <div class="text-xs text-slate-500 font-mono">
+                                A = (Reward - Mean(Group)) / Std(Group)
+                            </div>
+                        </div>
+                         <div class="p-4 bg-slate-50 rounded-lg">
+                            <div class="font-bold text-slate-800 text-sm mb-1">Reward Design</div>
+                            <div class="text-xs text-slate-500">
+                                Closed-ended: Binary (1/0)<br>
+                                Open-ended: BLEU Score
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 border-t border-slate-100 pt-4">
+                        <div class="text-sm font-bold text-slate-800 mb-2">Algorithm: Verifier-Corrector Pipeline</div>
+                        <div class="flex items-center text-xs text-slate-500">
+                             <div class="bg-green-100 text-green-700 px-2 py-1 rounded mr-2">Step 1</div>
+                             <span>Verifier Checks (o4-mini)</span>
+                             <span class="mx-2">→</span>
+                             <div class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded mr-2">Step 2</div>
+                             <span>Corrector Refines (TeamPath)</span>
+                             <span class="mx-2">→</span>
+                             <div class="bg-slate-100 text-slate-700 px-2 py-1 rounded">Loop</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>

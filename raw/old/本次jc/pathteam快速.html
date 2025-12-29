@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeamPath: Building MultiModal Pathology Experts with Reasoning AI Copilots</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; color: #1e293b; }
+        h1, h2, h3 { font-family: 'Merriweather', serif; }
+        .code-block { font-family: 'JetBrains Mono', monospace; }
+        .math-display { overflow-x: auto; padding: 1rem; background: #f8fafc; border-left: 4px solid #6366f1; font-family: 'JetBrains Mono', monospace; }
+        .atom-card { background: white; border-radius: 0.75rem; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .atom-card:hover { border-color: #cbd5e1; }
+        .highlight-term { color: #4338ca; font-weight: 600; background: #e0e7ff; padding: 0 4px; border-radius: 4px; }
+        .figure-container { background: #ffffff; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; margin: 2rem 0; }
+        .caption-box { background: #f8fafc; padding: 1rem; border-top: 1px solid #e2e8f0; font-size: 0.875rem; color: #475569; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- HEADER SECTION -->
+        <header class="text-center mb-16">
+            <div class="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-indigo-900 uppercase bg-indigo-100 rounded-full">
+                Research Paper Visualization
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-8 leading-tight">
+                TeamPath: <span class="text-indigo-600 font-serif italic">Building MultiModal Pathology Experts</span> with Reasoning AI Copilots
+            </h1>
+            
+            <!-- Authors Grid -->
+            <div class="flex flex-wrap justify-center gap-3 text-sm font-medium text-slate-700 mb-8 max-w-4xl mx-auto">
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Tianyu Liu</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Weihao Xuan</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Hao Wu</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Peter Humphrey</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Marcello DiStasio</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Heli Qi</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Rui Yang</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Simeng Han</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Tinglin Huang</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Fang Wu</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Nan Liu</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Irene Li</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Hua Xu</span>
+                <span class="bg-white px-3 py-1 rounded-full shadow-sm border border-slate-200">Hongyu Zhao</span>
+            </div>
+
+            <div class="text-xs text-slate-500 max-w-5xl mx-auto leading-relaxed border-t border-slate-200 pt-6">
+                <strong>Affiliations:</strong> Yale University (CBBI, Biostatistics, Pathology, CS, BIDS), Broad Institute of MIT & Harvard, The University of Tokyo, RIKEN, Duke-NUS Medical School, Stanford University.
+            </div>
+        </header>
+
+        <!-- ABSTRACT ATOMIZATION -->
+        <section class="mb-16">
+            <div class="grid md:grid-cols-12 gap-6">
+                <!-- Context Column -->
+                <div class="md:col-span-4 bg-slate-900 text-slate-300 p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-indigo-500 rounded-full opacity-20 blur-xl"></div>
+                    <h3 class="text-white font-bold text-lg mb-4 uppercase tracking-widest border-b border-slate-700 pb-2">The Context</h3>
+                    <p class="leading-relaxed mb-4">
+                        Computational pathology is entering an era of <strong>multi-modal diagnosis</strong>.
+                    </p>
+                    <p class="leading-relaxed">
+                        <span class="text-red-400 font-bold">The Problem:</span> Current pathology-specific visual language models lack:
+                    </p>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm text-slate-400">
+                        <li>Rigorous reasoning paths for diagnosis.</li>
+                        <li>Capacity to handle divergent tasks.</li>
+                        <li>Ability to serve as reliable AI Copilots.</li>
+                    </ul>
+                </div>
+
+                <!-- Solution Column -->
+                <div class="md:col-span-8 bg-white p-8 rounded-2xl shadow-lg border border-indigo-100">
+                    <h3 class="text-indigo-700 font-bold text-lg mb-4 uppercase tracking-widest border-b border-indigo-100 pb-2">The Solution: TeamPath</h3>
+                    <p class="text-slate-700 mb-6 leading-relaxed">
+                        We introduce <strong>TeamPath</strong>, an AI system powered by reinforcement learning and router-enhanced solutions based on large-scale histopathology multimodal datasets.
+                    </p>
+                    
+                    <div class="grid sm:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-indigo-50 p-4 rounded-lg text-center">
+                            <div class="text-2xl mb-2">🩺</div>
+                            <div class="font-bold text-slate-800 text-sm">Diagnosis</div>
+                            <div class="text-xs text-slate-500">Expert-level disease identification</div>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-lg text-center">
+                            <div class="text-2xl mb-2">📝</div>
+                            <div class="font-bold text-slate-800 text-sm">Summarization</div>
+                            <div class="text-xs text-slate-500">Patch-level information extraction</div>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-lg text-center">
+                            <div class="text-2xl mb-2">🧬</div>
+                            <div class="font-bold text-slate-800 text-sm">Generation</div>
+                            <div class="text-xs text-slate-500">Cross-modality transcriptomic integration</div>
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-slate-600 bg-slate-50 p-4 rounded border-l-4 border-indigo-500">
+                        <strong>Impact:</strong> Validated by pathologists from Yale School of Medicine, TeamPath assists in identifying and correcting expert conclusions and reasoning paths, serving as an innovative, reliable system for cross-modality communication.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1. INTRODUCTION -->
+        <section class="mb-20">
+            <h2 class="flex items-center text-3xl font-bold text-slate-900 mb-8">
+                <span class="bg-slate-900 text-white w-10 h-10 flex items-center justify-center rounded-lg text-lg mr-4 shadow-md">1</span>
+                Introduction
+            </h2>
+
+            <!-- Atom 1.1: The Human Baseline -->
+            <div class="atom-card mb-6">
+                <h4 class="font-bold text-slate-800 mb-3 flex items-center">
+                    <span class="w-2 h-2 bg-indigo-500 rounded-full mr-2"></span>
+                    The Complexity of Pathological Diagnosis
+                </h4>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="prose text-slate-600 text-sm">
+                        <p>Physicians analyze Whole-Slide Images (WSIs) to:</p>
+                        <ul class="list-disc pl-4 space-y-1">
+                            <li>Assess disease severity.</li>
+                            <li>Evaluate spatial distribution of malignant vs. healthy cells.</li>
+                            <li>Generate diagnostic reports and treatment plans.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 p-4 rounded border border-red-100 text-sm text-red-800">
+                        <strong>The Human Bottleneck:</strong> This process is time-intensive and labor-intensive. Accuracy fluctuates due to uncontrollable factors: workload, fatigue, and expertise variance.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Atom 1.2: The AI Landscape -->
+            <div class="mb-6">
+                <h4 class="font-bold text-slate-800 mb-4 ml-2">Deconstructing the AI Landscape</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Card 1 -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="font-bold text-indigo-600 text-xs uppercase mb-2">Category 1</div>
+                        <h5 class="font-bold text-slate-800 mb-2">Copilots</h5>
+                        <p class="text-xs text-slate-600 mb-3">Designed for interpretation assistance.</p>
+                        <div class="text-xs font-mono bg-slate-100 p-2 rounded">SlideChat, PathChat</div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="font-bold text-indigo-600 text-xs uppercase mb-2">Category 2</div>
+                        <h5 class="font-bold text-slate-800 mb-2">Report Generators</h5>
+                        <p class="text-xs text-slate-600 mb-3">Direct generation from images.</p>
+                        <div class="text-xs font-mono bg-slate-100 p-2 rounded">HistoGPT, spEMO</div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="font-bold text-indigo-600 text-xs uppercase mb-2">Category 3</div>
+                        <h5 class="font-bold text-slate-800 mb-2">Embedding Models</h5>
+                        <p class="text-xs text-slate-600 mb-3">Text-Image alignment for features.</p>
+                        <div class="text-xs font-mono bg-slate-100 p-2 rounded">MUSK, PLIP</div>
+                    </div>
+                     <!-- Card 4 -->
+                     <div class="bg-amber-50 p-5 rounded-xl border border-amber-200 shadow-sm relative">
+                        <div class="font-bold text-amber-700 text-xs uppercase mb-2">The Gap</div>
+                        <h5 class="font-bold text-amber-900 mb-2">Reasoning Deficit</h5>
+                        <p class="text-xs text-amber-800 leading-snug">
+                            Conventional VLMs struggle with tasks requiring <strong>deliberate reasoning</strong>. Most existing models are technically homogeneous, closed-source, and lack error analysis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Atom 1.3: TeamPath Proposal -->
+            <div class="bg-gradient-to-r from-slate-900 to-indigo-900 text-white p-8 rounded-2xl shadow-xl">
+                <h3 class="text-2xl font-bold mb-4">Our Contribution: The TeamPath Framework</h3>
+                <p class="mb-6 text-indigo-100 max-w-3xl">
+                    We aim to develop a high-precision reasoning model that explicates its reasoning path, serving as a trustworthy assistant to physicians.
+                </p>
+                <div class="grid sm:grid-cols-2 gap-6 text-sm">
+                    <div class="flex items-start">
+                        <span class="bg-indigo-500 rounded p-1 mr-3 mt-1">✓</span>
+                        <div>
+                            <strong class="block text-white">Augmented VLM Architecture</strong>
+                            <span class="text-indigo-200">Equipped with multi-modal reasoning and task-sensitive routing.</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-indigo-500 rounded p-1 mr-3 mt-1">✓</span>
+                        <div>
+                            <strong class="block text-white">Advanced Data Curation</strong>
+                            <span class="text-indigo-200">Selection of base models and medical-specific prompts for reasoning-enriched data.</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-indigo-500 rounded p-1 mr-3 mt-1">✓</span>
+                        <div>
+                            <strong class="block text-white">Dynamic Routing</strong>
+                            <span class="text-indigo-200">LLM-driven router selects the best strategy (RL vs SFT) for the task.</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="bg-indigo-500 rounded p-1 mr-3 mt-1">✓</span>
+                        <div>
+                            <strong class="block text-white">Human-AI Collaboration</strong>
+                            <span class="text-indigo-200">Validated by pathologists to correct conclusions and reasoning paths.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. RESULTS -->
+        <section class="mb-20">
+            <h2 class="flex items-center text-3xl font-bold text-slate-900 mb-8">
+                <span class="bg-slate-900 text-white w-10 h-10 flex items-center justify-center rounded-lg text-lg mr-4 shadow-md">2</span>
+                Results & Analysis
+            </h2>
+
+            <!-- Dataset Card -->
+            <div class="atom-card mb-8 border-l-4 border-indigo-500">
+                <h3 class="text-xl font-bold text-slate-800 mb-4">Dataset Strategy: Zero Leakage, High Quality</h3>
+                <div class="grid md:grid-cols-3 gap-6 text-sm">
+                    <div>
+                        <div class="font-bold text-indigo-700 mb-1">Training Source</div>
+                        <p class="text-slate-600">Subset of <strong>PathGen-1.6M</strong> (10k WSIs, 1.6M ROIs from TCGA). Reasoning data generated via o4-mini CoT templates and validated by Yale pathologists.</p>
+                    </div>
+                    <div>
+                        <div class="font-bold text-indigo-700 mb-1">Testing Benchmark</div>
+                        <p class="text-slate-600"><strong>PathMMU</strong> (5 diagnostic categories). Strictly excluded from training to ensure fairness.</p>
+                    </div>
+                    <div>
+                        <div class="font-bold text-indigo-700 mb-1">Cross-Modality Data</div>
+                        <p class="text-slate-600"><strong>HEST-1K</strong> (IDC) and <strong>STImage1K4M</strong> (Brain tissue) for transcriptomic profile generation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Figure 1: Landscape -->
+            <div class="figure-container">
+                <img src="https://arxiv.org/html/2511.17652v1/x1.png" alt="Landscape of TeamPath" class="w-full h-auto object-cover bg-gray-50">
+                <div class="caption-box">
+                    <span class="font-bold text-slate-900">Figure 1: Landscape of TeamPath.</span> 
+                    (a) Data curation from PathGen-1.6M. (b) Word cloud of ROIs. (c) Core VLM architecture. (d) System overview showing the LLM-enhanced router (80%+ accuracy) selecting between Parameter Adjustment (Fire) and Freeze (Snowflake). (e) Performance ranking (larger bubble = better).
+                </div>
+            </div>
+
+            <!-- VQA Performance Analysis -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-slate-800 mb-6">Task 1: ROI-Level Assessment (Pathology VQA)</h3>
+                
+                <p class="mb-4 text-slate-600">
+                    Unlike standard classification, Pathology VQA requires nuanced answers. We compared TeamPath against three classes of models on the PathMMU benchmark:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h4 class="font-bold text-slate-800 mb-4 border-b pb-2">Benchmark Competitors</h4>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex justify-between">
+                                <span class="text-slate-500">General VLMs</span>
+                                <span class="font-mono text-slate-700">Qwen2.5VL (3B/7B), InternVL3-8B</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-slate-500">Medical VLMs</span>
+                                <span class="font-mono text-slate-700">MedGemma-4B, MedVLThinker-7B</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span class="text-slate-500">Pathology VLMs</span>
+                                <span class="font-mono text-slate-700">PathGen-LLaVA-13B, Patho-R1-7B</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-indigo-50 p-6 rounded-lg shadow-sm border border-indigo-100 flex flex-col justify-center">
+                        <h4 class="font-bold text-indigo-900 mb-2">Key Finding</h4>
+                        <p class="text-indigo-800 text-sm leading-relaxed">
+                            TeamPath outperforms all baselines, including larger domain-expert models (13B). General and Medical VLMs performed poorly, highlighting the need for specialized reasoning training (GRPO).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Figure 2: Benchmarking -->
+                <div class="figure-container">
+                    <img src="https://arxiv.org/html/2511.17652v1/x2.png" alt="VQA Benchmarking" class="w-full h-auto object-cover bg-gray-50">
+                    <div class="caption-box">
+                        <span class="font-bold text-slate-900">Figure 2: Benchmarking Results.</span> 
+                        Accuracy comparisons across PubMed, SocialPath, Atlas, EduContent, and PathCLS categories. (d) shows TeamPath achieves the lowest (best) rank jointly.
+                    </div>
+                </div>
+
+                <!-- Case Study Breakdown -->
+                <div class="atom-card bg-slate-50">
+                    <h4 class="font-bold text-slate-800 mb-3">Case Study: Precision in Morphology (Figure 3 & Extended Fig 2)</h4>
+                    <div class="space-y-4">
+                        <div class="flex gap-4">
+                            <div class="w-1/3 text-right font-bold text-sm text-slate-500">The Challenge</div>
+                            <div class="w-2/3 text-sm text-slate-700">Distinguishing <strong>Lipoblasts</strong> from mature adipocytes.</div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-1/3 text-right font-bold text-sm text-red-500">Common Error</div>
+                            <div class="w-2/3 text-sm text-slate-700">Models chose Option C (vacuoles displacing nucleus), a sign of benign adipocytes.</div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-1/3 text-right font-bold text-sm text-green-600">TeamPath's Success</div>
+                            <div class="w-2/3 text-sm text-slate-700">Correctly identified Option B: <strong>Nuclear indentation/scalloping</strong> by vacuoles, a specific hallmark of lipoblasts.</div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Figure 3 Case Study -->
+                 <div class="figure-container">
+                    <img src="https://arxiv.org/html/2511.17652v1/x3.png" alt="Lipoblast Case Study" class="w-full h-auto object-cover bg-gray-50">
+                    <div class="caption-box">
+                        <span class="font-bold text-slate-900">Figure 3: Diagnostic Reasoning Case Study.</span> 
+                        Comparing reasoning paths. Green text indicates correct identification of key features; Red text highlights hallucinations or generic errors.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Human-AI Collaboration -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-bold text-slate-800 mb-6">Task 2: The AI Copilot (Correction & Verification)</h3>
+                
+                <p class="text-slate-600 mb-4">
+                    We tested TeamPath's ability to act as a safeguard. Yale pathologists provided answers (some intentionally incorrect or "I don't know"), and TeamPath was tasked with:
+                </p>
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-white border border-slate-200 p-4 rounded text-center">
+                        <div class="font-bold text-slate-800">Auto-Correction</div>
+                        <div class="text-xs text-slate-500">Fixing wrong expert conclusions</div>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-4 rounded text-center">
+                        <div class="font-bold text-slate-800">Reasoning Revision</div>
+                        <div class="text-xs text-slate-500">Correcting flawed logic paths</div>
+                    </div>
+                </div>
+
+                <div class="bg-green-50 p-4 rounded border-l-4 border-green-500 mb-6">
+                    <span class="font-bold text-green-800">Result:</span> TeamPath significantly improved accuracy (p-value = 0.004) across all categories when correcting expert inputs.
+                </div>
+
+                <!-- Figure 4 -->
+                <div class="figure-container">
+                    <img src="https://arxiv.org/html/2511.17652v1/x4.png" alt="Copilot Results" class="w-full h-auto object-cover bg-gray-50">
+                    <div class="caption-box">
+                        <span class="font-bold text-slate-900">Figure 4: Human-AI Collaboration.</span> 
+                        (a) The verification/correction loop. (b) Accuracy boost after TeamPath correction. (c) Example: TeamPath uses nuclear size, shape, and staining depth to correct an expert who overlooked nucleolar details.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summarization & Generation -->
+            <div>
+                <h3 class="text-2xl font-bold text-slate-800 mb-6">Task 3 & 4: Summarization & Cross-Modality</h3>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Summarization -->
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2">Image Caption Summarization</h4>
+                        <p class="text-sm text-slate-600 mb-3">Goal: Extract high-level interpretations (tissue type, disease state).</p>
+                        <div class="text-xs font-mono bg-slate-100 p-3 rounded mb-3">
+                            Metrics: BLEU, ROUGE-1/2/L, BERTScore, MEDCON
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            <strong>Outcome:</strong> TeamPath consistently outperforms baselines, generating precise descriptions (e.g., "elongated spindle-shaped cells") where others produce generic text.
+                        </p>
+                    </div>
+                    <!-- Cross Modality -->
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-2">Transcriptomic Generation</h4>
+                        <p class="text-sm text-slate-600 mb-3">Goal: Predict gene expression (ranked gene lists) directly from ROI images.</p>
+                        <div class="text-xs font-mono bg-slate-100 p-3 rounded mb-3">
+                            Metrics: SPCC, GPCC (Higher is better), MSE (Lower is better)
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            <strong>Outcome:</strong> Validated on Brain and IDC tissue. UMAP plots show generated profiles preserve biological signal and structural alignment better than finetuned Qwen models.
+                        </p>
+                    </div>
+                </div>
+
+                 <!-- Figure 5 & 6 Side by Side for compactness -->
+                 <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="figure-container m-0">
+                        <img src="https://arxiv.org/html/2511.17652v1/x5.png" alt="Summarization" class="w-full h-auto object-cover bg-gray-50">
+                        <div class="caption-box text-xs"><strong>Fig 5:</strong> Caption Summarization Benchmarks.</div>
+                    </div>
+                    <div class="figure-container m-0">
+                        <img src="https://arxiv.org/html/2511.17652v1/x6.png" alt="Transcriptomics" class="w-full h-auto object-cover bg-gray-50">
+                        <div class="caption-box text-xs"><strong>Fig 6:</strong> Transcriptomic Generation Metrics & UMAPs.</div>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- 3. DISCUSSION -->
+        <section class="mb-20">
+            <h2 class="flex items-center text-3xl font-bold text-slate-900 mb-8">
+                <span class="bg-slate-900 text-white w-10 h-10 flex items-center justify-center rounded-lg text-lg mr-4 shadow-md">3</span>
+                Discussion
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="prose text-slate-700">
+                    <h4 class="font-bold text-slate-900">Significance</h4>
+                    <p>TeamPath formulates a multi-task AI assistant that bridges the gap between raw capability and clinical utility. By employing an automatic router, it optimizes for cost and performance.</p>
+                    <p>It validates a crucial hypothesis: <strong>Reasoning-enhanced VLMs (via RL) are superior to standard models for complex pathology diagnostics.</strong></p>
+                </div>
+                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                    <h4 class="font-bold text-slate-900 mb-4">Limitations & Future Work</h4>
+                    <ul class="space-y-2 text-sm text-slate-700">
+                        <li class="flex items-start"><span class="text-red-500 mr-2">•</span> Dependency on base model updates.</li>
+                        <li class="flex items-start"><span class="text-red-500 mr-2">•</span> Router relies on trained LLM; Mixture-of-Experts could be better.</li>
+                        <li class="flex items-start"><span class="text-red-500 mr-2">•</span> Rare misalignment between reasoning process and conclusion (though identifiable by physicians).</li>
+                        <li class="flex items-start"><span class="text-red-500 mr-2">•</span> Privacy issues in clinical deployment remain unaddressed.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. METHODS -->
+        <section class="mb-20">
+            <h2 class="flex items-center text-3xl font-bold text-slate-900 mb-8">
+                <span class="bg-slate-900 text-white w-10 h-10 flex items-center justify-center rounded-lg text-lg mr-4 shadow-md">4</span>
+                Methods
+            </h2>
+
+            <!-- System Architecture -->
+            <div class="mb-8">
+                <h4 class="text-xl font-bold text-slate-800 mb-4">System Architecture: The Router</h4>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <p class="text-slate-700 mb-4">
+                        We unify TeamPath using a Language Model-based Router (<span class="code-block font-bold">ℛ()</span>) that directs queries to the optimal solution path.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="border border-indigo-200 bg-indigo-50 p-4 rounded text-center">
+                            <div class="font-bold text-indigo-900">Path 1: Reasoning</div>
+                            <div class="text-xs text-indigo-700 mt-1">Reinforcement Learning (GRPO)</div>
+                            <div class="text-xs text-slate-500 mt-2">For complex diagnostics</div>
+                        </div>
+                        <div class="border border-indigo-200 bg-indigo-50 p-4 rounded text-center">
+                            <div class="font-bold text-indigo-900">Path 2: Generation</div>
+                            <div class="text-xs text-indigo-700 mt-1">Supervised FineTuning (SFT)</div>
+                            <div class="text-xs text-slate-500 mt-2">For Summaries & Genes</div>
+                        </div>
+                        <div class="border border-indigo-200 bg-indigo-50 p-4 rounded text-center">
+                            <div class="font-bold text-indigo-900">Path 3: Collaboration</div>
+                            <div class="text-xs text-indigo-700 mt-1">Test-Time Scaling (TTS)</div>
+                            <div class="text-xs text-slate-500 mt-2">For Human Interaction</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RL Math -->
+            <div class="mb-8">
+                <h4 class="text-xl font-bold text-slate-800 mb-4">Reinforcement Learning: GRPO</h4>
+                <p class="text-slate-600 mb-4">We use <strong>Group Relative Policy Optimization</strong> to eliminate the need for a critic model. The objective function:</p>
+                
+                <div class="math-display text-sm text-slate-800 rounded-lg mb-4">
+                    J_{GRPO}(\theta)=\mathbb{E}\left[q\sim P(Q),\{o_{i}\}_{i=1}^{G}\sim\pi_{\theta_{old}}(O|q)\right]\left[\frac{1}{G}\sum_{i=1}^{G}\frac{1}{|o_{i}|}\sum_{t=1}^{|o_{i}|}\hat{A}_{i,t}\frac{\pi_{\theta}(o_{i,t}|q,o_{i,&lt;t})}{\pi_{\theta_{old}}(o_{i,t}|q,o_{i,&lt;t})}-\beta D_{KL}(\pi_{\theta}||\pi_{ref})\right]
+                </div>
+
+                <div class="bg-white p-4 rounded border border-slate-200">
+                    <p class="font-bold text-sm text-slate-700 mb-2">Key Innovation: Group-Relative Advantage</p>
+                    <div class="math-display text-xs mb-2 bg-white border-none p-0">
+                        \hat{A}_{i,t}=\frac{r_{i}-\text{mean}(\mathbf{r})}{\text{std}(\mathbf{r})}
+                    </div>
+                    <p class="text-xs text-slate-500">
+                        Here, <span class="code-block">r</span> is the group of rewards. For closed-ended questions, reward is binary (1/0). For open-ended, reward is the BLEU score.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Algorithm Block -->
+            <div class="mb-8">
+                <h4 class="text-xl font-bold text-slate-800 mb-4">Algorithm: Verifier-Corrector Pipeline</h4>
+                <div class="bg-slate-900 rounded-xl p-6 shadow-xl overflow-x-auto text-sm font-mono leading-relaxed">
+                    <div class="flex mb-4 border-b border-slate-700 pb-2">
+                        <span class="text-green-400 font-bold">Algorithm 1</span>
+                        <span class="text-slate-400 ml-4">Self-Verification & Correction</span>
+                    </div>
+                    
+                    <div class="text-slate-300">
+                        <span class="text-purple-400">Input:</span> Question <span class="text-yellow-300">Q</span>, Image <span class="text-yellow-300">I</span>, Human Answer <span class="text-yellow-300">O_A</span>, Reasoning <span class="text-yellow-300">O_R</span><br>
+                        <span class="text-purple-400">Models:</span> Verifier <span class="text-blue-300">M_v</span> (o4-mini), Corrector <span class="text-blue-300">M_c</span> (TeamPath)<br>
+                        <br>
+                        <span class="text-slate-500">// Check if human answer is already correct</span><br>
+                        <span class="text-red-400">IF</span> M_v(Q, O_R, O_A, I) is <span class="text-blue-300">True</span> <span class="text-red-400">THEN</span><br>
+                        &nbsp;&nbsp;<span class="text-red-400">RETURN</span> O_A<br>
+                        <span class="text-red-400">END IF</span><br>
+                        <br>
+                        <span class="text-slate-500">// Iterative Correction Loop</span><br>
+                        <span class="text-red-400">FOR</span> i in Steps <span class="text-red-400">DO</span><br>
+                        &nbsp;&nbsp;<span class="text-slate-500">// Generate new answer and reasoning</span><br>
+                        &nbsp;&nbsp;O_i, R_i = M_c(Q, O_R, O_A, I)<br>
+                        <br>
+                        &nbsp;&nbsp;<span class="text-slate-500">// Verify new answer</span><br>
+                        &nbsp;&nbsp;<span class="text-red-400">IF</span> M_v(Q, R_i, O_i, I) is <span class="text-blue-300">True</span> <span class="text-red-400">THEN</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-red-400">RETURN</span> O_i <span class="text-slate-500">// Success</span><br>
+                        &nbsp;&nbsp;<span class="text-red-400">ELSE</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;O_R = R_i; O_A = O_i <span class="text-slate-500">// Update context and retry</span><br>
+                        &nbsp;&nbsp;<span class="text-red-400">END IF</span><br>
+                        <span class="text-red-400">END FOR</span><br>
+                        <br>
+                        <span class="text-red-400">RETURN</span> O_A <span class="text-slate-500">// Return best effort</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. CODE & DATA -->
+        <section class="mb-16 bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">5. Resources & Availability</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-bold text-slate-700 mb-2">Compute Infrastructure</h4>
+                    <p class="text-sm text-slate-600 mb-2">
+                        Experiments performed on <strong>NCSA, YCRC, and TokyoU HPC</strong> platforms.
+                    </p>
+                    <div class="flex items-center gap-2 text-sm text-slate-600">
+                        <span class="bg-slate-100 px-2 py-1 rounded">32 x NVIDIA H100</span>
+                        <span class="bg-slate-100 px-2 py-1 rounded">8 x NVIDIA H200</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-700 mb-2">Open Source</h4>
+                    <a href="https://github.com/HelloWorldLTY/TeamPath" class="inline-flex items-center text-indigo-600 font-bold hover:underline">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        GitHub Repository
+                    </a>
+                    <p class="text-xs text-slate-500 mt-1">License: MIT</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. ACKNOWLEDGMENTS -->
+        <section class="mb-12 border-t border-slate-200 pt-8">
+            <h3 class="font-bold text-slate-800 mb-4">6. Acknowledgments & Contributions</h3>
+            <div class="text-sm text-slate-600 space-y-2">
+                <p>We thank Mr. Tong Ding for suggestions. <strong>IRB Approval:</strong> Yale project #2000039055.</p>
+                <p>
+                    <strong>Contributions:</strong> T.L. & W.X. (Design); T.L., W.X., H.Q. (Experiments); H.W., P.H., M.D. (Human Eval); H.Z. (Supervision).
+                </p>
+            </div>
+        </section>
+
+        <!-- APPENDICES (Styled as Cards) -->
+        <div class="mt-16 bg-slate-100 p-8 rounded-3xl">
+            <h1 class="text-3xl font-black text-slate-900 mb-8 text-center uppercase tracking-wider">Supplementary Materials</h1>
+
+            <!-- Appendix A: Prompts -->
+            <div class="mb-12">
+                <h3 class="text-xl font-bold text-slate-800 mb-6">Appendix A: Prompt Engineering</h3>
+                <div class="grid gap-6">
+                    <!-- Prompt 1 -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-1 rounded uppercase mr-2">Core</span>
+                            <h4 class="font-bold text-slate-800">Pathology VQA Prompt</h4>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded font-mono text-xs text-slate-600 border border-slate-200">
+                            1. Think through the question step by step, enclose reasoning in &lt;think&gt;...&lt;/think&gt;.<br>
+                            2. Provide single-letter choice inside &lt;answer&gt;...&lt;/answer&gt;.<br>
+                            3. No extra information.
+                        </div>
+                    </div>
+
+                    <!-- Prompt 2 -->
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center mb-3">
+                            <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded uppercase mr-2">Copilot</span>
+                            <h4 class="font-bold text-slate-800">Self-Verifier Prompt</h4>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded font-mono text-xs text-slate-600 border border-slate-200">
+                            Role: Expert in pathology.<br>
+                            Task: Break down solution components. Verify step by step.<br>
+                            Output: "The proposed solution is correct" OR "The proposed solution is incorrect".
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appendix B: Ablation -->
+            <div class="mb-12">
+                <h3 class="text-xl font-bold text-slate-800 mb-6">Appendix B: Training Strategy Comparison</h3>
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                        We compared four strategies: SFT, RL(GRPO), RL(DAPO), and SFT+RL.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div class="p-3 bg-red-50 rounded border border-red-100">
+                            <strong>DAPO / SFT+RL:</strong> Did not show significant improvement or reduced performance.
+                        </div>
+                        <div class="p-3 bg-green-50 rounded border border-green-100">
+                            <strong>Optimal Strategy:</strong> Patho-R1-7B + RL (GRPO). Selecting a base model with domain knowledge is crucial.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Supplementary Figures Grid -->
+            <div>
+                <h3 class="text-xl font-bold text-slate-800 mb-6">Supplementary Data Figures</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Figure Cards -->
+                    <div class="figure-container m-0">
+                        <img src="https://arxiv.org/html/2511.17652v1/x7.png" alt="Fig 1" class="w-full h-32 object-cover">
+                        <div class="p-3 text-xs bg-white border-t"><strong>Ext Fig 1:</strong> Data Preprocessing Flow.</div>
+                    </div>
+                    <div class="figure-container m-0">
+                        <img src="https://arxiv.org/html/2511.17652v1/x8.png" alt="Fig 2" class="w-full h-32 object-cover">
+                        <div class="p-3 text-xs bg-white border-t"><strong>Ext Fig 2:</strong> Lipoblast/Synaptophysin Case Study.</div>
+                    </div>
+                    <div class="figure-container m-0">
+                        <img src="https://arxiv.org/html/2511.17652v1/x9.png" alt="Fig 3" class="w-full h-32 object-cover">
+                        <div class="p-3 text-xs bg-white border-t"><strong>Ext Fig 3:</strong> Strategy Optimization (RL/SFT).</div>
+                    </div>
+                    <div class="figure-container m-0">
+                        <img src="https://arxiv.org/html/2511.17652v1/x10.png" alt="Fig 4" class="w-full h-32 object-cover">
+                        <div class="p-3 text-xs bg-white border-t"><strong>Ext Fig 4:</strong> Data Ablation (mcVQA vs Full).</div>
+                    </div>
+                    <div class="figure-container m-0">
+                        <img src="https://arxiv.org/html/2511.17652v1/x11.png" alt="Fig 5" class="w-full h-32 object-cover">
+                        <div class="p-3 text-xs bg-white border-t"><strong>Ext Fig 5:</strong> Pathologist Correction Example.</div>
+                    </div>
+                     <div class="figure-container m-0">
+                        <img src="https://arxiv.org/html/2511.17652v1/x12.png" alt="Fig 6" class="w-full h-32 object-cover">
+                        <div class="p-3 text-xs bg-white border-t"><strong>Ext Fig 6:</strong> Verifier Model Ablation.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

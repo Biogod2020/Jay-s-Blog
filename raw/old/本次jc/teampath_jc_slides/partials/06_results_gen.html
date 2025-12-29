@@ -1,0 +1,63 @@
+        <!-- Task 3 & 4: Generative -->
+        <section class="max-w-6xl mx-auto min-h-[90vh] flex flex-col justify-center">
+            
+            <div class="flex items-center mb-10">
+                <span class="text-6xl font-black text-slate-200 mr-6">05</span>
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-800">跨越模态的生成能力</h2>
+                    <p class="text-slate-500 font-medium mt-1">Summarization & Transcriptomics</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 h-full">
+                
+                <!-- Card 1: Image to Text -->
+                <div class="sota-card flex flex-col h-full bg-gradient-to-br from-white to-slate-50">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="bg-blue-100 p-3 rounded-lg text-blue-600 text-2xl">📝</div>
+                        <div class="text-xs font-bold bg-blue-50 text-blue-600 px-3 py-1 rounded-full border border-blue-100">Generation 1</div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">图像 -> 文本摘要</h3>
+                    <p class="text-sm text-slate-600 mb-6 flex-grow">
+                        不仅仅是打标签，而是生成<strong>High-Level 的病理描述</strong>。
+                        TeamPath 能够捕捉"梭形细胞拉长"等细微形态描述，而非仅输出通用的"肿瘤组织"。
+                    </p>
+
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 mb-4 h-48 overflow-hidden relative">
+                         <img src="https://arxiv.org/html/2511.17652v1/x5.png" alt="Captioning" class="absolute inset-0 w-full h-full object-cover opacity-90 hover:opacity-100 transition">
+                         <div class="absolute bottom-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded">Fig 5: Caption Benchmarks</div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-xs font-mono text-slate-500">
+                        <div class="bg-slate-100 px-2 py-1 rounded">METRIC: BLEU-4</div>
+                        <div class="bg-slate-100 px-2 py-1 rounded">METRIC: MEDCON</div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Image to Gene -->
+                <div class="sota-card flex flex-col h-full bg-gradient-to-br from-white to-slate-50">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="bg-purple-100 p-3 rounded-lg text-purple-600 text-2xl">🧬</div>
+                        <div class="text-xs font-bold bg-purple-50 text-purple-600 px-3 py-1 rounded-full border border-purple-100">Generation 2</div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">图像 -> 基因表达 (Transcriptomics)</h3>
+                    <p class="text-sm text-slate-600 mb-6 flex-grow">
+                        直接从 H&E 染色切片预测<strong>基因表达谱 (Gene Expression)</strong>。
+                        在 Brain 和 IDC 组织上验证，生成的表达谱在 UMAP 空间中完美保留了生物学结构信号。
+                    </p>
+
+                    <div class="bg-white p-4 rounded-lg border border-slate-200 mb-4 h-48 overflow-hidden relative">
+                         <img src="https://arxiv.org/html/2511.17652v1/x6.png" alt="Transcriptomics" class="absolute inset-0 w-full h-full object-cover opacity-90 hover:opacity-100 transition">
+                         <div class="absolute bottom-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded">Fig 6: UMAP Visualization</div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-xs font-mono text-slate-500">
+                        <div class="bg-slate-100 px-2 py-1 rounded">Target: SPCC/GPCC</div>
+                        <div class="bg-slate-100 px-2 py-1 rounded">Struct: Align w/ Biology</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
