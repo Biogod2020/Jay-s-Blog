@@ -14,6 +14,10 @@ heroImage: "/images/assa-evolution/cover.png"
     </div>
 </div>
 
+<figure class="mb-12 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-xl bg-gray-900 flex justify-center p-4">
+    <img src="/images/assa-evolution/extension-preview.png" alt="ASSA Extension Preview in Gemini CLI" class="max-w-full h-auto object-contain rounded-lg border border-gray-700" style="max-height: 500px;" />
+</figure>
+
 作为一个穷学生，已经重度使用 `geminicli` 三个月了，在惊叹于 gemini 的智商之余，笔者也常被它的**健忘**和**幻觉**所困扰。
 
 这种痛苦是极其具体的：当你正在为一个大项目的复杂泛型逻辑头秃时，你明明在第一轮对话就交代过“*所有类型定义必须使用 interface*”，但在第 30 轮，它却随手写了一堆 `type`；或者它言之凿凿地报告说“<span class="text-green-600 dark:text-green-400 font-mono">代码已修改成功</span>”，但当你打开文件一看，**物理内容却纹丝不动**。不断重复地提示它相同的错误，或者在大项目的情况下，它经常罔顾事实乱改代码，这些确实让人头痛。
@@ -23,6 +27,20 @@ heroImage: "/images/assa-evolution/cover.png"
 在这过程中感慨良多，果然还是得靠**日常实践**去尝试，才能够发现技术细节上的问题并思考出解决方法。一切进步都建立在不断的试错中，如果不去试错，就永远无法进步。马克思曾说，人类的知识都来源于生产实践。唯有多做，才能进步。
 
 整个过程的思路让 AI 总结了一下，放在下面，欢迎大家阅读或体验我开发的插件（*虽然目前只有我一个人 star*）。
+
+### 🚀 插件快捷入口
+
+> **安装命令**：
+> ```bash
+> gemini extensions install https://github.com/Biogod2020/ASSA
+> ```
+
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue?style=for-the-badge&logo=github)](https://github.com/Biogod2020/ASSA)
+
+> [!IMPORTANT]
+> **局限性说明**：当然，当前的扩展也存在问题。在和别的工具混合使用的时候，记忆功能常常不能自行启动；且当上下文一长，钩子注入的功能似乎也会削弱。
+> 
+> 后期可能考虑使用更加底层的代码逻辑，确保每次对话都能够稳定提交记忆。但是当前开发时间太少，在长上下文的时候手动驱动一下也不是不行，同时也坐等谷歌更新，给出更加底层、更加好用的钩子。也欢迎大家提出宝贵的意见！
 
 ---
 
@@ -157,19 +175,29 @@ AI 提出了一些基于向量检索或摘要压缩的方法，但我感觉都�
 
 所以，我就果断拥抱了 Subagents，将后台的提炼任务（`Distiller`）和全局规则同步任务（`Promoter`）打包成独立的子代理工具。这就像是给主 Agent 配备了两个后台秘书，大大降低了主进程的工程量，同时提高了系统的性能。
 
-<div class="formula-block bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 my-8">
-    <p class="font-mono text-[10px] text-gray-500 mb-3 uppercase flex items-center">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-        主进程与子代理分工
-    </p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-            <span class="text-xs text-indigo-500 font-bold uppercase">主进程 (Main Agent)</span>
-            <p class="text-xs text-gray-500 mt-2 leading-relaxed">专注于执行用户任务，写代码，以及做最终的架构治理（拍板合并规则）。</p>
-        </div>
-        <div class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-            <span class="text-xs text-green-500 font-bold uppercase">子代理 (Subagents)</span>
-            <p class="text-xs text-gray-500 mt-2 leading-relaxed">在后台默默将 PENDING 的原始信号转化为 Patterns（Distiller），以及将本地 Patterns 晋升到全局图谱（Promoter）。</p>
+<div class="my-12 p-1 rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 shadow-xl shadow-indigo-500/20">
+    <div class="bg-white dark:bg-gray-900 rounded-[22px] p-8 md:p-10">
+        <h3 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-10 flex items-center justify-center">
+            <svg class="w-8 h-8 mr-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            主进程与子代理分工
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
+            <div class="space-y-6">
+                <div class="inline-flex items-center px-5 py-1.5 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 text-sm font-bold uppercase tracking-widest border border-indigo-200 dark:border-indigo-800">
+                    Main Agent (主进程)
+                </div>
+                <p class="text-xl md:text-2xl text-gray-800 dark:text-gray-200 leading-relaxed font-semibold">
+                    专注于执行用户任务，编写核心代码，并承担最终的<span class="text-indigo-600 dark:text-indigo-400">架构治理</span>决策。
+                </p>
+            </div>
+            <div class="space-y-6">
+                <div class="inline-flex items-center px-5 py-1.5 rounded-full bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 text-sm font-bold uppercase tracking-widest border border-green-200 dark:border-green-800">
+                    Subagents (子代理)
+                </div>
+                <p class="text-xl md:text-2xl text-gray-800 dark:text-gray-200 leading-relaxed font-semibold">
+                    在后台执行重型逻辑：将原始信号转化为 Patterns，并将其晋升至全局图谱。
+                </p>
+            </div>
         </div>
     </div>
 </div>

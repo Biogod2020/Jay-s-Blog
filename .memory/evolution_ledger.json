@@ -1,0 +1,47 @@
+[
+  {
+    "session_id": "unknown",
+    "message_id": "mcp-1773980366710",
+    "timestamp": "2026-03-20T04:19:26.711Z",
+    "status": "PROCESSED",
+    "type": "positive",
+    "payload": {
+      "rule": "When writing project evolution docs, prioritize the human 'trial-and-error' journey and personal anecdotes over dry architectural descriptions to resonate with the user's stylistic preference for 'practice-led' knowledge.",
+      "context": "[Symptom/Intent]\nUser felt the previous version was too 'pruned' and requested a more personal, reflective tone based on their own experience as a 'poor student' using Gemini CLI.\n\n[Failed Attempts]\nNone\n\n[Breakthrough]\nDeeply integrated user's personal narrative and philosophical reflections into the technical blog post, shifting the tone from 'AI-Architect-speak' to a grounded 'Developer-Diary' style that emphasizes trial-and-error and Marxist-inspired practice.",
+      "tags": []
+    },
+    "git_anchor": ""
+  },
+  {
+    "session_id": "unknown",
+    "message_id": "mcp-1773980503326",
+    "timestamp": "2026-03-20T04:21:43.326Z",
+    "status": "PROCESSED",
+    "type": "positive",
+    "payload": {
+      "rule": "When writing or editing blog content for this user, maintain a sincere and plain-spoken tone. Avoid flowery or hyperbolic analogies. Focus on the actual practice and trial-and-error process rather than abstract 'architectural' grandeur.",
+      "context": "[Symptom/Intent]\nUser expressed that the previous version used too many 'exaggerated metaphors' and quotes, and requested a more sincere tone that reflects their actual way of speaking.\n\n[Failed Attempts]\nNone\n\n[Breakthrough]\nAdopted a sincere, grounded, and plain writing style for blog posts, intentionally avoiding exaggerated metaphors, heavy usage of quoted terms, or 'marketing-speak' AI personas. Prioritized clear, honest descriptions of technical challenges and solutions.",
+      "tags": []
+    },
+    "git_anchor": ""
+  },
+  {
+    "session_id": "unknown",
+    "message_id": "mcp-1773986332504",
+    "timestamp": "2026-03-20T05:58:52.508Z",
+    "status": "PENDING",
+    "type": "positive",
+    "payload": {
+      "rule": "When writing or editing blog content for this user, prioritize a 'Practice-led Architecture' narrative (Pain -> Failure -> Practice -> Breakthrough -> Reflection). Preserve the user's plain-spoken, professional, and practice-focused voice. Use native CSS/Tailwind components over external libraries (like Mermaid) when visual stability is critical. Perform exhaustive visual QA via screenshot/multimodal audit before concluding major content updates.",
+      "context": "[Symptom/Intent]\nThe blog post content was too thin and lacked logical flow. User requested a more detailed, practice-led narrative that matches their speaking style ('poor student', 'practice out of pain') and includes visual enhancements.\n\n[Failed Attempts]\nInitial attempt to rewrite the post was too aggressive and removed the user's personal voice. Mermaid timeline failed to render in the Astro context. Regex-based surgical edits (sed) initially led to some duplication and parsing issues with raw HTML tags.\n\n[Breakthrough]\nImplemented a practice-led, story-driven blog post documenting the 8-day evolution of ASSA v3.5. Transitioned from Python to JS/TS, established tiered memory (L1-L3), organizational hierarchy (G0-G3), and subagent-driven development. Resolved Mermaid rendering issues with a native Tailwind timeline and swapped particle background for a softer Aura/Mesh gradient. Applied rich Markdown formatting and visual SVG icons to enhance technical storytelling while preserving the user's plain-spoken, practice-focused voice.",
+      "tags": [
+        "blogging",
+        "storytelling",
+        "practice-led-design",
+        "visual-qa",
+        "tailwind-components"
+      ]
+    },
+    "git_anchor": ""
+  }
+]
