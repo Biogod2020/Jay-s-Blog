@@ -29,7 +29,7 @@
     "session_id": "unknown",
     "message_id": "mcp-1773986332504",
     "timestamp": "2026-03-20T05:58:52.508Z",
-    "status": "PENDING",
+    "status": "PROCESSED",
     "type": "positive",
     "payload": {
       "rule": "When writing or editing blog content for this user, prioritize a 'Practice-led Architecture' narrative (Pain -> Failure -> Practice -> Breakthrough -> Reflection). Preserve the user's plain-spoken, professional, and practice-focused voice. Use native CSS/Tailwind components over external libraries (like Mermaid) when visual stability is critical. Perform exhaustive visual QA via screenshot/multimodal audit before concluding major content updates.",
