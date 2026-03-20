@@ -25,17 +25,46 @@ heroImage: "/images/assa-evolution/cover.png"
 
 在一周多的时间里，我们经历了一场“压缩进化”。从最初的纵向记忆构建，到最后的横向秩序重塑。
 
-```mermaid
-timeline
-    title ASSA 进化里程碑 (V1.0 - V3.5)
-    Day 1-2 : 完全没有头绪的摸索 : Python 脚本试错 : 改道 JS/TS 体系
-    Day 3-4 : 拥抱 MCP 与 Hook : 解决指令漂移与执行黑盒 : 确立 L1-L2-L3 提炼路径
-    Day 4   : 解决保鲜期问题 : 引入 PENDING/PROCESSED 状态过滤
-    Day 5   : 架构的预判 : 引入 Graph 组织形式 : 划分 G0-G3 知识层级
-    Day 6   : 拥抱子代理 : 减轻主进程压力 : 剥离 Distiller 与 Promoter 逻辑
-    Day 6-8 : 极致性能与治理 : 实施 Index-First 策略 : 确立主进程主权
-```
-
+<div class="my-10">
+    <div class="relative border-l-2 border-indigo-200 dark:border-indigo-800 ml-4 space-y-8">
+        <!-- Day 1-2 -->
+        <div class="relative pl-8">
+            <div class="absolute w-4 h-4 bg-indigo-500 rounded-full -left-[9px] top-1 border-4 border-white dark:border-gray-900"></div>
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Day 1-2: 完全没有头绪的摸索</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Python 脚本试错，最终改道 JS/TS 体系。</p>
+        </div>
+        <!-- Day 3-4 -->
+        <div class="relative pl-8">
+            <div class="absolute w-4 h-4 bg-indigo-500 rounded-full -left-[9px] top-1 border-4 border-white dark:border-gray-900"></div>
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Day 3-4: 拥抱 MCP 与 Hook</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">解决指令漂移与执行黑盒，确立 L1-L2-L3 提炼路径。</p>
+        </div>
+        <!-- Day 4 -->
+        <div class="relative pl-8">
+            <div class="absolute w-4 h-4 bg-indigo-500 rounded-full -left-[9px] top-1 border-4 border-white dark:border-gray-900"></div>
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Day 4: 解决保鲜期问题</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">引入 PENDING/PROCESSED 状态过滤，解决历史遗忘问题。</p>
+        </div>
+        <!-- Day 5 -->
+        <div class="relative pl-8">
+            <div class="absolute w-4 h-4 bg-indigo-500 rounded-full -left-[9px] top-1 border-4 border-white dark:border-gray-900"></div>
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Day 5: 架构的预判</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">引入 Graph 组织形式，划分 G0-G3 知识层级。</p>
+        </div>
+        <!-- Day 6 -->
+        <div class="relative pl-8">
+            <div class="absolute w-4 h-4 bg-indigo-500 rounded-full -left-[9px] top-1 border-4 border-white dark:border-gray-900"></div>
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Day 6: 拥抱子代理</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">减轻主进程压力，剥离 Distiller 与 Promoter 逻辑。</p>
+        </div>
+        <!-- Day 6-8 -->
+        <div class="relative pl-8">
+            <div class="absolute w-4 h-4 bg-indigo-500 rounded-full -left-[9px] top-1 border-4 border-white dark:border-gray-900"></div>
+            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Day 6-8: 极致性能与治理</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400">实施 Index-First 策略，确立主进程主权。</p>
+        </div>
+    </div>
+</div>
 ---
 
 ## 02. 完全没有头绪的摸索 (Day 1-2)

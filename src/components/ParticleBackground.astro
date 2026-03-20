@@ -59,10 +59,10 @@
 
     updateColor() {
       const isDark = document.documentElement.classList.contains("dark");
-      // Indigo-500 with low opacity for light mode, Indigo-400 for dark mode
+      // Make colors much more subtle and softer
       this.color = isDark
-        ? "rgba(129, 140, 248, 0.2)"
-        : "rgba(99, 102, 241, 0.15)";
+        ? "rgba(129, 140, 248, 0.08)" // very subtle indigo in dark mode
+        : "rgba(99, 102, 241, 0.05)"; // very subtle indigo in light mode
     }
 
     resize() {
@@ -79,19 +79,20 @@
 
     initParticles() {
       this.particles = [];
-      // Responsive particle count
+      // Reduce particle count significantly for a cleaner look
       const particleCount = Math.min(
-        Math.floor((this.width * this.height) / 10000),
-        150
+        Math.floor((this.width * this.height) / 18000),
+        80
       );
 
       for (let i = 0; i < particleCount; i++) {
         this.particles.push({
           x: Math.random() * this.width,
           y: Math.random() * this.height,
-          vx: (Math.random() - 0.5) * 1.5,
-          vy: (Math.random() - 0.5) * 1.5,
-          size: Math.random() * 2 + 1,
+          // Slower, softer movement
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          size: Math.random() * 1.5 + 0.5,
         });
       }
     }
@@ -104,11 +105,11 @@
         p.x += p.vx;
         p.y += p.vy;
 
-        // Bounce off edges
+        // Bounce off edges smoothly
         if (p.x < 0 || p.x > this.width) p.vx *= -1;
         if (p.y < 0 || p.y > this.height) p.vy *= -1;
 
-        // Mouse interaction
+        // Mouse interaction (softened)
         if (this.mouse.x != null && this.mouse.y != null) {
           const dx = this.mouse.x - p.x;
           const dy = this.mouse.y - p.y;
@@ -118,8 +119,8 @@
             const forceDirectionX = dx / distance;
             const forceDirectionY = dy / distance;
             const force = (this.mouse.radius - distance) / this.mouse.radius;
-            const directionX = forceDirectionX * force * 3; // Attraction strength
-            const directionY = forceDirectionY * force * 3;
+            const directionX = forceDirectionX * force * 1.5; // Weaker attraction
+            const directionY = forceDirectionY * force * 1.5;
 
             p.x += directionX;
             p.y += directionY;
@@ -141,7 +142,8 @@
           if (distance < this.connectionDistance) {
             this.ctx.beginPath();
             this.ctx.strokeStyle = this.color;
-            this.ctx.lineWidth = 1 - distance / this.connectionDistance;
+            // Softer, thinner lines
+            this.ctx.lineWidth = (1 - distance / this.connectionDistance) * 0.5;
             this.ctx.moveTo(p.x, p.y);
             this.ctx.lineTo(p2.x, p2.y);
             this.ctx.stroke();
