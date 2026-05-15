@@ -54,4 +54,8 @@ I am a firm believer in optimizing every workflow. My primary productivity stack
 
 *Captured at UC Berkeley during my exchange program at UCLA (2021-2022). Exploring the academic landscapes of the West Coast was a defining chapter in my journey.*
 
+![At HKUST](/hkust_photo.jpg)
+
+*Visiting the Hong Kong University of Science and Technology (HKUST) during my clinical elective at HKU Queen Mary Hospital (2025). Engaging with the vibrant academic and research community in Hong Kong further broadened my global perspective.*
+
 
