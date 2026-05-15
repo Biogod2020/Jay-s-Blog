@@ -1,7 +1,7 @@
 Hello there! 👋 Welcome to my digital space. I am currently an 8-year M.D. candidate specializing in Neurology at Fudan University. Beyond the clinical wards and academic papers, my curiosity knows no bounds. I am incredibly passionate about exploring broad interests and optimizing the efficiency of everyday life, particularly by leveraging the power of Artificial Intelligence. I don't just study medicine—I actively embrace and build with AI to solve problems. Whether you want to discuss neuroscience, multi-agent frameworks, or just share cool productivity hacks, I am always open to connecting with like-minded people!
 
 ## The Genesis of a Scientist
-My aspiration to become a scientist began in elementary school and has been the unwavering driving force behind my academic journey. This early dedication culminated in winning the First Prize in the National Biology Olympiad (ranking 9th in Guangdong Province), laying a rigorous foundation in the life sciences. However, my curiosity has always been profoundly interdisciplinary, spanning mathematics, physics, and computer science. Driven purely by a passion for building and discovering, I am entirely self-taught in computer science and programming. This natural fusion of biological intuition and computational engineering has shaped my unique approach to scientific problem-solving.
+Born in a Teochew family and raised in the vibrant city of Guangzhou, my aspiration to become a scientist began as early as elementary school. My formative years at Yingyuan No. 2 High School and Guangzhou No. 2 High School were defined by a relentless drive for discovery, which culminated in winning the First Prize in the National Biology Olympiad (ranking 9th in Guangdong Province). This achievement laid a rigorous foundation in the life sciences, but my curiosity has always been profoundly interdisciplinary, spanning mathematics, physics, and computer science. Driven purely by a passion for building, I am entirely self-taught in computer science and programming—a natural fusion of biological intuition and computational engineering that continues to shape my unique approach to scientific problem-solving.
 
 ## Clinical Reality & Neuroscience
 When it came to choosing my academic path, I pursued the elite 8-year M.D. clinical medicine program at Fudan University. My reasoning was straightforward: I wanted to engage in translational research that sits as close as possible to real-world human applications and patient care. During my medical training, I was deeply drawn to the intricacies of neuroscience. Yet, standing at the bedside and observing the devastating progression of neurodegenerative diseases, I experienced a profound realization. I recognized that the extreme complexity of human brain disorders and biological systems fundamentally exceeds the analytical capacity of traditional clinical methodologies.
@@ -18,9 +18,9 @@ I am firmly convinced that the future of scientific discovery will inevitably be
 *   **Fudan Data-Driven Future Lab & Institute of Medical Genetics** `(2023.09 – Present)`
     *Research Project Leader | Focus: Alzheimer's Spatial Intelligence*
     Under the guidance of Prof. Jintai Yu and Prof. Zhiyuan Yuan, I synergize clinical biomarker insights with cutting-edge spatial multi-omics technologies. I spearheaded the computational mapping of the β-amyloid plaque microenvironment, developing robust algorithms and utilizing transformer networks to align high-resolution whole-slide imaging (WSI) with spatial transcriptomic coordinates.
-*   **Massachusetts General Hospital** `(2021.10 – 2023.06)`
+*   **Fudan University (Prof. Bin Song's Lab)** `(2021.10 – 2023.06)`
     *Undergraduate Researcher | Focus: Parkinson's Disease & scRNA-seq*
-    Engineered scRNA-seq analytical pipelines in Prof. Bin Song's Lab to identify crucial genetic markers, enhancing the purity, safety, and treatment efficacy of autologous iPSC-derived DA progenitor transplantation.
+    Engineered scRNA-seq analytical pipelines to identify crucial genetic markers, enhancing the purity, safety, and treatment efficacy of autologous iPSC-derived DA progenitor transplantation.
 *   **HKU Queen Mary Hospital** `(2025.04 – 2025.05)`
     *Clinical Observer | Department of Medicine*
     Gained immersive clinical exposure through rounds and multidisciplinary case discussions, bridging clinical practice with academic medicine.
@@ -36,5 +36,16 @@ I am firmly convinced that the future of scientific discovery will inevitably be
     *Co-first Author.* Combined in situ β-amyloid staining with single-nucleus sequencing to generate the largest spatiotemporally resolved AD transcriptomic atlas to date (12.36 million spatial profiles).
 *   **ASSA (Autonomous Self-Sovereign Agent)** & **Spatial-CLIP**
     Developed robust agentic frameworks featuring hierarchical memory systems, and fine-tuned vision-language encoders to align histopathology images with spatial transcriptomics data.
+
+## 🎓 Teaching & Sharing
+
+I believe that sharing knowledge is the ultimate form of mastery. In December 2025, I was invited to conduct two experience-sharing sessions for both graduate and undergraduate students, focusing on the practical application of AI in academic workflows. Additionally, I delivered a course exploring the evolving relationship between Artificial Intelligence and scientific research, aiming to inspire fellow researchers to embrace the AI-native paradigm.
+
+## 🛠️ Tooling & Productivity
+
+I am a firm believer in optimizing every workflow. My primary productivity stack for research and development includes:
+*   **Core Frameworks**: PyTorch, LangGraph
+*   **Foundation Models**: DeepSeek, Google Gemini
+*   **Infrastructure**: High-performance Linux clusters and multi-GPU training environments.
 
 
