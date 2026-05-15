@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProfileSidebar from "../components/ProfileSidebar.astro";
+import * as Narrative from "../content/about/narrative.md";
+
+// We use max-w-6xl for this page to accommodate the two-column layout
+---
+
+<Layout title="About Me - Jiahao Ji" maxWidth="max-w-6xl">
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-8 mt-4">
+    <!-- Left Column: Sticky Sidebar -->
+    <div class="md:col-span-4 lg:col-span-3">
+      <ProfileSidebar />
+    </div>
+    
+    <!-- Right Column: Scrolling Narrative -->
+    <div class="md:col-span-8 lg:col-span-9 bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-8 border-b pb-4 dark:border-gray-700">About Me</h1>
+      <article class="prose prose-indigo dark:prose-invert max-w-none">
+        <Narrative.Content />
+      </article>
+    </div>
+  </div>
+</Layout>
