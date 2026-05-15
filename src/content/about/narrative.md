@@ -48,4 +48,10 @@ I am a firm believer in optimizing every workflow. My primary productivity stack
 *   **Foundation Models**: DeepSeek, Google Gemini
 *   **Infrastructure**: High-performance Linux clusters and multi-GPU training environments.
 
+## 📷 Life Beyond the Lab
+
+![At UC Berkeley](/life_photo.jpg)
+
+*Captured at UC Berkeley during my exchange program at UCLA (2021-2022). Exploring the academic landscapes of the West Coast was a defining chapter in my journey.*
+
 
