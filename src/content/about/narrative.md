@@ -35,7 +35,4 @@ I am firmly convinced that the future of scientific discovery will inevitably be
 *   **ASSA (Autonomous Self-Sovereign Agent)** & **Spatial-CLIP**
     Developed robust agentic frameworks featuring hierarchical memory systems, and fine-tuned vision-language encoders to align histopathology images with spatial transcriptomics data.
 
-## 🎓 Education
 
-*   **Doctor of Medicine (M.D.)**, 8-Year Clinical Medicine Program, *Fudan University* `(2019 – 2027)`
-*   **Exchange Program (UCEAP)**, Intensive lab-based research and coursework, *University of California, Los Angeles (UCLA)* `(2021 – 2022)`
