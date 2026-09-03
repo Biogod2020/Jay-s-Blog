@@ -1,0 +1,16 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#111827" />
+  <rect width="1200" height="630" fill="url(#grad)" opacity="0.14" />
+  <circle cx="930" cy="110" r="280" fill="url(#grad)" opacity="0.18" />
+  <circle cx="180" cy="600" r="330" fill="url(#grad)" opacity="0.12" />
+  <text x="100" y="168" font-family="Noto Sans SC, Arial, sans-serif" font-size="34" font-weight="600" fill="#a5b4fc">医学博士候选人 · 人工智能研究者</text>
+  <text x="100" y="290" font-family="Noto Sans SC, Arial, sans-serif" font-size="86" font-weight="700" fill="white">纪家灏</text>
+  <text x="100" y="395" font-family="Noto Sans SC, Arial, sans-serif" font-size="48" font-weight="600" fill="#e5e7eb">面向生物医学发现的智能系统</text>
+  <text x="100" y="482" font-family="Noto Sans SC, Arial, sans-serif" font-size="28" fill="#cbd5e1">科学智能体 · 空间组学 · 多智能体推理</text>
+</svg>
