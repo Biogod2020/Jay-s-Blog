@@ -1,0 +1,40 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ProfileSidebarZh from "../../components/ProfileSidebarZh.astro";
+import ProfileLanguageSwitch from "../../components/ProfileLanguageSwitch.astro";
+import * as Narrative from "../../content/about/narrative.zh.md";
+---
+
+<Layout
+  title="个人详情 | 纪家灏"
+  description="纪家灏，复旦大学上海医学院八年制医学博士候选人，研究方向包括科学智能体、多模态生物医学人工智能、空间组学与可靠多智能体推理。"
+  image="/social-image-zh.svg"
+  maxWidth="max-w-6xl"
+  lang="zh-CN"
+>
+  <div class="mt-4">
+    <div class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-400">
+          Profile
+        </p>
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white">个人详情</h1>
+      </div>
+      <ProfileLanguageSwitch current="zh" />
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-12">
+      <div class="md:col-span-4 lg:col-span-3">
+        <ProfileSidebarZh />
+      </div>
+
+      <div
+        class="rounded-2xl border border-gray-100 bg-white p-7 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:col-span-8 md:p-10 lg:col-span-9"
+      >
+        <article class="prose prose-indigo max-w-none dark:prose-invert">
+          <Narrative.Content />
+        </article>
+      </div>
+    </div>
+  </div>
+</Layout>
