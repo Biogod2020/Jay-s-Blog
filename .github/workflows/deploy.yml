@@ -1,13 +1,12 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
   push:
-    branches: [ main ]
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
-# Allow this job to clone the repo and create a page deployment
 permissions:
   contents: read
   pages: write
@@ -17,17 +16,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Install, build, and upload your site
+
+      - name: Compile curriculum vitae
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: cv/Jia-Hao_Ji_CV.tex
+          work_in_root_file_dir: true
+          texlive_version: 2026
+          os: debian
+
+      - name: Stage verified CV for the website
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s cv/Jia-Hao_Ji_CV.pdf
+          cp cv/Jia-Hao_Ji_CV.pdf public/Jia-Hao_Ji_CV.pdf
+          cp cv/Jia-Hao_Ji_CV.pdf public/resume_long.pdf
+
+      - name: Install, build, and upload website
         uses: withastro/action@v2
-        # with:
-          # path: . # The root location of your Astro project inside the repository. (optional)
-          # node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 20. (optional)
-          # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
 
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:
