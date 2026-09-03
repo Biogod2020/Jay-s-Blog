@@ -15,7 +15,7 @@ interface Props {
 
 const {
   title,
-  description = "Jiahao's Blog - AI & Algorithms",
+  description = "Jia-Hao Ji — M.D. candidate and AI researcher building agentic and multimodal systems for biomedical discovery.",
   image = "/social-image.svg",
   externalScripts = [],
   localScripts = [],
@@ -103,7 +103,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <title>{title}</title>
     <script is:inline>
-      // On page load or when changing themes, best to add inline in `head` to avoid FOUC
       if (
         localStorage.getItem("color-theme") === "dark" ||
         (!("color-theme" in localStorage) &&
@@ -116,52 +115,62 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     </script>
   </head>
   <body
-    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 antialiased transition-colors duration-300 relative"
+    class="relative bg-gray-50 text-gray-900 antialiased transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100"
   >
     <AuraBackground />
     <header
-      class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-colors duration-300"
+      class="sticky top-0 z-50 bg-white/80 shadow-sm backdrop-blur-md transition-colors duration-300 dark:bg-gray-800/80"
     >
       <nav
-        class={`mx-auto px-4 py-4 flex justify-between items-center ${maxWidth}`}
+        class={`mx-auto flex items-center justify-between px-4 py-4 ${maxWidth}`}
       >
         <a
           href="/"
-          class="text-xl font-bold text-indigo-600 dark:text-indigo-400"
-          >Jiahao's Blog</a
+          class="text-lg font-bold text-indigo-600 dark:text-indigo-400 md:text-xl"
         >
-        <div class="flex items-center space-x-4">
+          Jia-Hao Ji
+        </a>
+        <div class="flex items-center gap-3 text-sm md:gap-4 md:text-base">
           <a
             href="/"
-            class="hover:text-indigo-600 dark:hover:text-indigo-400 transition"
-            >Home</a
+            class="transition hover:text-indigo-600 dark:hover:text-indigo-400"
           >
+            Home
+          </a>
+          <a
+            href="/#research"
+            class="transition hover:text-indigo-600 dark:hover:text-indigo-400"
+          >
+            Research
+          </a>
           <a
             href="/blog"
-            class="hover:text-indigo-600 dark:hover:text-indigo-400 transition"
-            >Blog</a
+            class="transition hover:text-indigo-600 dark:hover:text-indigo-400"
           >
+            Blog
+          </a>
           <a
             href="/about"
-            class="hover:text-indigo-600 dark:hover:text-indigo-400 transition"
-            >About</a
+            class="transition hover:text-indigo-600 dark:hover:text-indigo-400"
           >
+            About
+          </a>
           <ThemeToggle />
         </div>
       </nav>
     </header>
 
-    <main class={`mx-auto px-4 py-8 min-h-[80vh] ${maxWidth}`}>
+    <main class={`mx-auto min-h-[80vh] px-4 py-8 ${maxWidth}`}>
       <slot />
     </main>
 
     <footer
-      class="bg-white dark:bg-gray-800 border-t dark:border-gray-700 mt-12 transition-colors duration-300"
+      class="mt-12 border-t bg-white transition-colors duration-300 dark:border-gray-700 dark:bg-gray-800"
     >
       <div
-        class={`mx-auto px-4 py-6 text-center text-gray-500 dark:text-gray-400 text-sm ${maxWidth}`}
+        class={`mx-auto px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400 ${maxWidth}`}
       >
-        &copy; {new Date().getFullYear()} Jiahao's Blog. Powered by Astro & AI.
+        &copy; {new Date().getFullYear()} Jia-Hao Ji. Built with Astro.
       </div>
     </footer>
 
