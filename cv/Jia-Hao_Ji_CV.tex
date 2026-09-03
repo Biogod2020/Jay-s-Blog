@@ -1,35 +1,36 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[a4paper,top=14mm,bottom=14mm,left=17mm,right=17mm]{geometry}
+\usepackage[margin=16mm,top=14mm,bottom=15mm]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage[default]{sourcesanspro}
-\usepackage{microtype}
+\usepackage[default]{lato}
 \usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage{enumitem}
 \usepackage{tabularx}
 \usepackage{array}
-\usepackage{enumitem}
 \usepackage{titlesec}
-\usepackage{hyperref}
-\usepackage{needspace}
 \usepackage{fancyhdr}
+\usepackage{lastpage}
 \usepackage{ragged2e}
+\usepackage{needspace}
 \usepackage{setspace}
 
-\definecolor{Ink}{HTML}{17212B}
-\definecolor{Accent}{HTML}{1E5B79}
-\definecolor{AccentDark}{HTML}{153F55}
-\definecolor{AccentLight}{HTML}{EAF2F6}
-\definecolor{Muted}{HTML}{5D6874}
-\definecolor{Rule}{HTML}{C9D4DB}
+\definecolor{Navy}{HTML}{17324D}
+\definecolor{Teal}{HTML}{0F7182}
+\definecolor{Ink}{HTML}{17202A}
+\definecolor{Muted}{HTML}{5D6773}
+\definecolor{Rule}{HTML}{D6DEE5}
+\definecolor{Soft}{HTML}{EEF4F7}
 
 \hypersetup{
   colorlinks=true,
-  urlcolor=Accent,
-  linkcolor=Accent,
+  urlcolor=Teal,
+  linkcolor=Navy,
   pdfauthor={Jia-Hao Ji},
   pdftitle={Jia-Hao Ji - Curriculum Vitae},
-  pdfsubject={Academic curriculum vitae},
-  pdfkeywords={agentic AI, multimodal AI, spatial omics, neuroscience, multi-agent systems}
+  pdfsubject={Biomedical AI, spatial omics, and multi-agent reasoning},
+  pdfkeywords={biomedical AI, agentic AI, spatial omics, multi-agent systems, neuroscience}
 }
 \urlstyle{same}
 
@@ -37,135 +38,177 @@
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
-\fancyfoot[L]{\scriptsize\color{Muted}Jia-Hao Ji \textbar{} Curriculum Vitae}
-\fancyfoot[R]{\scriptsize\color{Muted}Updated September 2026 \textbar{} \thepage/2}
+\fancyfoot[L]{\footnotesize\color{Muted}Jia-Hao Ji \textbar{} Curriculum Vitae \textbar{} September 2026}
+\fancyfoot[R]{\footnotesize\color{Muted}Page \thepage{} of \pageref*{LastPage}}
+\setlength{\footskip}{9mm}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0pt}
 \setstretch{1.03}
-\setlength{\emergencystretch}{1.5em}
-\color{Ink}
+\emergencystretch=1em
 
 \titleformat{\section}
-  {\needspace{4\baselineskip}\large\bfseries\color{AccentDark}}
+  {\needspace{3\baselineskip}\large\bfseries\color{Navy}}
   {}{0pt}{}
-  [\vspace{2pt}\color{Rule}\titlerule]
-\titlespacing*{\section}{0pt}{8pt}{4pt}
+  [\vspace{-0.35em}\color{Rule}\titlerule]
+\titlespacing*{\section}{0pt}{1.05em}{0.55em}
 
-\newcommand{\entry}[4]{%
-  \begin{tabularx}{\textwidth}{@{}X>{\raggedleft\arraybackslash}p{35mm}@{}}
-    {\bfseries #1} & {\small\color{Muted}#2} \\
-    {\small\itshape\color{AccentDark}#3} & {\small\color{Muted}#4}
-  \end{tabularx}\vspace{2pt}
+\newcommand{\contactsep}{\hspace{0.5em}\textcolor{Rule}{\textbullet}\hspace{0.5em}}
+\newcommand{\roleline}[3]{%
+  \begin{tabularx}{\textwidth}{@{}>{\RaggedRight\arraybackslash}X>{\RaggedLeft\arraybackslash}p{32mm}@{}}
+    \textbf{#1} & \textcolor{Muted}{#3}\\[-0.1em]
+    \textcolor{Teal}{#2} &
+  \end{tabularx}
 }
-
-\newcommand{\pub}[4]{%
-  \begin{tabularx}{\textwidth}{@{}p{7mm}X@{}}
-    {\small\bfseries\color{Accent}#1} & {\small #2} \\
-    & {\small\color{Muted}#3} \\
-    & {\small #4}
-  \end{tabularx}\vspace{5pt}
-}
-
-\newcommand{\skillrow}[2]{%
-  \begin{tabularx}{\textwidth}{@{}p{34mm}X@{}}
-    {\small\bfseries\color{AccentDark}#1} & {\small #2}
-  \end{tabularx}\vspace{2pt}
-}
-
-\newenvironment{cvitems}{
-  \begin{itemize}[leftmargin=4.5mm,itemsep=1.4pt,topsep=2pt,parsep=0pt,partopsep=0pt]
-  \small
+\newcommand{\pubtitle}[1]{\textbf{\color{Ink}#1}}
+\newcommand{\meta}[1]{{\small\color{Muted}#1}}
+\newcommand{\cvitem}[1]{\item {#1}}
+\newenvironment{cvitems}{%
+  \begin{itemize}[leftmargin=1.15em,itemsep=0.17em,topsep=0.25em,parsep=0pt,partopsep=0pt,label=\textcolor{Teal}{\raisebox{0.15ex}{\scriptsize\textbullet}}]
 }{\end{itemize}}
+\newcommand{\tag}[1]{\colorbox{Soft}{\strut\hspace{0.35em}\textcolor{Navy}{\small\bfseries #1}\hspace{0.35em}}}
 
 \begin{document}
 
-% Header
-\begin{minipage}[t]{0.64\textwidth}
-  {\fontsize{29}{31}\selectfont\bfseries\color{Ink}Jia-Hao Ji}\\[4pt]
-  {\large\bfseries\color{Accent}Eight-Year M.D. Candidate \textbar{} AI Researcher}\\[5pt]
-  {\small\color{Muted}\RaggedRight
-    Building reliable agentic and multimodal AI systems for biomedical discovery, with current work in spatial omics, neuroscience, and multi-agent reasoning.
-  }
-\end{minipage}\hfill
-\begin{minipage}[t]{0.31\textwidth}
-  \raggedleft\small
-  Shanghai, China\\[3pt]
-  \href{mailto:Jhji19@fudan.edu.cn}{Jhji19@fudan.edu.cn}\\[3pt]
-  \href{https://jiahaoblog.com}{jiahaoblog.com}\\[3pt]
-  \href{https://github.com/Biogod2020}{github.com/Biogod2020}
+\noindent\color{Navy}\rule{\textwidth}{2.2pt}
+\vspace{0.7em}
+
+{\fontsize{27}{30}\selectfont\bfseries\color{Ink}Jia-Hao (Jay) Ji}\par
+\vspace{0.18em}
+{\large\color{Navy}\bfseries M.D. Candidate \textbar{} AI Researcher \textbar{} Physician-Scientist in Training}\par
+\vspace{0.55em}
+{\small\color{Muted}
+Shanghai, China
+\contactsep \href{mailto:jhji19@fudan.edu.cn}{jhji19@fudan.edu.cn}
+\contactsep \href{https://jiahaoblog.com}{jiahaoblog.com}
+\contactsep \href{https://github.com/Biogod2020}{github.com/Biogod2020}
+\contactsep \href{https://orcid.org/0009-0007-4647-522X}{ORCID}
+}\par
+
+\vspace{0.85em}
+\begin{minipage}{\textwidth}
+\colorbox{Soft}{%
+  \parbox{\dimexpr\textwidth-2\fboxsep\relax}{%
+    \vspace{0.35em}
+    \small\color{Ink}
+    Eight-year M.D. candidate at Shanghai Medical College, Fudan University developing reliable agentic and multimodal AI systems for biomedical discovery. My research connects large-language-model agents, spatial omics, digital pathology, and neuroscience, with emphasis on measurable reliability and scalable scientific workflows.
+    \vspace{0.35em}
+  }%
+}
 \end{minipage}
 
-\vspace{7pt}
-\color{Accent}\rule{\textwidth}{1.4pt}\color{Ink}
+\vspace{0.7em}
+\tag{Agentic AI for Science}\hspace{0.45em}
+\tag{Spatial Omics}\hspace{0.45em}
+\tag{Multimodal Learning}\hspace{0.45em}
+\tag{Multi-Agent Reasoning}\hspace{0.45em}
+\tag{Neuroscience}
 
-\section{Education}
+\section*{Selected Publications and Manuscripts}
 
-\entry{Fudan University Shanghai Medical College}{Shanghai, China}{M.D. Candidate, Eight-Year Clinical Medicine Program}{Sep 2019 -- Jun 2027 (expected)}
-\small Interdisciplinary training in clinical medicine, neuroscience, computational biology, and artificial intelligence.\par\vspace{4pt}
-
-\entry{University of California, Los Angeles (UCLA)}{Los Angeles, USA}{International Exchange Program}{Sep 2021 -- Feb 2022}
-
-\section{Selected Publications and Preprints}
-
-\pub{1}{\textbf{Jia-Hao Ji}, Sijie Li, Jiabei Cheng, Zixi She, Jin-Tai Yu, and Zhiyuan Yuan. ``\textbf{Candidate supply and answer selection shape the value of LLM judging in multi-agent systems}.''}{arXiv:2608.25937 [cs.AI, cs.MA], 2026. \href{https://arxiv.org/abs/2608.25937}{Paper}}{First-author study separating candidate generation, answer recognition, and terminal selection. Analysed 15,336 questions and replayed 81,390 fixed candidate pools; changing only the selection rule raised accuracy from 63.82\% to 70.82--70.95\%.}
-
-\pub{2}{\textbf{Jia-Hao Ji}, Qi Zou, Jiabei Cheng, Zixi She, Yining Hao, Weishi Liu, Daoliang Zhang, Zhikang Wang, Jin-Tai Yu, and Zhiyuan Yuan. ``\textbf{SpatialDataAgent: Autonomous Spatial Omics Data Curation at Decade Scale}.''}{bioRxiv preprint, 2026. \href{https://doi.org/10.64898/2026.05.27.727615}{DOI}}{First author and lead developer. Built an evidence-grounded agentic workflow that identified 769 paired H\&E--spatial transcriptomics datasets and assembled HESRT, a datalake containing 29.2 million spots or cells.}
-
-\pub{3}{\textbf{Jia-Hao Ji}$^{*}$ et al. ``\textbf{Spatiotemporally resolved transcriptome unveils reactive subpallial microglia underlying cholinergic vulnerability in Alzheimer's disease}.''}{Manuscript, 2026. $^{*}$Co-first author.}{Integrated in situ amyloid pathology, single-nucleus sequencing, and spatial transcriptomics to characterize disease-associated microglial states and cholinergic vulnerability across 12.36 million spatial profiles.}
-
-\section{Research Experience}
-
-\entry{Fudan Data-Driven Future Lab \& Institute of Medical Genetics}{Shanghai, China}{Research Project Lead | Spatial Intelligence in Alzheimer's Disease}{Sep 2023 -- Present}
+\pubtitle{Candidate supply and answer selection shape the value of LLM judging in multi-agent systems}\par
+\meta{\textbf{Jia-Hao Ji}, Sijie Li, Jiabei Cheng, Zixi She, Jin-Tai Yu, and Zhiyuan Yuan. arXiv:2608.25937 [cs.AI, cs.MA], 2026. \href{https://arxiv.org/abs/2608.25937}{Paper}}
 \begin{cvitems}
-  \item Conduct computational research under Prof. Jin-Tai Yu and Prof. Zhiyuan Yuan at the intersection of neuropathology, spatial multi-omics, and agentic AI.
-  \item Developed multimodal registration and analysis pipelines linking whole-slide histology, spatial transcriptomics, and disease-associated tissue microenvironments.
-  \item Led the design, implementation, and benchmarking of SpatialDataAgent and the HESRT datalake; coordinated evidence auditing, dataset standardization, and manuscript preparation.
-  \item Investigated LLM-judge reliability and terminal answer selection in multi-agent reasoning through controlled candidate-pool replay experiments.
+  \cvitem{Separated candidate generation, answer recognition, and terminal selection in controlled multi-agent reasoning experiments across five benchmarks.}
+  \cvitem{Analysed 15,336 questions and replayed 81,390 fixed candidate pools; changing only the final selection rule increased accuracy from 63.82\% to 70.82--70.95\%.}
+\end{cvitems}
+
+\vspace{0.28em}
+\pubtitle{SpatialDataAgent: Autonomous Spatial Omics Data Curation at Decade Scale}\par
+\meta{\textbf{Jia-Hao Ji}, Qi Zou, Jiabei Cheng, Zixi She, Yining Hao, Weishi Liu, Daoliang Zhang, Zhikang Wang, Jin-Tai Yu, and Zhiyuan Yuan. bioRxiv, 2026. \href{https://doi.org/10.64898/2026.05.27.727615}{DOI}}
+\begin{cvitems}
+  \cvitem{Conceived and led development of an evidence-grounded agentic workflow combining schema-constrained evaluation with self-refining data standardisation.}
+  \cvitem{Recovered 769 paired H\&E--spatial transcriptomics datasets, expanded existing curated baselines by 6.4-fold, and assembled HESRT with 29.2 million spots or cells.}
+\end{cvitems}
+
+\vspace{0.28em}
+\pubtitle{Spatiotemporally resolved transcriptome unveils reactive subpallial microglia underlying cholinergic vulnerability in Alzheimer's disease}\par
+\meta{\textbf{Jia-Hao Ji} (co-first author) et al. Manuscript, 2026.}
+\begin{cvitems}
+  \cvitem{Integrated spatial transcriptomics, single-nucleus sequencing, and in situ amyloid pathology across 12.36 million spatial profiles.}
+  \cvitem{Characterised disease-associated microglial microenvironments and their relationship to basal forebrain cholinergic vulnerability.}
+\end{cvitems}
+
+\section*{Research Experience}
+
+\roleline{Researcher and Project Lead}{Fudan Data-Driven Future Lab \& Institute of Medical Genetics, Fudan University}{Sep 2023 -- Present}
+\meta{Advisors: Prof. Jin-Tai Yu and Prof. Zhiyuan Yuan \textbar{} Alzheimer's disease, spatial omics, and biomedical AI}
+\begin{cvitems}
+  \cvitem{Lead computational projects spanning large-scale spatial-data curation, multimodal tissue registration, and disease-focused analysis of histology and molecular profiles.}
+  \cvitem{Developed transformer-based and image-registration pipelines to align whole-slide pathology with spatial transcriptomic coordinates and map beta-amyloid plaque microenvironments.}
+  \cvitem{Designed reproducible agentic workflows with explicit schemas, evidence tracking, failure auditing, and multi-stage validation.}
+\end{cvitems}
+
+\vspace{0.3em}
+\roleline{Undergraduate Researcher}{Prof. Bin Song's Lab, Fudan University}{Oct 2021 -- Jun 2023}
+\meta{Parkinson's disease and single-cell transcriptomics}
+\begin{cvitems}
+  \cvitem{Built scRNA-seq analysis pipelines to identify markers relevant to the purity, safety, and therapeutic potential of autologous iPSC-derived dopaminergic progenitor transplantation.}
+\end{cvitems}
+
+\vspace{0.24em}
+\roleline{Undergraduate Researcher}{Prof. Fei Lan's Lab, Institutes of Biomedical Sciences, Fudan University}{Sep 2019 -- Jul 2021}
+\meta{DNA methylation, epigenetics, and molecular biology}
+\begin{cvitems}
+  \cvitem{Received wet-lab training in cell culture, molecular assays, and experimental analysis of DNA methylation and epigenetic regulation.}
 \end{cvitems}
 
 \newpage
+\noindent\color{Navy}\rule{\textwidth}{2.2pt}
+\vspace{0.55em}
+{\small\bfseries\color{Navy}JIA-HAO JI}\hfill{\small\color{Muted}BIOMEDICAL AI \textbar{} SPATIAL OMICS \textbar{} MULTI-AGENT REASONING}\par
 
-\section{Research and Clinical Experience (continued)}
+\section*{Education and Clinical Training}
 
-\entry{Fudan University, Prof. Bin Song's Laboratory}{Shanghai, China}{Undergraduate Researcher | Parkinson's Disease and scRNA-seq}{Oct 2021 -- Jun 2023}
+\roleline{Doctor of Medicine, Eight-Year Clinical Medicine Program}{Shanghai Medical College, Fudan University}{Sep 2019 -- Jun 2027 (expected)}
 \begin{cvitems}
-  \item Built single-cell RNA-sequencing pipelines to identify molecular markers relevant to the purity, safety, and therapeutic potential of iPSC-derived dopaminergic progenitors.
-  \item Performed quality control, clustering, differential-expression analysis, cell-state annotation, and biological interpretation for transplantation studies.
+  \cvitem{Clinical focus in neurology; research focus in biomedical AI, computational biology, spatial omics, and neurodegenerative disease.}
 \end{cvitems}
 
-\entry{Institutes of Biomedical Sciences, Fudan University}{Shanghai, China}{Undergraduate Researcher | DNA Methylation and Epigenetics}{Sep 2019 -- Jul 2021}
+\vspace{0.28em}
+\roleline{Exchange Program}{University of California, Los Angeles}{Sep 2021 -- Feb 2022}
+\meta{Interdisciplinary coursework and research-oriented academic training.}
+
+\vspace{0.22em}
+\roleline{Clinical Elective, Department of Medicine}{HKU Queen Mary Hospital}{Apr 2025 -- May 2025}
+\meta{Ward rounds, case discussions, and multidisciplinary clinical teaching.}
+
+\section*{Selected Systems and Engineering}
+
+\roleline{ASSA -- Autonomous Self-Sovereign Agent}{Independent open-source project}{2026}
 \begin{cvitems}
-  \item Received foundational wet-lab training in molecular biology, cell culture, DNA methylation, epigenetic regulation, and standard biochemical assays in Prof. Fei Lan's laboratory.
+  \cvitem{Developed an agent framework with hierarchical memory, reflection, and skill-generation mechanisms for long-horizon adaptation. \href{https://github.com/Biogod2020/ASSA}{GitHub}}
 \end{cvitems}
 
-\entry{HKU Queen Mary Hospital}{Hong Kong SAR}{Clinical Elective | Department of Medicine}{Apr 2025 -- May 2025}
+\vspace{0.28em}
+\roleline{Spatial-CLIP}{Multimodal representation learning for spatial biology}{2025 -- Present}
 \begin{cvitems}
-  \item Participated in clinical rounds, multidisciplinary case discussions, and academic teaching across internal-medicine services, strengthening the link between computational research and clinically meaningful questions.
+  \cvitem{Fine-tuned vision-language encoders with contrastive objectives to align histopathology images and spatial transcriptomic states for cross-modal retrieval and analysis. \href{https://github.com/Biogod2020/Spatial-Clip}{GitHub}}
 \end{cvitems}
 
-\section{Selected Systems and Technical Contributions}
+\section*{Teaching and Scientific Communication}
 
-\small
-\textbf{ASSA - Autonomous Self-Sovereign Agent.} Developed a modular agent framework with hierarchical memory, iterative tool use, and skill-generation loops for long-horizon autonomous work. \href{https://github.com/Biogod2020/ASSA}{GitHub}\par\vspace{4pt}
+\begin{cvitems}
+  \cvitem{Delivered invited sessions for graduate and undergraduate students on practical AI workflows for literature synthesis, scientific writing, and reproducible research, Fudan University, December 2025.}
+  \cvitem{Developed a course module on artificial intelligence in scientific discovery and biomedical research; maintain a technical research blog at \href{https://jiahaoblog.com}{jiahaoblog.com}.}
+\end{cvitems}
 
-\textbf{Spatial-CLIP - Multimodal Contrastive Learning.} Fine-tuned vision-language encoders to align histopathology image patches with spatial-transcriptomic signals for cross-modal retrieval and tissue representation learning. \href{https://github.com/Biogod2020/Spatial-CLIP}{GitHub}\par
+\section*{Technical Expertise}
 
-\section{Teaching and Academic Communication}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries\color{Navy}}p{35mm}X@{}}
+Machine Learning & PyTorch, transformers, graph neural networks, contrastive learning, multimodal foundation models, LLM agents, judge-based evaluation, multi-agent systems \\
+Biomedical Data & Spatial transcriptomics, single-cell RNA-seq, digital pathology, whole-slide imaging, tissue registration, statistical analysis \\
+Engineering & Python, R, TypeScript, Linux, Git, multi-GPU training, high-performance computing, LangGraph, ReAct-style orchestration \\
+\end{tabularx}
 
-\entry{AI-Native Research Workflows for Medical Students and Researchers}{Fudan University}{Invited Speaker and Workshop Instructor}{Dec 2025}
-\small Delivered two invited sessions for graduate and undergraduate audiences on reproducible use of large language models and agents in literature review, data analysis, coding, and scientific writing; also presented a seminar on AI in scientific discovery and physician-scientist training.\par
-
-\section{Selected Honors}
-
-\small \textbf{First Prize, China National Biology Olympiad (Guangdong)} - ranked 9th in Guangdong Province.\par
-
-\section{Technical Skills}
-
-\skillrow{Programming}{Python, R, TypeScript, Bash, Linux; reproducible research pipelines and scientific software engineering.}
-\skillrow{Machine Learning}{PyTorch; transformers, graph neural networks, contrastive learning, vision-language models, LLM agents, multi-agent systems, model evaluation.}
-\skillrow{Biomedical Data}{Spatial transcriptomics, single-cell RNA-seq, histopathology and whole-slide imaging, multimodal registration, computational neuroscience.}
-\skillrow{Infrastructure}{High-performance computing, remote Linux environments, multi-GPU training, parallel API workflows, experiment logging and audit pipelines.}
-\skillrow{Languages}{Mandarin Chinese, Cantonese, and Teochew; English (TOEFL 105+); Spanish (basic).}
+\vspace{0.55em}
+{\large\bfseries\color{Navy}Honours and Languages}\par
+\vspace{-0.35em}\color{Rule}\rule{\textwidth}{0.45pt}\par
+\vspace{0.32em}
+\color{Ink}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries\color{Navy}}p{35mm}X@{}}
+Selected Honour & First Prize, National Biology Olympiad (China); ranked 9th in Guangdong Province \\
+Languages & Mandarin, Cantonese, and Teochew (native); English (TOEFL 105); Spanish (basic) \\
+\end{tabularx}
 
 \end{document}
