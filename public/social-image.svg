@@ -5,10 +5,13 @@
       <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <rect width="1200" height="630" fill="#111827"/>
-  <rect width="1200" height="630" fill="url(#grad)" opacity="0.1"/>
-  <circle cx="600" cy="315" r="250" fill="url(#grad)" opacity="0.1" filter="blur(40px)"/>
-  
-  <text x="600" y="280" font-family="Arial, sans-serif" font-size="80" font-weight="bold" fill="white" text-anchor="middle">Jiahao's Blog</text>
-  <text x="600" y="380" font-family="Arial, sans-serif" font-size="40" fill="#cbd5e1" text-anchor="middle">Thinking in Algorithms</text>
+  <rect width="1200" height="630" fill="#111827" />
+  <rect width="1200" height="630" fill="url(#grad)" opacity="0.14" />
+  <circle cx="930" cy="110" r="280" fill="url(#grad)" opacity="0.18" />
+  <circle cx="180" cy="600" r="330" fill="url(#grad)" opacity="0.12" />
+
+  <text x="100" y="175" font-family="Arial, sans-serif" font-size="34" font-weight="600" fill="#a5b4fc">MD CANDIDATE · AI RESEARCHER</text>
+  <text x="100" y="290" font-family="Arial, sans-serif" font-size="82" font-weight="700" fill="white">Jia-Hao Ji</text>
+  <text x="100" y="390" font-family="Arial, sans-serif" font-size="46" font-weight="600" fill="#e5e7eb">AI Systems for Biomedical Discovery</text>
+  <text x="100" y="475" font-family="Arial, sans-serif" font-size="28" fill="#cbd5e1">Agentic AI · Spatial Omics · Multi-Agent Reasoning</text>
 </svg>

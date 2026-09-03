@@ -2,21 +2,27 @@
 import Layout from "../layouts/Layout.astro";
 import ProfileSidebar from "../components/ProfileSidebar.astro";
 import * as Narrative from "../content/about/narrative.md";
-
-// We use max-w-6xl for this page to accommodate the two-column layout
 ---
 
-<Layout title="About Me - Jiahao Ji" maxWidth="max-w-6xl">
-  <div class="grid grid-cols-1 md:grid-cols-12 gap-8 mt-4">
-    <!-- Left Column: Sticky Sidebar -->
+<Layout
+  title="About | Jia-Hao Ji"
+  description="Research profile of Jia-Hao Ji, an M.D. candidate and AI researcher working on agentic AI, multimodal biomedical learning, spatial omics, and multi-agent reasoning."
+  maxWidth="max-w-6xl"
+>
+  <div class="mt-4 grid grid-cols-1 gap-8 md:grid-cols-12">
     <div class="md:col-span-4 lg:col-span-3">
       <ProfileSidebar />
     </div>
-    
-    <!-- Right Column: Scrolling Narrative -->
-    <div class="md:col-span-8 lg:col-span-9 bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-8 border-b pb-4 dark:border-gray-700">About Me</h1>
-      <article class="prose prose-indigo dark:prose-invert max-w-none">
+
+    <div
+      class="rounded-2xl border border-gray-100 bg-white p-7 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:col-span-8 md:p-10 lg:col-span-9"
+    >
+      <h1
+        class="mb-8 border-b border-gray-200 pb-4 text-4xl font-bold text-gray-900 dark:border-gray-700 dark:text-white"
+      >
+        About
+      </h1>
+      <article class="prose prose-indigo max-w-none dark:prose-invert">
         <Narrative.Content />
       </article>
     </div>

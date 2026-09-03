@@ -1,61 +1,71 @@
-Hello there! 👋 Welcome to my digital space. I am currently an 8-year M.D. candidate specializing in Neurology at Fudan University. Beyond the clinical wards and academic papers, my curiosity knows no bounds. I am incredibly passionate about exploring broad interests and optimizing the efficiency of everyday life, particularly by leveraging the power of Artificial Intelligence. I don't just study medicine—I actively embrace and build with AI to solve problems. Whether you want to discuss neuroscience, multi-agent frameworks, or just share cool productivity hacks, I am always open to connecting with like-minded people!
+I am an eight-year M.D. candidate at **Fudan University Shanghai Medical College** and a physician-scientist in training. My work sits at the intersection of clinical medicine, computational biology, and artificial intelligence.
 
-## The Genesis of a Scientist
-Born in a Teochew family and raised in the vibrant city of Guangzhou, my aspiration to become a scientist began as early as elementary school. My formative years at Yingyuan No. 2 High School and Guangzhou No. 2 High School were defined by a relentless drive for discovery, which culminated in winning the First Prize in the National Biology Olympiad (ranking 9th in Guangdong Province). This achievement laid a rigorous foundation in the life sciences, but my curiosity has always been profoundly interdisciplinary, spanning mathematics, physics, and computer science. Driven purely by a passion for building, I am entirely self-taught in computer science and programming—a natural fusion of biological intuition and computational engineering that continues to shape my unique approach to scientific problem-solving.
+I build **reliable agentic and multimodal AI systems for biomedical discovery**. Rather than treating AI as a generic assistant, I study how it can recover fragmented scientific evidence, connect tissue morphology with molecular states, and preserve correct reasoning in multi-agent systems.
 
-## Clinical Reality & Neuroscience
-When it came to choosing my academic path, I pursued the elite 8-year M.D. clinical medicine program at Fudan University. My reasoning was straightforward: I wanted to engage in translational research that sits as close as possible to real-world human applications and patient care. During my medical training, I was deeply drawn to the intricacies of neuroscience. Yet, standing at the bedside and observing the devastating progression of neurodegenerative diseases, I experienced a profound realization. I recognized that the extreme complexity of human brain disorders and biological systems fundamentally exceeds the analytical capacity of traditional clinical methodologies.
+## Research Agenda
 
-## The Philosophy of Science & The Agentic Future
-My perspective is heavily influenced by a deep passion for the history of science. At its core, the essence of science is summarizing past experiences to better predict the future. While this pursuit is endlessly fascinating, the exponential explosion of high-dimensional biological data has outpaced the limits of the carbon-based human brain's cognitive load. 
+My current work is organized around three connected themes:
 
-I am firmly convinced that the future of scientific discovery will inevitably be driven by artificial intelligence. Specifically, AI Agents—capable of autonomously summarizing, reasoning, and processing massive, multi-modal datasets—will serve as the new paradigm and the primary engine of scientific advancement. This philosophy is why I transitioned into AI development, building autonomous systems to bridge the gap between computational rationality and biological truth. My ultimate goal remains unchanged: to relentlessly pursue the path of scientific research and leverage silicon-based intelligence to unlock the complexities of the human brain.
+- **Agentic AI for science:** autonomous, evidence-grounded systems for curating scientific data and executing complex research workflows.
+- **Multimodal biomedical AI and spatial omics:** methods that integrate histology, spatial transcriptomics, and clinical knowledge to study tissue microenvironments and neurological disease.
+- **Reliable multi-agent reasoning:** understanding how candidate generation, judge reliability, communication, and terminal answer selection determine system performance.
 
----
+The long-term objective is to develop general computational systems that make biomedical research more scalable, reproducible, and scientifically useful.
 
-## 🔬 Research & Clinical Experience
+## Selected Research
 
-*   **Fudan Data-Driven Future Lab & Institute of Medical Genetics** `(2023.09 – Present)`
-    *Research Project Leader | Focus: Alzheimer's Spatial Intelligence*
-    Under the guidance of Prof. Jintai Yu and Prof. Zhiyuan Yuan, I synergize clinical biomarker insights with cutting-edge spatial multi-omics technologies. I spearheaded the computational mapping of the β-amyloid plaque microenvironment, developing robust algorithms and utilizing transformer networks to align high-resolution whole-slide imaging (WSI) with spatial transcriptomic coordinates.
-*   **Fudan University (Prof. Bin Song's Lab)** `(2021.10 – 2023.06)`
-    *Undergraduate Researcher | Focus: Parkinson's Disease & scRNA-seq*
-    Engineered scRNA-seq analytical pipelines to identify crucial genetic markers, enhancing the purity, safety, and treatment efficacy of autologous iPSC-derived DA progenitor transplantation.
-*   **HKU Queen Mary Hospital** `(2025.04 – 2025.05)`
-    *Clinical Observer | Department of Medicine*
-    Gained immersive clinical exposure through rounds and multidisciplinary case discussions, bridging clinical practice with academic medicine.
-*   **Institutes of Biomedical Sciences, Fudan** `(2019.09 – 2021.07)`
-    *Undergraduate Researcher | Focus: DNA Methylation & Epigenetics*
-    Conducted fundamental wet-lab experiments in Prof. Fei Lan's Lab, building a solid methodological foundation in molecular biology.
+### [Candidate supply and answer selection shape the value of LLM judging in multi-agent systems](https://arxiv.org/abs/2608.25937)
 
-## 📝 Key Publications & Projects
+**First author · arXiv:2608.25937 · 2026**
 
-*   **SpatialDataAgent: Autonomous Curation of Spatial Omics Data** *(Prepared for Nature Methods)*
-    *Sole Developer.* Independently developed an autonomous framework using an Autoresearch-style iterative ReAct loop. Recovered 769 H&E-ST paired datasets from GEO (+141% over manual methods) and generated HESRT, a datalake containing 29.2 million spots of histological data.
-*   **Spatiotemporally resolved transcriptome unveils reactive subpallial microglia underlying cholinergic vulnerability in Alzheimer’s disease** *(Under Review at Cell)*
-    *Co-first Author.* Combined in situ β-amyloid staining with single-nucleus sequencing to generate the largest spatiotemporally resolved AD transcriptomic atlas to date (12.36 million spatial profiles).
-*   **ASSA (Autonomous Self-Sovereign Agent)** & **Spatial-CLIP**
-    Developed robust agentic frameworks featuring hierarchical memory systems, and fine-tuned vision-language encoders to align histopathology images with spatial transcriptomics data.
+We separate multi-agent reasoning into candidate generation, answer recognition, and terminal selection. Across five benchmarks, the study shows that a correct answer is often already present but can be lost during consensus. Combining answer frequency with an LLM judge changes only the final selection rule and improves accuracy from **63.82% to 70.82–70.95%**, primarily by rescuing correct answers outnumbered by popular errors.
 
-## 🎓 Teaching & Sharing
+### [SpatialDataAgent: Autonomous Spatial Omics Data Curation at Decade Scale](https://www.biorxiv.org/content/10.64898/2026.05.27.727615v1)
 
-I believe that sharing knowledge is the ultimate form of mastery. In December 2025, I was invited to conduct two experience-sharing sessions for both graduate and undergraduate students, focusing on the practical application of AI in academic workflows. Additionally, I delivered a course exploring the evolving relationship between Artificial Intelligence and scientific research, aiming to inspire fellow researchers to embrace the AI-native paradigm.
+**First author and lead developer · bioRxiv preprint · 2026**
 
-## 🛠️ Tooling & Productivity
+SpatialDataAgent is an evidence-grounded agentic workflow for recovering and standardizing fragmented multimodal spatial-omics records. Applied to a decade of GEO records, it identified **769 paired H&E–spatial transcriptomics datasets** and assembled HESRT, a datalake containing **29.2 million spots or cells**.
 
-I am a firm believer in optimizing every workflow. My primary productivity stack for research and development includes:
-*   **Core Frameworks**: PyTorch, LangGraph
-*   **Foundation Models**: DeepSeek, Google Gemini
-*   **Infrastructure**: High-performance Linux clusters and multi-GPU training environments.
+### Spatiotemporally resolved transcriptome unveils reactive subpallial microglia underlying cholinergic vulnerability in Alzheimer's disease
 
-## 📷 Life Beyond the Lab
+**Co-first author · Manuscript**
+
+This work combines spatial transcriptomics, single-nucleus sequencing, and in situ pathology to study the spatiotemporal organization of Alzheimer's disease and the relationship between reactive microglia and cholinergic vulnerability.
+
+## Research and Clinical Experience
+
+### Fudan Data-Driven Future Lab & Institute of Medical Genetics
+
+**Research project leader · 2023–present**
+
+Under the supervision of Prof. Jin-Tai Yu and Prof. Zhiyuan Yuan, I work on spatial multi-omics, Alzheimer's disease, and agentic systems for biomedical data. My contributions include multimodal tissue registration, large-scale spatial-data curation, and computational analysis of disease-associated tissue microenvironments.
+
+### Fudan University, Prof. Bin Song's Lab
+
+**Undergraduate researcher · 2021–2023**
+
+I developed single-cell RNA-sequencing analysis pipelines for research on iPSC-derived dopaminergic progenitor transplantation in Parkinson's disease.
+
+### Institutes of Biomedical Sciences, Fudan University
+
+**Undergraduate researcher · 2019–2021**
+
+I received early wet-lab training in molecular biology, DNA methylation, and epigenetics in Prof. Fei Lan's laboratory.
+
+My clinical training has included an elective at **HKU Queen Mary Hospital** and medical rotations at Fudan-affiliated hospitals. These experiences keep my computational work anchored to clinically meaningful questions.
+
+## Background
+
+I grew up in Guangzhou in a Teochew family. Early training in biology, including a provincial top-ten result in the National Biology Olympiad, led me toward scientific research. I later completed an exchange program at UCLA and gradually moved from wet-lab and single-cell analysis toward multimodal AI and autonomous research systems.
+
+I also teach and share practical AI workflows for medical students and researchers, with an emphasis on turning new tools into reproducible scientific practice rather than one-off demonstrations.
+
+## Beyond Research
 
 ![At UC Berkeley](/life_photo.jpg)
 
-*Captured at UC Berkeley during my exchange program at UCLA (2021-2022). Exploring the academic landscapes of the West Coast was a defining chapter in my journey.*
+*At UC Berkeley during my UCLA exchange program, 2021–2022.*
 
 ![At HKUST](/hkust_photo.jpg)
 
-*Visiting the Hong Kong University of Science and Technology (HKUST) during my clinical elective at HKU Queen Mary Hospital (2025). Engaging with the vibrant academic and research community in Hong Kong further broadened my global perspective.*
-
-
+*Visiting the Hong Kong University of Science and Technology during my HKU clinical elective, 2025.*
