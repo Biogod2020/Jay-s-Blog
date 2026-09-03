@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import ProfileSidebar from "../components/ProfileSidebar.astro";
+import ProfileLanguageSwitch from "../components/ProfileLanguageSwitch.astro";
 import * as Narrative from "../content/about/narrative.md";
 ---
 
@@ -9,22 +10,29 @@ import * as Narrative from "../content/about/narrative.md";
   description="Research profile of Jia-Hao Ji, an M.D. candidate and AI researcher working on agentic AI, multimodal biomedical learning, spatial omics, and multi-agent reasoning."
   maxWidth="max-w-6xl"
 >
-  <div class="mt-4 grid grid-cols-1 gap-8 md:grid-cols-12">
-    <div class="md:col-span-4 lg:col-span-3">
-      <ProfileSidebar />
+  <div class="mt-4">
+    <div class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-400">
+          Profile
+        </p>
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white">About</h1>
+      </div>
+      <ProfileLanguageSwitch current="en" />
     </div>
 
-    <div
-      class="rounded-2xl border border-gray-100 bg-white p-7 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:col-span-8 md:p-10 lg:col-span-9"
-    >
-      <h1
-        class="mb-8 border-b border-gray-200 pb-4 text-4xl font-bold text-gray-900 dark:border-gray-700 dark:text-white"
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-12">
+      <div class="md:col-span-4 lg:col-span-3">
+        <ProfileSidebar />
+      </div>
+
+      <div
+        class="rounded-2xl border border-gray-100 bg-white p-7 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:col-span-8 md:p-10 lg:col-span-9"
       >
-        About
-      </h1>
-      <article class="prose prose-indigo max-w-none dark:prose-invert">
-        <Narrative.Content />
-      </article>
+        <article class="prose prose-indigo max-w-none dark:prose-invert">
+          <Narrative.Content />
+        </article>
+      </div>
     </div>
   </div>
 </Layout>
