@@ -5,250 +5,163 @@ import { getCollection } from "astro:content";
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-
 const featuredPost = posts[0];
 const otherPosts = posts.slice(1);
+const researchAreas = [
+  "Agentic AI for Science",
+  "Multimodal AI & Spatial Omics",
+  "Reliable Multi-Agent Reasoning",
+];
 ---
 
-<Layout title="Jiahao's Blog - Thinking in Algorithms">
-  <!-- Hero Section -->
-  <section class="relative py-12 md:py-20 overflow-hidden">
-    <div
-      class="absolute inset-0 bg-gradient-to-br from-indigo-50/50 to-white/50 dark:from-gray-900/50 dark:to-gray-800/50 -z-10"
-    >
-    </div>
-    <div
-      class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] aspect-square bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl -z-10 pointer-events-none"
-    >
-    </div>
+<Layout
+  title="Jia-Hao Ji | MD Candidate & AI Researcher"
+  description="Jia-Hao Ji is an eight-year M.D. candidate at Fudan University Shanghai Medical College building reliable agentic and multimodal AI systems for biomedical discovery."
+  maxWidth="max-w-7xl"
+>
+  <section class="relative overflow-hidden py-14 md:py-24">
+    <div class="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50/70 via-white/40 to-cyan-50/60 dark:from-gray-900/60 dark:via-gray-900/30 dark:to-indigo-950/40"></div>
+    <div class="absolute left-1/2 top-0 -z-10 aspect-square w-full max-w-[900px] -translate-x-1/2 rounded-full bg-indigo-500/10 blur-3xl"></div>
 
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <div
-        class="inline-flex items-center px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 text-xs md:text-sm font-medium mb-6"
-      >
-        <span class="flex h-2 w-2 rounded-full bg-indigo-500 mr-2 animate-pulse"
-        ></span>
-        Exploring the Future of AI
+    <div class="mx-auto max-w-5xl px-4 text-center">
+      <div class="mb-7 inline-flex rounded-full border border-indigo-200 bg-white/70 px-4 py-2 text-xs font-semibold tracking-wide text-indigo-700 shadow-sm backdrop-blur dark:border-indigo-800 dark:bg-gray-900/60 dark:text-indigo-300 md:text-sm">
+        MD Candidate · AI Researcher · Fudan University
       </div>
-      <h1
-        class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight"
-      >
-        Thinking in <span
-          class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400"
-          >Algorithms</span
-        >
+      <h1 class="mb-7 text-4xl font-extrabold leading-tight tracking-tight text-gray-950 dark:text-white md:text-6xl lg:text-7xl">
+        AI Systems for
+        <span class="block bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-cyan-400">Biomedical Discovery</span>
       </h1>
-      <p
-        class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed px-4"
-      >
-        A digital garden where I document my journey through Artificial
-        Intelligence, Web Development, and the intersection of technology and
-        creativity.
+      <p class="mx-auto max-w-3xl text-lg leading-relaxed text-gray-600 dark:text-gray-300 md:text-xl">
+        I am Jia-Hao (Jay) Ji, an eight-year M.D. candidate and physician-scientist in training. I build reliable agentic and multimodal AI systems, with a focus on spatial omics, neuroscience, and multi-agent reasoning.
       </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href="#research" class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">View Selected Research</a>
+        <a href="/about" class="rounded-lg border border-gray-300 bg-white/80 px-5 py-3 text-sm font-semibold text-gray-800 transition hover:border-indigo-400 hover:text-indigo-600 dark:border-gray-700 dark:bg-gray-900/70 dark:text-gray-100">About Me</a>
+        <a href="https://arxiv.org/abs/2608.25937" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-300 bg-white/80 px-5 py-3 text-sm font-semibold text-gray-800 transition hover:border-indigo-400 hover:text-indigo-600 dark:border-gray-700 dark:bg-gray-900/70 dark:text-gray-100">Latest Paper ↗</a>
+      </div>
+      <div class="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-3 sm:grid-cols-3">
+        {researchAreas.map((area) => (
+          <div class="rounded-xl border border-gray-200 bg-white/60 px-4 py-3 text-sm font-medium text-gray-700 backdrop-blur dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-200">{area}</div>
+        ))}
+      </div>
     </div>
   </section>
 
-  <div class="max-w-6xl mx-auto px-4 py-12">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-      <!-- Main Content -->
-      <div class="lg:col-span-8 space-y-12">
-        <!-- Section Title -->
-        <div
-          class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-4"
-        >
-          <h2
-            class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2"
-          >
-            <i class="fas fa-pen-nib text-indigo-500"></i> Latest Writings
-          </h2>
-          <a
-            href="/blog"
-            class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition"
-          >
-            View Archive &rarr;
+  <div class="mx-auto max-w-6xl px-4 py-10 md:py-14">
+    <section id="research" class="scroll-mt-24">
+      <div class="mb-7 flex flex-col gap-3 border-b border-gray-200 pb-4 dark:border-gray-700 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-400">Selected Research</p>
+          <h2 class="text-3xl font-bold text-gray-950 dark:text-white">Current work</h2>
+        </div>
+        <a href="/about" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 dark:text-indigo-400">Full research profile &rarr;</a>
+      </div>
+
+      <article class="overflow-hidden rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-50 via-white to-cyan-50 p-7 shadow-sm dark:border-indigo-800 dark:from-indigo-950/40 dark:via-gray-900 dark:to-cyan-950/30 md:p-10">
+        <div class="mb-5 inline-flex rounded-full bg-indigo-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">New preprint · arXiv 2026</div>
+        <h3 class="max-w-4xl text-2xl font-bold leading-snug text-gray-950 dark:text-white md:text-4xl">
+          <a href="https://arxiv.org/abs/2608.25937" target="_blank" rel="noopener noreferrer" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">
+            Candidate supply and answer selection shape the value of LLM judging in multi-agent systems
           </a>
+        </h3>
+        <p class="mt-4 text-sm font-medium text-gray-600 dark:text-gray-300">Jia-Hao Ji, Sijie Li, Jiabei Cheng, Zixi She, Jin-Tai Yu, and Zhiyuan Yuan</p>
+        <p class="mt-5 max-w-4xl text-base leading-relaxed text-gray-700 dark:text-gray-300 md:text-lg">
+          We isolate candidate generation, answer recognition, and terminal selection in multi-agent reasoning. Correct answers are often generated but lost during consensus; a judge-guided selection rule can rescue correct minority answers without changing the candidate pool.
+        </p>
+        <div class="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div class="rounded-xl border border-white/70 bg-white/70 p-4 dark:border-gray-700 dark:bg-gray-900/60"><p class="text-2xl font-bold text-gray-950 dark:text-white">15,336</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">questions used to map judge reliability</p></div>
+          <div class="rounded-xl border border-white/70 bg-white/70 p-4 dark:border-gray-700 dark:bg-gray-900/60"><p class="text-2xl font-bold text-gray-950 dark:text-white">81,390</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">fixed candidate-pool replays</p></div>
+          <div class="rounded-xl border border-white/70 bg-white/70 p-4 dark:border-gray-700 dark:bg-gray-900/60"><p class="text-2xl font-bold text-gray-950 dark:text-white">63.82% → 70.82–70.95%</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">accuracy after changing only answer selection</p></div>
+        </div>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="https://arxiv.org/abs/2608.25937" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">Read on arXiv ↗</a>
+          <span class="rounded-lg border border-indigo-200 bg-white/60 px-4 py-2.5 text-sm font-medium text-gray-700 dark:border-indigo-800 dark:bg-gray-900/50 dark:text-gray-200">arXiv:2608.25937 · cs.AI · cs.MA</span>
+        </div>
+      </article>
+
+      <article class="mt-6 rounded-2xl border border-gray-200 bg-white/80 p-7 shadow-sm dark:border-gray-700 dark:bg-gray-800/70 md:p-8">
+        <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+          <div class="max-w-4xl">
+            <p class="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-emerald-600 dark:text-emerald-400">bioRxiv preprint · Agentic AI for science</p>
+            <h3 class="text-2xl font-bold text-gray-950 dark:text-white">
+              <a href="https://www.biorxiv.org/content/10.64898/2026.05.27.727615v1" target="_blank" rel="noopener noreferrer" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">SpatialDataAgent: Autonomous Spatial Omics Data Curation at Decade Scale</a>
+            </h3>
+            <p class="mt-4 leading-relaxed text-gray-600 dark:text-gray-300">An evidence-grounded agentic workflow for recovering and standardizing fragmented multimodal spatial-omics records. The HESRT datalake contains 769 paired H&amp;E–spatial transcriptomics datasets and 29.2 million spots or cells.</p>
+          </div>
+          <a href="https://www.biorxiv.org/content/10.64898/2026.05.27.727615v1" target="_blank" rel="noopener noreferrer" class="shrink-0 text-sm font-semibold text-indigo-600 hover:text-indigo-800 dark:text-indigo-400">View preprint ↗</a>
+        </div>
+      </article>
+    </section>
+
+    <div class="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-12">
+      <div class="space-y-12 lg:col-span-8">
+        <div class="flex items-center justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
+          <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white"><i class="fas fa-pen-nib text-indigo-500"></i> Latest Writings</h2>
+          <a href="/blog" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400">View Archive &rarr;</a>
         </div>
 
-        <!-- Featured Post -->
-        {
-          featuredPost && (
-            <article class="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
-              <div class="p-6 md:p-10 relative z-20">
-                <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-4">
-                  <span class="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-300 px-3 py-1 rounded-full font-medium">
-                    Featured
-                  </span>
-                  <time datetime={featuredPost.data.pubDate.toISOString()}>
-                    {featuredPost.data.pubDate.toLocaleDateString("en-us", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-                </div>
-                <a
-                  href={`/blog/${featuredPost.slug}`}
-                  class="block group-hover:translate-x-1 transition-transform duration-300"
-                >
-                  <h3 class="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                    {featuredPost.data.title}
-                  </h3>
-                  <p class="text-gray-600 dark:text-gray-300 text-base md:text-lg line-clamp-3 mb-6">
-                    {featuredPost.data.description}
-                  </p>
-                </a>
-                <div class="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-medium group-hover:translate-x-2 transition-transform">
-                  Read Article <i class="fas fa-arrow-right text-sm" />
-                </div>
+        {featuredPost && (
+          <article class="group overflow-hidden rounded-2xl border border-gray-100 bg-white/80 shadow-xl backdrop-blur-sm transition hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800/80">
+            <div class="p-6 md:p-10">
+              <div class="mb-4 flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                <span class="rounded-full bg-indigo-50 px-3 py-1 font-medium text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-300">Featured</span>
+                <time datetime={featuredPost.data.pubDate.toISOString()}>{featuredPost.data.pubDate.toLocaleDateString("en-us", { year: "numeric", month: "long", day: "numeric" })}</time>
               </div>
-            </article>
-          )
-        }
+              <a href={`/blog/${featuredPost.slug}`}>
+                <h3 class="mb-4 text-2xl font-bold text-gray-900 transition group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400 md:text-3xl">{featuredPost.data.title}</h3>
+                <p class="mb-6 line-clamp-3 text-base text-gray-600 dark:text-gray-300 md:text-lg">{featuredPost.data.description}</p>
+              </a>
+              <a href={`/blog/${featuredPost.slug}`} class="font-medium text-indigo-600 dark:text-indigo-400">Read Article &rarr;</a>
+            </div>
+          </article>
+        )}
 
-        <!-- Other Posts Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {
-            otherPosts.map((post) => (
-              <article class="flex flex-col bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden group">
-                <div class="p-6 flex-1 flex flex-col">
-                  <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-3">
-                    <i class="far fa-calendar" />
-                    <time datetime={post.data.pubDate.toISOString()}>
-                      {post.data.pubDate.toLocaleDateString("en-us", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </time>
-                  </div>
-                  <a href={`/blog/${post.slug}`} class="block flex-1">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors line-clamp-2">
-                      {post.data.title}
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-4">
-                      {post.data.description}
-                    </p>
-                  </a>
-                  <a
-                    href={`/blog/${post.slug}`}
-                    class="inline-flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline mt-auto"
-                  >
-                    Read more
-                  </a>
-                </div>
-              </article>
-            ))
-          }
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+          {otherPosts.map((post) => (
+            <article class="group flex flex-col rounded-xl border border-gray-100 bg-white/80 p-6 shadow-sm backdrop-blur-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-800/80">
+              <div class="mb-3 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                <i class="far fa-calendar"></i>
+                <time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString("en-us", { year: "numeric", month: "short", day: "numeric" })}</time>
+              </div>
+              <a href={`/blog/${post.slug}`} class="flex-1">
+                <h3 class="mb-3 line-clamp-2 text-xl font-bold text-gray-900 transition group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400">{post.data.title}</h3>
+                <p class="mb-4 line-clamp-3 text-sm text-gray-600 dark:text-gray-400">{post.data.description}</p>
+              </a>
+              <a href={`/blog/${post.slug}`} class="mt-auto text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400">Read more</a>
+            </article>
+          ))}
         </div>
       </div>
 
-      <!-- Sidebar -->
-      <aside class="lg:col-span-4 space-y-8">
-        <!-- About Card -->
-        <div
-          class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700"
-        >
-          <div class="flex items-center gap-4 mb-4">
-            <div
-              class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl"
-            >
-              J
-            </div>
-            <div>
-              <h3 class="font-bold text-gray-900 dark:text-white">Jiahao</h3>
-              <p class="text-xs text-gray-500 dark:text-gray-400">
-                AI Researcher & Developer
-              </p>
-            </div>
+      <aside class="space-y-8 lg:col-span-4">
+        <div class="rounded-2xl border border-gray-100 bg-white/80 p-6 shadow-sm backdrop-blur-sm dark:border-gray-700 dark:bg-gray-800/80">
+          <div class="mb-5 flex items-center gap-4">
+            <img src="/avatar.jpg" alt="Portrait of Jia-Hao Ji" class="h-14 w-14 rounded-full object-cover ring-2 ring-indigo-100 dark:ring-indigo-900" />
+            <div><h3 class="font-bold text-gray-900 dark:text-white">Jia-Hao Ji</h3><p class="text-xs text-gray-500 dark:text-gray-400">MD Candidate &amp; AI Researcher</p></div>
           </div>
-          <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-            Passionate about leveraging AI to transform how we learn, create,
-            and visualize knowledge.
-          </p>
-          <div class="flex gap-3">
-            <a href="#" class="text-gray-400 hover:text-indigo-500 transition"
-              ><i class="fab fa-github text-xl"></i></a
-            >
-            <a href="#" class="text-gray-400 hover:text-blue-400 transition"
-              ><i class="fab fa-twitter text-xl"></i></a
-            >
-            <a href="#" class="text-gray-400 hover:text-blue-600 transition"
-              ><i class="fab fa-linkedin text-xl"></i></a
-            >
+          <p class="mb-5 text-sm leading-relaxed text-gray-600 dark:text-gray-300">Physician-scientist in training at Fudan University, working at the intersection of clinical medicine, computational biology, and artificial intelligence.</p>
+          <div class="flex items-center gap-4">
+            <a href="https://github.com/Biogod2020" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" class="text-gray-400 hover:text-indigo-500"><i class="fab fa-github text-xl"></i></a>
+            <a href="mailto:Jhji19@fudan.edu.cn" aria-label="Email Jia-Hao Ji" class="text-gray-400 hover:text-indigo-500"><i class="fas fa-envelope text-xl"></i></a>
+            <a href="https://arxiv.org/abs/2608.25937" target="_blank" rel="noopener noreferrer" aria-label="Latest arXiv paper" class="text-gray-400 hover:text-indigo-500"><i class="fas fa-file-lines text-xl"></i></a>
           </div>
         </div>
 
-        <!-- ASSA System Status -->
-        <div
-          class="bg-indigo-50/50 dark:bg-indigo-900/20 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-indigo-100 dark:border-indigo-800"
-        >
-          <h3
-            class="font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2"
-          >
-            <span class="relative flex h-3 w-3">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
-            </span>
-            ASSA V3.5 Active
-          </h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">
-            The blog is currently governed by the <strong>Weaver</strong> autonomous self-evolution protocol.
-          </p>
-          <a
-            href="/blog/assa-weaver-evolution"
-            class="inline-flex items-center text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 transition"
-          >
-            View System Soul &rarr;
-          </a>
+        <div class="rounded-2xl border border-indigo-100 bg-indigo-50/60 p-6 shadow-sm dark:border-indigo-800 dark:bg-indigo-900/20">
+          <h3 class="mb-4 font-bold text-gray-900 dark:text-white">Research Focus</h3>
+          <div class="space-y-4">
+            <div><p class="text-sm font-semibold text-gray-800 dark:text-gray-100">Agentic AI for Science</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">Evidence-grounded systems for scientific data and workflows.</p></div>
+            <div><p class="text-sm font-semibold text-gray-800 dark:text-gray-100">Multimodal Biomedical AI</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">Histology, spatial omics, and disease-focused learning.</p></div>
+            <div><p class="text-sm font-semibold text-gray-800 dark:text-gray-100">Reliable Multi-Agent Reasoning</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">Candidate generation, judge reliability, and answer selection.</p></div>
+          </div>
         </div>
 
-        <!-- Topics (Static for now) -->
-        <div
-          class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700"
-        >
-          <h3
-            class="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2"
-          >
-            <i class="fas fa-tags text-indigo-500"></i> Trending Topics
-          </h3>
+        <div class="rounded-2xl border border-gray-100 bg-white/80 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800/80">
+          <h3 class="mb-4 flex items-center gap-2 font-bold text-gray-900 dark:text-white"><i class="fas fa-tags text-indigo-500"></i> Topics</h3>
           <div class="flex flex-wrap gap-2">
-            {
-              [
-                "Artificial Intelligence",
-                "Data Visualization",
-                "Web Development",
-                "Astro",
-                "React",
-                "Machine Learning",
-              ].map((tag) => (
-                <span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full hover:bg-indigo-100 dark:hover:bg-indigo-900 hover:text-indigo-600 dark:hover:text-indigo-300 transition cursor-pointer">
-                  #{tag}
-                </span>
-              ))
-            }
-          </div>
-        </div>
-
-        <!-- Newsletter (Mockup) -->
-        <div
-          class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white shadow-lg"
-        >
-          <h3 class="font-bold text-lg mb-2">Stay Updated</h3>
-          <p class="text-indigo-100 text-sm mb-4">
-            Get the latest AI insights delivered to your inbox.
-          </p>
-          <div class="flex gap-2">
-            <input
-              type="email"
-              placeholder="Your email"
-              class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-indigo-200 text-sm focus:outline-none focus:ring-2 focus:ring-white/50"
-            />
-            <button
-              class="bg-white text-indigo-600 px-3 py-2 rounded-lg text-sm font-bold hover:bg-indigo-50 transition"
-            >
-              <i class="fas fa-paper-plane"></i>
-            </button>
+            {["Agentic AI", "Multi-Agent Systems", "Spatial Omics", "Neuroscience", "Multimodal Learning", "AI for Science"].map((tag) => (
+              <span class="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-700 dark:text-gray-300">#{tag}</span>
+            ))}
           </div>
         </div>
       </aside>
