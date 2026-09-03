@@ -19,21 +19,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Compile curriculum vitae
+      - name: Compile curriculum vitae files
         uses: xu-cheng/latex-action@v4
         with:
-          root_file: cv/Jia-Hao_Ji_CV.tex
+          root_file: |
+            cv/Jia-Hao_Ji_CV.tex
+            cv/Jia-Hao_Ji_One_Page_CV.tex
           work_in_root_file_dir: true
           texlive_version: 2026
           os: debian
 
-      - name: Stage verified CV for the website
+      - name: Stage verified CV files for the website
         shell: bash
         run: |
           set -euo pipefail
+          test -s cv/Jia-Hao_Ji_One_Page_CV.pdf
           test -s cv/Jia-Hao_Ji_CV.pdf
-          cp cv/Jia-Hao_Ji_CV.pdf public/Jia-Hao_Ji_CV.pdf
-          cp cv/Jia-Hao_Ji_CV.pdf public/resume_long.pdf
+          cp cv/Jia-Hao_Ji_One_Page_CV.pdf public/Jia-Hao_Ji_CV.pdf
+          cp cv/Jia-Hao_Ji_One_Page_CV.pdf public/resume_long.pdf
+          cp cv/Jia-Hao_Ji_CV.pdf public/Jia-Hao_Ji_Academic_CV.pdf
 
       - name: Install, build, and upload website
         uses: withastro/action@v2
