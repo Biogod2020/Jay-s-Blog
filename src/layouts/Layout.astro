@@ -11,7 +11,6 @@ interface Props {
   localScripts?: string[];
   localStyles?: string[];
   maxWidth?: string;
-  locale?: "en" | "zh";
   lang?: string;
 }
 
@@ -23,31 +22,21 @@ const {
   localScripts = [],
   localStyles = [],
   maxWidth = "max-w-4xl",
-  locale = "en",
-  lang,
+  lang = "en",
 } = Astro.props;
 
-const isZh = locale === "zh";
-const pageLang = lang ?? (isZh ? "zh-CN" : "en");
-const brandHref = isZh ? "/zh/" : "/";
-const navItems = isZh
-  ? [
-      { href: "/zh/", label: "首页", hideOnMobile: false },
-      { href: "/zh/#research", label: "研究", hideOnMobile: true },
-      { href: "/zh/#about", label: "简介", hideOnMobile: true },
-      { href: "/blog", label: "博客", hideOnMobile: false },
-    ]
-  : [
-      { href: "/", label: "Home", hideOnMobile: false },
-      { href: "/#research", label: "Research", hideOnMobile: true },
-      { href: "/blog", label: "Blog", hideOnMobile: false },
-      { href: "/about", label: "About", hideOnMobile: true },
-    ];
+const useChineseFont = lang.toLowerCase().startsWith("zh");
+const navItems = [
+  { href: "/", label: "Home", hideOnMobile: false },
+  { href: "/#research", label: "Research", hideOnMobile: true },
+  { href: "/blog", label: "Blog", hideOnMobile: false },
+  { href: "/about", label: "About", hideOnMobile: true },
+];
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
-<html lang={pageLang}>
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -97,7 +86,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(image, Astro.url)} />
-    <meta property="og:locale" content={isZh ? "zh_CN" : "en_US"} />
+    <meta property="og:locale" content={useChineseFont ? "zh_CN" : "en_US"} />
 
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={Astro.url} />
@@ -131,7 +120,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body
     class="relative bg-gray-50 text-gray-900 antialiased transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100"
-    style={isZh ? "font-family: 'Noto Sans SC', Inter, system-ui, sans-serif;" : undefined}
+    style={useChineseFont ? "font-family: 'Noto Sans SC', Inter, system-ui, sans-serif;" : undefined}
   >
     <AuraBackground />
     <header
@@ -141,10 +130,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         class={`mx-auto flex items-center justify-between gap-3 px-4 py-4 ${maxWidth}`}
       >
         <a
-          href={brandHref}
+          href="/"
           class="shrink-0 text-lg font-bold text-indigo-600 dark:text-indigo-400 md:text-xl"
         >
-          {isZh ? "纪家灏" : "Jia-Hao Ji"}
+          Jia-Hao Ji
         </a>
         <div class="flex items-center gap-2 text-xs sm:gap-3 sm:text-sm md:gap-4 md:text-base">
           {
@@ -160,13 +149,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
               </a>
             ))
           }
-          <a
-            href={isZh ? "/" : "/zh/"}
-            class="rounded-full border border-gray-200 bg-white/70 px-2.5 py-1 font-semibold text-indigo-600 transition hover:border-indigo-300 hover:bg-indigo-50 dark:border-gray-700 dark:bg-gray-900/60 dark:text-indigo-400 dark:hover:border-indigo-700"
-            aria-label={isZh ? "Switch to English" : "切换到中文版"}
-          >
-            {isZh ? "EN" : "中文"}
-          </a>
           <ThemeToggle />
         </div>
       </nav>
@@ -182,11 +164,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       <div
         class={`mx-auto px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400 ${maxWidth}`}
       >
-        {
-          isZh
-            ? `© ${new Date().getFullYear()} 纪家灏。使用 Astro 构建。`
-            : `© ${new Date().getFullYear()} Jia-Hao Ji. Built with Astro.`
-        }
+        &copy; {new Date().getFullYear()} Jia-Hao Ji. Built with Astro.
       </div>
     </footer>
 
