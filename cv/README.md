@@ -1,6 +1,11 @@
-# One-Page Research CV
+# Curriculum Vitae
 
-The website CV is generated from `Jia-Hao_Ji_CV.tex` during pull-request and production builds. It is designed as a single A4 research resume and uses the existing public profile image at `public/avatar.jpg`.
+The website publishes two CV formats from maintainable pdfLaTeX sources:
+
+- `Jia-Hao_Ji_CV.tex` - the primary one-page research CV with portrait
+- `Jia-Hao_Ji_Academic_CV.tex` - the complete two-page academic CV
+
+The one-page source uses the existing public portrait at `public/avatar.jpg`. Both sources use TeX Live packages only; no private fonts or image assets are required.
 
 ## Build locally
 
@@ -8,13 +13,15 @@ From the repository root:
 
 ```bash
 latexmk -pdf -interaction=nonstopmode -halt-on-error cv/Jia-Hao_Ji_CV.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error cv/Jia-Hao_Ji_Academic_CV.tex
 ```
 
-The source is pdfLaTeX-compatible and uses the TeX Live `lato` package, so no private or system font files are required.
+## Public URLs
 
-The deployment workflow copies the compiled PDF to both:
+The deployment workflow publishes:
 
-- `/Jia-Hao_Ji_CV.pdf` - canonical public URL
-- `/resume_long.pdf` - legacy-compatible alias
+- `/Jia-Hao_Ji_CV.pdf` - primary one-page CV with portrait
+- `/resume_long.pdf` - legacy-compatible alias of the one-page CV
+- `/Jia-Hao_Ji_Academic_CV.pdf` - complete two-page academic CV
 
-After editing the CV, confirm that the output remains exactly one A4 page, then render it at high resolution and inspect the portrait crop, text wrapping, column alignment, and hyperlinks before merging.
+After editing either source, confirm the intended page count, render every page at high resolution, inspect the portrait crop and text layout, and verify fonts and hyperlinks before merging.
