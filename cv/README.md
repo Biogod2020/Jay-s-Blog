@@ -1,19 +1,28 @@
-# Academic CV
+# Curriculum Vitae
 
-The website CV is generated from `Jia-Hao_Ji_CV.tex` during pull-request and production builds.
+The website publishes two PDF versions from maintainable pdfLaTeX sources:
+
+- `Jia-Hao_Ji_One_Page_CV.tex` — the primary one-page research CV with profile photo
+- `Jia-Hao_Ji_CV.tex` — the complete two-page academic CV
+
+The profile photo is read from `../public/avatar.jpg`; no private font or image assets are required.
 
 ## Build locally
 
 ```bash
 cd cv
+latexmk -pdf -interaction=nonstopmode -halt-on-error Jia-Hao_Ji_One_Page_CV.tex
 latexmk -pdf -interaction=nonstopmode -halt-on-error Jia-Hao_Ji_CV.tex
 ```
 
-The source is intentionally pdfLaTeX-compatible and uses the TeX Live `lato` package, so no private or system font files are required.
+Both sources are pdfLaTeX-compatible and use TeX Live packages only.
 
-The deployment workflow copies the compiled PDF to both:
+## Public URLs
 
-- `/Jia-Hao_Ji_CV.pdf` — canonical public URL
-- `/resume_long.pdf` — legacy-compatible alias
+The deployment workflow publishes:
 
-After editing the CV, render both A4 pages and inspect them before merging.
+- `/Jia-Hao_Ji_CV.pdf` — primary one-page CV
+- `/resume_long.pdf` — legacy-compatible alias of the one-page CV
+- `/Jia-Hao_Ji_Academic_CV.pdf` — complete two-page academic CV
+
+After editing either source, confirm the page count, render every page at high resolution, inspect for clipping or overlap, and verify that fonts and hyperlinks remain intact before merging.
