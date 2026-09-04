@@ -28,7 +28,7 @@ SpatialDataAgent is an evidence-grounded agentic workflow for recovering and sta
 
 ### Spatiotemporally resolved transcriptome unveils reactive subpallial microglia underlying cholinergic vulnerability in Alzheimer's disease
 
-**Co-first author · Manuscript**
+**Co-first author · Under review at Cell**
 
 This work combines spatial transcriptomics, single-nucleus sequencing, and in situ pathology to study the spatiotemporal organization of Alzheimer's disease and the relationship between reactive microglia and cholinergic vulnerability.
 
