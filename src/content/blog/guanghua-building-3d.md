@@ -77,13 +77,13 @@ for row in range(n_floors):
 
 这份指令 JSON 原始约 560 KB，gzip 后只有大约 **56 KB**，再转成 Base64 也只有约 **75 KB**。HTML 打开后先解压 JSON，然后在浏览器里重新生成几何。建筑主体的 4,550 个 box 不是创建 4,550 次 draw call，而是按材质合并成 `InstancedMesh`。
 
-核心逻辑类似这样：
+核心逻辑类似这样。这里把压缩数据拆成若干静态分片，只是为了方便作为普通文本文件随博客一起部署；加载后会按顺序拼回同一段 gzip + Base64 数据：
 
 ```js
 const DATA_URLS = [
-  '/interactive/guanghua-data/gh_model_part_00.txt',
-  '/interactive/guanghua-data/gh_model_part_01.txt',
-  '/interactive/guanghua-data/gh_model_part_02.txt',
+  '/interactive/guanghua-data/gh_model_part_00_0.txt',
+  '/interactive/guanghua-data/gh_model_part_00_1.txt',
+  // ...其余数据分片
   '/interactive/guanghua-data/gh_model_part_03.txt',
 ];
 
@@ -102,7 +102,7 @@ matrices.forEach((matrix, i) => mesh.setMatrixAt(i, matrix));
 scene.add(mesh);
 ```
 
-这样最终的交互 viewer 只有大约 **88 KB**，而且建筑几何仍来自同一套参数化建模定义。树冠这类非关键景观在网页端换成了更轻量的实例化低多边形几何，换取更低的 draw call 和更稳定的手机性能。
+这样最终的交互 viewer 本身加上压缩后的模型描述只有大约 **88 KB**，而且建筑几何仍来自同一套参数化建模定义。树冠这类非关键景观在网页端换成了更轻量的实例化低多边形几何，换取更低的 draw call 和更稳定的手机性能。Three.js / OrbitControls 则从 CDN 作为模块加载。
 
 之后就是常规 Three.js：`PerspectiveCamera` 负责透视相机，`OrbitControls` 负责拖拽 / 缩放，`HemisphereLight + DirectionalLight` 提供基础建筑光照，再加三个预设机位、自动旋转和夜景开关。
 
