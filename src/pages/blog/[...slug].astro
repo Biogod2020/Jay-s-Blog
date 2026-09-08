@@ -19,6 +19,8 @@ const { Content, headings } = await post.render();
 <Layout 
 	title={post.data.title} 
 	description={post.data.description}
+	lang={post.data.lang ?? 'en'}
+	image={post.data.heroImage}
 	externalScripts={post.data.externalScripts}
 	localScripts={post.data.localScripts}
 	localStyles={post.data.localStyles}
@@ -31,7 +33,7 @@ const { Content, headings } = await post.render();
 			<div class="mb-8 text-center">
 				<h1 class="mb-2 text-gray-900 dark:text-white !text-4xl md:!text-5xl !leading-tight">{post.data.title}</h1>
 				<time datetime={post.data.pubDate.toISOString()} class="text-gray-500 dark:text-gray-400">
-					{post.data.pubDate.toLocaleDateString('en-us', {
+					{post.data.pubDate.toLocaleDateString(post.data.lang ?? 'en-us', {
 						year: 'numeric',
 						month: 'long',
 						day: 'numeric',
