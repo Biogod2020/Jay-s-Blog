@@ -3,6 +3,7 @@ title: "Qwen-VL 系列发展路径：李宏毅风格超长讲义"
 description: "从 Qwen-VL 到 Qwen3-VL 的深度演进指南，一份「李宏毅风格」的深度学习讲义。"
 pubDate: 2025-12-06
 externalScripts: ["https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"]
+lang: zh-CN
 ---
 <!-- MathJax Configuration -->
 <script>

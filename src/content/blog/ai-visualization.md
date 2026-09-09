@@ -4,6 +4,7 @@ description: "从被动阅读到全流程交互重构 - 建立“AI 逻辑 + HTM
 pubDate: 2025-12-01
 localScripts:
   - "/scripts/ai-visualization.js"
+lang: zh-CN
 ---
 
 <div class="not-prose mb-12 space-y-8">

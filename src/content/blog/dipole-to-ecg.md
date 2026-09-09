@@ -2,6 +2,7 @@
 title: "心电图物理原理：从电偶极子到心脏向量"
 description: "作为医学生，我们熟知心电图的规则，但规则背后的物理原理是什么？本文从电偶极子出发，深入解读心电图背后的电场理论，揭示P-QRS-T波形产生的物理本质。"
 pubDate: 2025-12-29
+lang: zh-CN
 ---
 
 <header class="pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center" id="intro">

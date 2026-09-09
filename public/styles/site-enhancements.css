@@ -1,0 +1,17 @@
+/* Keep the indigo/cyan glass design; refine navigation and reading. */
+body{font-family:Inter,'Noto Sans SC',system-ui,sans-serif}
+.skip-link{position:fixed;left:1rem;top:-6rem;z-index:100;padding:.75rem 1rem;background:#4f46e5;color:white;border-radius:.6rem}.skip-link:focus{top:1rem}
+:focus-visible{outline:2px solid #6366f1;outline-offset:4px}
+.site-menu summary{list-style:none;cursor:pointer;padding:.5rem}.site-menu summary::-webkit-details-marker{display:none}.site-menu div a{display:block;padding:.6rem 0}
+.site-subscribe{border:1px solid #c7d2fe;border-radius:1rem;background:linear-gradient(125deg,rgba(238,242,255,.9),rgba(255,255,255,.85),rgba(236,254,255,.7));padding:1.5rem;margin:2rem 0}
+.dark .site-subscribe{border-color:#3730a3;background:linear-gradient(125deg,rgba(49,46,129,.25),rgba(17,24,39,.8),rgba(8,51,68,.25))}
+.site-subscribe a{display:inline-block;color:#4f46e5;font-weight:600;margin:.5rem 1rem 0 0}.dark .site-subscribe a{color:#a5b4fc}
+.archive-controls input,.archive-controls select{width:100%;border:1px solid #d1d5db;border-radius:.75rem;padding:.8rem 1rem;background:rgba(255,255,255,.8);color:#111827}.dark .archive-controls input,.dark .archive-controls select{background:#1f2937;color:#f9fafb;border-color:#4b5563}
+.archive-card[hidden]{display:none!important}
+.cm-article .cm-photo{max-width:100%}.cm-article .cm-photo img{display:block;width:auto;max-width:100%;height:auto;max-height:680px;object-fit:contain;margin:0 auto;background:rgba(148,163,184,.06)}
+.cm-article .cm-photo figcaption{font-size:.78rem;line-height:1.8;color:#64748b}.dark .cm-article .cm-photo figcaption{color:#a5b4c7}
+.prose .site-subscribe h2{margin-top:0;font-size:1.3rem;border:0;background:none;-webkit-text-fill-color:currentColor}.prose .site-subscribe p{font-size:1rem;margin:.5rem 0}
+.prose{overflow-wrap:anywhere}.prose pre{overflow-x:auto;overflow-wrap:normal}.prose img{height:auto}.prose iframe{max-width:100%}
+.article-meta{font-size:.85rem;display:flex;justify-content:center;flex-wrap:wrap;gap:.4rem 1rem}
+@media(max-width:640px){.cm-article .cm-photo img{max-height:560px}.article-title{font-size:1.9rem!important;line-height:1.5!important}.site-subscribe{padding:1.25rem}.prose h2{font-size:1.55rem;line-height:1.55}.prose h3{font-size:1.25rem;line-height:1.5}.prose table{display:block;overflow-x:auto}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}

@@ -12,6 +12,7 @@ localScripts:
   - "/scripts/ai-science-paradigm.js"
 localStyles:
   - "/styles/ai-science-paradigm.css"
+lang: zh-CN
 ---
 
 <div class="text-center mb-12 -mt-4">

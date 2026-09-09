@@ -7,14 +7,6 @@ lang: zh-CN
 heroImage: /images/compressed-modernity/cover.svg
 localStyles:
   - /styles/compressed-modernity.css
-wechat:
-  draft: true
-  title: "压缩现代性与制度滞后：中国青年职业困境的形成机制"
-  author: "Jay"
-  digest: "医院需要他们值班，学校需要他们完成学位。工资、休息和独立生活，却可以一再往后排。这段等待，究竟由谁支付？"
-  cover: /images/compressed-modernity/cover.svg
-  sourceUrl: "https://jiahaoblog.com/blog/compressed-modernity-medical-training/"
-  openComment: false
 ---
 
 <div class="cm-article" lang="zh-CN" markdown="1">
@@ -34,11 +26,15 @@ wechat:
 
 这种处境并非朝夕形成。从住院医师制度初入中国，到计划经济时期的单位统包统配，再到市场化转型中的医院收支核算与住房教育改革，不同历史阶段的制度遗产层层累加，最终全部折叠进了一个二十多岁医学生的日程表。理解当代青年医生的困境，必须从这套相互冲突的制度锁链开始抽丝剥茧。[3](#ref-3)[10](#ref-10)[12](#ref-12)[16](#ref-16)
 
+<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:Hospital_corridor_2.jpg" target="_blank" rel="noopener noreferrer"><img src="/images/compressed-modernity/photos/hospital-corridor.webp" srcset="/images/compressed-modernity/photos/hospital-corridor-640.webp 640w, /images/compressed-modernity/photos/hospital-corridor.webp 800w" sizes="(max-width: 700px) 100vw, 850px" width="800" height="1135" loading="lazy" decoding="async" alt="医院走廊，2007年。环境资料图，非本文受访者所在病区。" /></a><figcaption>医院走廊，2007年。环境资料图，非本文受访者所在病区。 tanakawho / Wikimedia Commons · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>。按比例缩放并转为WebP，未裁切。 <a href="https://commons.wikimedia.org/wiki/File:Hospital_corridor_2.jpg">来源</a></figcaption></figure>
+
 ## 消失的后勤与被借用的传统
 
 在现代住院医师制度的一条重要源流里，医生是真的“住”在医院里。
 
 1889年约翰斯·霍普金斯医院开院，奥斯勒将年轻医师带到病床边，推行连续观察与贴身指导。20世纪20年代，北京协和医院引入这一培养传统，住院负责制与总住院医师制度逐渐成为中国现代临床教育的重要组成部分。[2](#ref-2)[3](#ref-3)
+
+<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:First_group_of_interns_at_Johns_Hopkins_Hospital%2C_April_1889.jpg" target="_blank" rel="noopener noreferrer"><img src="/images/compressed-modernity/photos/hopkins-interns-1889.webp" srcset="/images/compressed-modernity/photos/hopkins-interns-1889-640.webp 640w, /images/compressed-modernity/photos/hopkins-interns-1889.webp 1280w" sizes="(max-width: 700px) 100vw, 850px" width="1280" height="1008" loading="lazy" decoding="async" alt="1889年4月，约翰斯·霍普金斯医院第一批实习医师合影。美国国家医学图书馆藏，摄影者未详。" /></a><figcaption>1889年4月，约翰斯·霍普金斯医院第一批实习医师合影。美国国家医学图书馆藏，摄影者未详。 Unknown photographer / U.S. National Library of Medicine / Wikimedia Commons · <a href="https://creativecommons.org/publicdomain/mark/1.0/">Public domain</a>。按比例缩放并转为WebP，未裁切。 <a href="https://commons.wikimedia.org/wiki/File:First_group_of_interns_at_Johns_Hopkins_Hospital%2C_April_1889.jpg">来源</a></figcaption></figure>
 
 这种教学革新有着充分的专业理由：疾病的动态演变与救治决策，无法仅凭教科书掌握，必须在床旁长期的观察与反馈中习得。然而，今天的管理者往往选择性地遗忘了历史的另一半——当年的高强度训练，依托着周密的后勤支撑与组织投入。
 
@@ -46,7 +42,7 @@ wechat:
 
 如果今天的教学医院反复宣扬前辈“24小时不离病房”的奉献叙事，却对食宿保障、轮休机制与带教职责闭口不谈，这种对传统的继承便充斥着实用主义的算计：它精准继承了向下索取劳动的权力，却悄然剥离了机构应尽的照料义务。
 
-<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/7/76/William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg" loading="lazy" decoding="async" alt="奥斯勒床旁诊查历史照片，Wellcome藏品L0004900" /></a><figcaption>床旁诊查史料图。Wellcome Library, London / Wellcome Collection，藏品L0004900，<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>。原图按比例显示，具体拍摄年份未标。</figcaption></figure>
+<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg" target="_blank" rel="noopener noreferrer"><img src="/images/compressed-modernity/photos/osler-bedside.webp" srcset="/images/compressed-modernity/photos/osler-bedside-640.webp 640w, /images/compressed-modernity/photos/osler-bedside.webp 1196w" sizes="(max-width: 700px) 100vw, 850px" width="1196" height="1800" loading="lazy" decoding="async" alt="床旁诊查史料图。Wellcome藏品L0004900；具体拍摄年份未标。" /></a><figcaption>床旁诊查史料图。Wellcome藏品L0004900；具体拍摄年份未标。 Wellcome Library, London / Wellcome Collection / Wikimedia Commons · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>。按比例缩放并转为WebP，未裁切。 <a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg">来源</a></figcaption></figure>
 
 ## 统包统配的责任，与被筛选的历史
 
@@ -56,7 +52,7 @@ wechat:
 
 “我们当年也是这么熬过来的”——这句常被用于压制年轻人的说辞，经不起制度史的推敲。历史中有青年的服从，更有体制对用人单位权力的防范与约束。今天如果只记住前人的隐忍，却选择性遗忘组织曾经承担的托底保障与责任边界，本质上是对历史经验的肆意裁剪。
 
-<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:Old_building_of_Peking_Union_Medical_College_Hospital_(20180821142741).jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Old_building_of_Peking_Union_Medical_College_Hospital_%2820180821142741%29.jpg" loading="lazy" decoding="async" alt="北京协和医院老楼，摄于2018年" /></a><figcaption>北京协和医院老楼，2018年8月21日。摄影：N509FZ / Wikimedia Commons，<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>。建筑资料图，原图按比例显示。</figcaption></figure>
+<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:Old_building_of_Peking_Union_Medical_College_Hospital_%2820180821142741%29.jpg" target="_blank" rel="noopener noreferrer"><img src="/images/compressed-modernity/photos/pumch-old-building.webp" srcset="/images/compressed-modernity/photos/pumch-old-building-640.webp 640w, /images/compressed-modernity/photos/pumch-old-building.webp 1280w" sizes="(max-width: 700px) 100vw, 850px" width="1280" height="853" loading="lazy" decoding="async" alt="北京协和医院老楼，2018年8月21日。建筑资料照片。" /></a><figcaption>北京协和医院老楼，2018年8月21日。建筑资料照片。 N509FZ / Wikimedia Commons · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>。按比例缩放并转为WebP，未裁切。 <a href="https://commons.wikimedia.org/wiki/File:Old_building_of_Peking_Union_Medical_College_Hospital_%2820180821142741%29.jpg">来源</a></figcaption></figure>
 
 ## 经济核算的压力，与廉价的“学生时间”
 
@@ -71,6 +67,8 @@ wechat:
 ## 双向选择的风险，与单向延宕的人生
 
 1990年代的市场化改革，逐步拆开了旧有的工作与生活安排。1993年《中国教育改革和发展纲要》推动毕业生由“统包统配”向自主择业转轨；1998年住房制度改革要求停止住房实物分配，逐步实行货币化。此后，青年医生更需要依靠工资、家庭积累和信贷解决居住问题，就业与建立城市生活的风险也更多落到个人身上。[12](#ref-12)[7](#ref-7)
+
+<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:Wanbang_Garden_Pudong_Shanghai_2007.jpg" target="_blank" rel="noopener noreferrer"><img src="/images/compressed-modernity/photos/shanghai-housing.webp" srcset="/images/compressed-modernity/photos/shanghai-housing-640.webp 640w, /images/compressed-modernity/photos/shanghai-housing.webp 1280w" sizes="(max-width: 700px) 100vw, 850px" width="1280" height="960" loading="lazy" decoding="async" alt="上海浦东万邦都市花园住宅楼。住房改革段落的城市环境资料图。" /></a><figcaption>上海浦东万邦都市花园住宅楼。住房改革段落的城市环境资料图。 Ssarkarhyd / Wikimedia Commons · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>。按比例缩放并转为WebP，未裁切。 <a href="https://commons.wikimedia.org/wiki/File:Wanbang_Garden_Pudong_Shanghai_2007.jpg">来源</a></figcaption></figure>
 
 与此同时，培养制度的调整又会改写个人已经排好的人生计划。2009年上海推进新一轮住院医师培训改革时，中国青年报记录了医学生赵钢德原定签约被暂停的经历，也报道了毕业生对新增培训时间与待遇的担忧。“再规培三年”在文件上只需短短一行字，落到一个已经读了多年医学的人身上，却可能牵动成家、收入以及整个职业安排。[13](#ref-13)
 
