@@ -14,6 +14,16 @@ const blog = defineCollection({
 		externalScripts: z.array(z.string()).optional(),
 		localScripts: z.array(z.string()).optional(),
 		localStyles: z.array(z.string()).optional(),
+		wechat: z.object({
+			draft: z.boolean().optional(),
+			title: z.string().optional(),
+			author: z.string().optional(),
+			digest: z.string().optional(),
+			cover: z.string().optional(),
+			sourceUrl: z.string().url().optional(),
+			openComment: z.boolean().optional(),
+			onlyFansCanComment: z.boolean().optional(),
+		}).optional(),
 	}),
 });
 
