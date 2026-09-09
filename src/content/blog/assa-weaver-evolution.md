@@ -3,6 +3,7 @@ title: "Weaver：在实践中长出来的 AI 自进化系统"
 description: "记录 ASSA 项目从几行脚本进化为 V3.5 层级化知识图谱的真实历程。这不仅是技术的跃迁，更是对“人机协作主权”的深度思考。"
 pubDate: 2026-03-20
 heroImage: "/images/assa-evolution/cover.png"
+lang: zh-CN
 ---
 
 <div class="mb-12">

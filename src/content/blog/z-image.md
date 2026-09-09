@@ -3,6 +3,7 @@ title: "Z-Image: 6B 参数的单流 S3-DiT 效率革命"
 description: "Z-Image 通过 S3-DiT 单流架构、3D-RoPE 位置编码和解耦蒸馏技术，以 6B 参数取得了媲美 80B 模型的图像生成效果。"
 pubDate: 2025-12-08
 externalScripts: ["https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"]
+lang: zh-CN
 ---
 <script>
 mermaid.initialize({ startOnLoad: true, theme: 'default' });

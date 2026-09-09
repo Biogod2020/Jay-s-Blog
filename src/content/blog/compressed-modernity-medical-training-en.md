@@ -7,8 +7,6 @@ lang: en
 heroImage: /images/compressed-modernity/cover.svg
 localStyles:
   - /styles/compressed-modernity.css
-wechat:
-  draft: false
 ---
 
 <div class="cm-article" lang="en" markdown="1">
@@ -28,11 +26,15 @@ Published accounts from teaching hospitals repeatedly describe a familiar encoun
 
 This predicament has a history. Residential medical training, state allocation of graduates, hospital financial reform, housing markets and the integration of degrees with residency have accumulated across different decades. Their demands now share the calendar of a medical student in their twenties. To understand the pressure on that student, we have to follow how these arrangements were built and passed down.[3](#ref-3)[10](#ref-10)[12](#ref-12)[16](#ref-16)
 
+<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:Hospital_corridor_2.jpg" target="_blank" rel="noopener noreferrer"><img src="/images/compressed-modernity/photos/hospital-corridor.webp" srcset="/images/compressed-modernity/photos/hospital-corridor-640.webp 640w, /images/compressed-modernity/photos/hospital-corridor.webp 800w" sizes="(max-width: 700px) 100vw, 850px" width="800" height="1135" loading="lazy" decoding="async" alt="Hospital corridor, 2007. An illustrative setting, not the ward of an interviewee in this article." /></a><figcaption>Hospital corridor, 2007. An illustrative setting, not the ward of an interviewee in this article. tanakawho / Wikimedia Commons · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>。Resized proportionally and converted to WebP; not cropped. <a href="https://commons.wikimedia.org/wiki/File:Hospital_corridor_2.jpg">Source</a></figcaption></figure>
+
 ## The support that disappeared, and the tradition that survived
 
 In one important source of modern residency training, residents actually lived in the hospital.
 
 Johns Hopkins Hospital opened in 1889. William Osler brought young doctors to the bedside, combining sustained observation with close supervision. In the 1920s, Peking Union Medical College Hospital adopted this training tradition. Resident responsibility and the chief-resident system became important parts of modern clinical education in China.[2](#ref-2)[3](#ref-3)
+
+<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:First_group_of_interns_at_Johns_Hopkins_Hospital%2C_April_1889.jpg" target="_blank" rel="noopener noreferrer"><img src="/images/compressed-modernity/photos/hopkins-interns-1889.webp" srcset="/images/compressed-modernity/photos/hopkins-interns-1889-640.webp 640w, /images/compressed-modernity/photos/hopkins-interns-1889.webp 1280w" sizes="(max-width: 700px) 100vw, 850px" width="1280" height="1008" loading="lazy" decoding="async" alt="The first group of interns at Johns Hopkins Hospital, April 1889. U.S. National Library of Medicine; photographer unknown." /></a><figcaption>The first group of interns at Johns Hopkins Hospital, April 1889. U.S. National Library of Medicine; photographer unknown. Unknown photographer / U.S. National Library of Medicine / Wikimedia Commons · <a href="https://creativecommons.org/publicdomain/mark/1.0/">Public domain</a>。Resized proportionally and converted to WebP; not cropped. <a href="https://commons.wikimedia.org/wiki/File:First_group_of_interns_at_Johns_Hopkins_Hospital%2C_April_1889.jpg">Source</a></figcaption></figure>
 
 The educational rationale was substantial. Disease changes over time. Clinical judgement develops through observation, decisions and feedback. A textbook alone cannot supply that experience. Yet celebrations of demanding training frequently omit the support that made it possible.
 
@@ -40,7 +42,7 @@ At PUMCH around 1950, staff cleaned residents’ and nurses’ clothes and rooms
 
 A hospital that repeatedly invokes its predecessors’ constant presence while falling silent about accommodation, recovery time and teaching duties is practising a highly selective form of inheritance. It remembers exactly what it can demand from the trainee. It forgets what the institution must provide in return.
 
-<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/7/76/William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg" loading="lazy" decoding="async" alt="Historical bedside photographs of William Osler, Wellcome collection L0004900" /></a><figcaption>Historical bedside photographs. Wellcome Library, London / Wellcome Collection, L0004900, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Displayed proportionally; exact photographic dates are not specified.</figcaption></figure>
+<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg" target="_blank" rel="noopener noreferrer"><img src="/images/compressed-modernity/photos/osler-bedside.webp" srcset="/images/compressed-modernity/photos/osler-bedside-640.webp 640w, /images/compressed-modernity/photos/osler-bedside.webp 1196w" sizes="(max-width: 700px) 100vw, 850px" width="1196" height="1800" loading="lazy" decoding="async" alt="Historical bedside photographs, Wellcome collection L0004900. Exact photographic dates are not specified." /></a><figcaption>Historical bedside photographs, Wellcome collection L0004900. Exact photographic dates are not specified. Wellcome Library, London / Wellcome Collection / Wikimedia Commons · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>。Resized proportionally and converted to WebP; not cropped. <a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg">Source</a></figcaption></figure>
 
 ## State allocation carried responsibilities of its own
 
@@ -50,7 +52,7 @@ The same 1955 directive drew limits around employers’ power. It criticised the
 
 “We all had to endure it” cannot survive a serious encounter with this history. The record includes obligations imposed on graduates and restraints imposed on institutions. Selecting the obedience while discarding the organisation’s responsibilities is an abuse of historical memory.
 
-<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:Old_building_of_Peking_Union_Medical_College_Hospital_(20180821142741).jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/3/30/Old_building_of_Peking_Union_Medical_College_Hospital_%2820180821142741%29.jpg" loading="lazy" decoding="async" alt="Old PUMCH building photographed in 2018" /></a><figcaption>The old PUMCH building, photographed on 21 August 2018. N509FZ / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. Architectural reference photograph, displayed proportionally.</figcaption></figure>
+<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:Old_building_of_Peking_Union_Medical_College_Hospital_%2820180821142741%29.jpg" target="_blank" rel="noopener noreferrer"><img src="/images/compressed-modernity/photos/pumch-old-building.webp" srcset="/images/compressed-modernity/photos/pumch-old-building-640.webp 640w, /images/compressed-modernity/photos/pumch-old-building.webp 1280w" sizes="(max-width: 700px) 100vw, 850px" width="1280" height="853" loading="lazy" decoding="async" alt="The old PUMCH building, photographed on 21 August 2018. Architectural reference photograph." /></a><figcaption>The old PUMCH building, photographed on 21 August 2018. Architectural reference photograph. N509FZ / Wikimedia Commons · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>。Resized proportionally and converted to WebP; not cropped. <a href="https://commons.wikimedia.org/wiki/File:Old_building_of_Peking_Union_Medical_College_Hospital_%2820180821142741%29.jpg">Source</a></figcaption></figure>
 
 ## Hospital accounts and cheap “student time”
 
@@ -65,6 +67,8 @@ The unpaid portion of the bill does not disappear. It becomes sleep a trainee lo
 ## A labour market that moves on, and lives told to wait
 
 The market reforms of the 1990s gradually separated employment and living arrangements previously joined by the work unit. The 1993 education reform programme proposed a transition from centrally assigned jobs towards graduates finding employment. The 1998 housing reform required an end to housing allocation in kind and a gradual move towards monetary arrangements. Young doctors increasingly had to rely on wages, family savings and borrowing to secure housing. More of the risk of entering employment and establishing an urban life fell on individuals.[12](#ref-12)[7](#ref-7)
+
+<figure class="cm-figure cm-photo"><a href="https://commons.wikimedia.org/wiki/File:Wanbang_Garden_Pudong_Shanghai_2007.jpg" target="_blank" rel="noopener noreferrer"><img src="/images/compressed-modernity/photos/shanghai-housing.webp" srcset="/images/compressed-modernity/photos/shanghai-housing-640.webp 640w, /images/compressed-modernity/photos/shanghai-housing.webp 1280w" sizes="(max-width: 700px) 100vw, 850px" width="1280" height="960" loading="lazy" decoding="async" alt="Apartment buildings at Wanbang Garden in Pudong, Shanghai. Urban context for the discussion of housing reform." /></a><figcaption>Apartment buildings at Wanbang Garden in Pudong, Shanghai. Urban context for the discussion of housing reform. Ssarkarhyd / Wikimedia Commons · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>。Resized proportionally and converted to WebP; not cropped. <a href="https://commons.wikimedia.org/wiki/File:Wanbang_Garden_Pudong_Shanghai_2007.jpg">Source</a></figcaption></figure>
 
 Changes to training could meanwhile overturn plans already made. During Shanghai’s new residency reform in 2009, China Youth Daily reported that medical student Zhao Gangde’s expected contract signing had been suspended. Other graduates described concerns about additional training and its financial terms. Three more years occupy very little space in a policy document. For someone who has already spent years studying medicine, they can rearrange marriage, income and an entire professional future.[13](#ref-13)
 
