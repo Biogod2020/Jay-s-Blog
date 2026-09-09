@@ -9,8 +9,8 @@
 1. 读取 Astro Markdown front matter 和正文。
 2. Markdown 转换为微信公众号可接受的内联样式 HTML。
 3. 删除公众号正文不支持的 `script`、`iframe`、`video` 等交互元素。
-4. 将正文 JPG/PNG 图片上传到微信图文消息图片接口并替换 URL。
-5. 将封面上传为永久图片素材，取得 `thumb_media_id`。
+4. 将正文图片上传到微信图文消息图片接口并替换 URL；SVG 会先自动栅格化为 PNG。
+5. 将封面上传为永久图片素材，取得 `thumb_media_id`；SVG 封面同样自动转为 PNG。
 6. 调用 `draft/add` 创建草稿。
 
 博客现有的 GitHub Pages 部署 workflow 不受影响。
@@ -24,7 +24,7 @@
 title: "示例标题"
 description: "示例摘要"
 pubDate: 2026-09-09
-heroImage: "/images/example-cover.jpg"
+heroImage: "/images/example-cover.svg"
 wechat:
   draft: true
   author: "复旦动物园"
@@ -92,6 +92,13 @@ GitHub 中进入：
 
 然后在微信公众号后台将这台服务器的公网出口 IP 加入 API IP 白名单。
 
+SVG 转 PNG 使用 CairoSVG。如果你的精简 Linux 镜像没有 Cairo 运行库，在 Debian/Ubuntu 上安装：
+
+```bash
+sudo apt-get update
+sudo apt-get install -y libcairo2
+```
+
 ## 自动同步
 
 当 `main` 分支的 `src/content/blog/**/*.md` 发生新增或修改时，workflow 会检查发生变化的文章。只有包含：
@@ -114,7 +121,7 @@ GitHub：
 输入例如：
 
 ```text
-src/content/blog/guanghua-building-3d.md
+src/content/blog/compressed-modernity-medical-training.md
 ```
 
 手动模式会强制生成草稿，不要求 `wechat.draft: true`。
@@ -123,8 +130,8 @@ src/content/blog/guanghua-building-3d.md
 
 - Markdown 标题、段落、引用、列表、表格、代码块、链接
 - Markdown 和普通 HTML `<img>` 图片
-- 正文 JPG / PNG
-- 封面 JPG / PNG / GIF
+- 正文 JPG / PNG；SVG 自动转 PNG
+- 封面 JPG / PNG / GIF；SVG 自动转 PNG
 - 自动摘要
 - 自动“阅读原文”链接到 `https://jiahaoblog.com/blog/<slug>/`
 
@@ -136,7 +143,7 @@ src/content/blog/guanghua-building-3d.md
 python -m pip install -r scripts/wechat/requirements.txt
 export WECHAT_APP_ID='...'
 export WECHAT_APP_SECRET='...'
-python scripts/wechat/publish.py --file src/content/blog/guanghua-building-3d.md --force
+python scripts/wechat/publish.py --file src/content/blog/compressed-modernity-medical-training.md --force
 ```
 
 成功时终端会打印微信返回的草稿 `media_id`。
