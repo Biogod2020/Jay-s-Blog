@@ -1,218 +1,289 @@
 ---
-title: "Compressed Modernity and Institutional Lag: The Making of China’s Youth Career Predicament—The Case of Clinical Medical Education and Residency Training"
-description: "A white coat can mean doctor when work is assigned and student when pay is discussed. A reported-source essay on medical training, institutional power, and the young people asked to finance professional growth with their time."
-pubDate: 2026-09-09
-lang: "en"
-heroImage: "/images/compressed-modernity/cover.svg"
+title: 'Compressed Modernity and Institutional Lag: The Making of China’s Youth Career Predicament—The Case of Clinical Medical Education and Residency Training'
+description: 'From residential training and state job allocation to hospital reform, housing markets and integrated degrees: a historical account of how duties survived while the bargain around them changed.'
+pubDate: '2026-09-09'
+updatedDate: '2026-09-09'
+lang: en
+heroImage: /images/compressed-modernity/cover.svg
 localStyles:
-  - "/styles/compressed-modernity.css"
+- /styles/compressed-modernity.css
 ---
 
 <div class="cm-article" lang="en">
 
-<div class="cm-kicker">Society · Medical education · Work</div>
-<nav class="cm-language" aria-label="Article language"><a href="/blog/compressed-modernity-medical-training/" lang="zh-CN" hreflang="zh-CN">阅读中文版 ↗</a><span aria-current="page">English</span></nav>
+<p class="cm-kicker">Medicine & Society · Historical Revision</p>
+<p class="cm-deck">What once made a system of long hours, obedience and deferred rewards hold together? As employment, housing and medical education changed, why did some obligations survive while the responsibilities attached to them failed to travel into the present?</p>
+<p class="cm-colophon">Jia-Hao (Jay) Ji · 9 September 2026 · Historical documents, published interviews and analysis</p>
+<p class="cm-language"><a href="/blog/compressed-modernity-medical-training/" lang="zh-CN">阅读完整中文版 →</a></p>
 
-<figure class="cm-figure cm-cover">
-<img src="/images/compressed-modernity/cover.svg" width="1200" height="630" alt="Original illustration: a white coat caught between the clocks of professional training, institutional demands, and personal life" fetchpriority="high" />
-<figcaption>Beneath the white coat, different institutional clocks keep different time. Original conceptual illustration.</figcaption>
-</figure>
+<figure class="cm-figure cm-cover"><img src="/images/compressed-modernity/cover.svg" width="1200" height="630" alt="Original white-coat illustration with the clocks of professional, institutional and personal life" fetchpriority="high" /><figcaption>Historical revision | Who pays for professional formation? Original conceptual illustration.</figcaption></figure>
 
-<p class="cm-deck">The question is not simply whether young people will endure hardship. It is who gets to prescribe that hardship, who benefits from it, and who guarantees that the time invested becomes competence rather than a life consumed.</p>
+In a 2024 China Youth Daily report, a clinical professional-master’s student undergoing residency training remembered a small window in an anaesthesiology department’s bathroom. A corner of its frosted covering had been peeled away, letting in sunlight. The interviewee, given the pseudonym He Yi, did not dismiss the value of his training. Three years of practice had helped him develop substantially. He also wanted better support and supervision.[1](#ref-1)
 
-## 1. One white coat, two identities
+The learning was real. So was the exhaustion. The question is not whether both can exist, but why the first so often closes down discussion of the second.
 
-In March 2024, a clinical medical graduate student interviewed by Red Star News, identified as Li Li, was assigned six night shifts, including two on weekends, without compensatory time off. Her objection was rejected. She told the reporter that she received RMB 1,500 a month while being expected to approach the work as a doctor.[1](#ref-1)
+“We all went through this.” Once that becomes the explanation, the debate can collapse into a comparison of generational character: the older generation endured; the younger generation complains. Their predecessors had ideals; today’s trainees count the cost.
 
-The arithmetic of her pay was simple. The arithmetic of her identity was not. When the hospital needed her work, the white coat marked her as a doctor. When compensation was discussed, it became a student’s uniform again.
+Yet the important historical question lies inside “went through this.”
 
-Days later, Xinhua Daily Telegraph examined the same tension. One interviewee, a 25-year-old professional master’s student given the pseudonym Zhang Qiang, regarded finishing training, obtaining the required credentials, and entering a hospital job as a path he had to complete. Leaving was conceivable, but it would force him to reconsider both his investment to date and his plans for the years ahead.[2](#ref-2)
+Where did those earlier young doctors live? Who arranged their jobs? Who trained them, and which institution employed them? What provision existed beyond a low cash salary? Who took responsibility for the professional destination at the end of years of work? When those conditions change, comparing hours alone does not compare two generations’ capacity for sacrifice. It compares two different bargains while leaving out half their terms.
 
-It is easy to reduce such accounts to a complaint that young people no longer tolerate hardship. Hospitals have never been undemanding workplaces. A doctor cannot take responsibility only when doing so is convenient.
+**The predicament of young people in Chinese medicine is not an ancient institution arriving intact in the present. Several institutions were established, dismantled and recombined at different moments: some obligations were inherited, some protections were rewritten, and new demands accumulated around the same trainee.**
 
-But that response avoids the central distinction: **clinical training can require hardship without every hardship constituting clinical training.**
+## 1. Residents originally lived in the hospital
 
-A trainee asking about rest after a night shift, unnecessary repetition, or recognition of useful work is not necessarily refusing to become a doctor. They may be asking how, precisely, the institution intends to make them one.
+This history cannot begin and end with Chinese traditions of apprenticeship. One important source of modern residency lies in the United States in the late nineteenth century.
 
-<figure class="cm-figure cm-photo">
-<a href="https://commons.wikimedia.org/wiki/File:Hospital_corridor_2.jpg" target="_blank" rel="noopener noreferrer"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Hospital_corridor_2.jpg" width="800" height="1135" loading="lazy" decoding="async" alt="Archival hospital-corridor photograph with daylight reflected along the floor" /></a>
-<figcaption>Hospital corridor, 2007. Photograph: tanakawho / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>. Proportionally resized, not cropped. An illustrative photograph, not an interviewee’s hospital. <a href="https://commons.wikimedia.org/wiki/File:Hospital_corridor_2.jpg">Source</a>.</figcaption>
-</figure>
+The Johns Hopkins Hospital, opened in 1889, closely linked hospital practice and medical education. William Osler developed bedside teaching and a full-time training arrangement that required residence in the hospital. Hopkins’s own history describes residents living in its administration building. Training had no uniformly fixed endpoint; some stayed for seven or eight years. The word *resident* was, first of all, a statement about where a person lived.[2](#ref-2)
 
-## 2. More than training is compressed into three years
-
-The first step is to separate categories that everyday discussion often collapses into “medical students.”
-
-Undergraduate clinical interns, students pursuing professional master’s degrees in clinical medicine, residents already employed by a hospital, doctors sent for training by another employer, and trainees recruited without a sending employer do not share one institutional status. Licensure, employment relationships, and sources of compensation cannot be inferred from a white coat.[2](#ref-2)[15](#ref-15)
-
-Professional master’s students are particularly revealing. **They do not finish being students before beginning residency. The two tracks operate within the same stretch of time.**
-
-A national guideline issued in 2013 expanded standardized residency training across China. Its purpose was to provide systematic clinical preparation rather than leave the transition from classroom to ward so heavily dependent on where a graduate happened to work and whom they happened to learn from.[4](#ref-4)
-
-The 2015 national framework for professional master’s education placed at least 33 months of actual clinical training inside a three-year program, alongside coursework, research training, and a thesis. Award of the professional degree was also linked to physician qualification and completion of standardized residency training.[5](#ref-5)
-
-Integration has a genuine benefit: it avoids making graduate education and residency entirely sequential. The problem is not integration itself, but whether the requirements are actually coordinated. When clinical demands remain intact and degree work must find room in evenings and weekends, institutional coordination on paper can become overlapping obligations in one person’s diary.
-
-<figure class="cm-figure">
-<a href="/images/compressed-modernity/dual-track-en.svg"><img src="/images/compressed-modernity/dual-track-en.svg" width="900" height="540" loading="lazy" alt="Two-track schematic: at least 33 months of clinical training overlap with coursework, research, and thesis requirements within a three-year program" /></a>
-<figcaption>Figure 1. Two sets of requirements, one period of time. Based on the 2015 framework; bar length represents total required duration, not an actual rotation schedule. Unfilled space does not mean leave.[5] Select the image to enlarge.</figcaption>
-</figure>
-
-There is another kind of compression, outside the curriculum. In Initium’s 2024 reporting, a 28-year-old trainee identified as Zhu Yang had moved from a primary-level hospital into employer-sponsored training. Delayed allowances still drove him to seek financial help from his parents. The difficulty was not only a small income, but the contrast between his dependence and the adult lives his peers were already building.[6](#ref-6)
-
-On the professional clock, he was still preparing. On the clock of family and personal life, he was already expected to have begun.
-
-## 3. Several historical orders, inside one hospital
-
-The South Korean sociologist Kyung-Sup Chang’s concept of *compressed modernity* means more than rapid development. It draws attention to the coexistence of institutions, values, and ways of life associated with different historical periods, concentrated in a relatively compressed social space and time.[3](#ref-3)
-
-Applied to hospitals, the concept suggests a useful analytical frame.
-
-Clinical standards belong to a highly professionalized world of documented competence, protocols, and risk management. Career selection adds academic credentials and research competition. Yet some everyday organizational relationships still revolve around apprenticeship, seniority, personal trust, and deference. Student status can leave the recognition of work and organizational membership unsettled. Public reporting describes precisely these collisions: concurrent clinical and research obligations, status-based differences in treatment, and teaching displaced by service demands.[2](#ref-2)[9](#ref-9)[18](#ref-18)
-
-These are not four neatly successive historical stages. They are four sets of expectations that can bear on the same person at once: be dependable as a professional, productive as a researcher, compliant as a junior, and patient about delayed rewards as a trainee.
-
-<figure class="cm-figure">
-<a href="/images/compressed-modernity/four-logics-en.svg"><img src="/images/compressed-modernity/four-logics-en.svg" width="900" height="760" loading="lazy" alt="Conceptual model: professional standards, academic requirements, hierarchy, and student status converge on a young trainee" /></a>
-<figcaption>Figure 2. Four institutional logics, one young person. An analytical framework proposed in this essay—not a uniform description of hospitals or an identified causal effect.</figcaption>
-</figure>
-
-The wider educational transformation matters too. China’s Ministry of Education reports a higher-education gross enrollment rate of 9.8% in 1998 and 60.8% in 2024. That expansion is an enormous social achievement. It also means university education is no longer a distinction reserved for a small minority: it has become the starting point of many more families’ plans for the future.[7](#ref-7)[8](#ref-8)
-
-More educational opportunity does not automatically produce a proportionate increase in autonomy, desirable jobs, or professional security. The years a student invests can increase without an equivalent change in how an organization treats that student as an adult.
-
-This is not an argument that complaints are mainly caused by inflated expectations. **An expectation gap helps explain how a person interprets a situation. It does not settle whether the situation is fair.** Low compensation, inadequate rest, or improperly supervised assignments do not become reasonable merely because an earlier generation endured them.
-
-Compressed modernity helps explain why conflicts may accumulate. To understand why they persist, we must also examine power and incentives.
-
-## 4. Who signs the promise that things will improve?
-
-Medical training necessarily involves deferred rewards. Practicing history-taking and physical examination now makes it possible to handle complex cases later. That delay has an intelligible professional purpose.
-
-A different promise is harder to audit: do more today and perhaps someone will recognize you tomorrow; do not question the arrangement now and an opportunity may eventually appear. Growth in competence can be observed and assessed. A promise of future favor may never come due.
-
-When work allocation, everyday assessment, and recommendations sit within the same network of relationships, a junior person is not bargaining only over the value of this afternoon’s labor. They must also estimate whether an objection could affect the next assessment, and whether changing environments would mean starting again.
-
-A residency certificate is not a private credential that a department chief can issue at will. But training bases conduct process assessments and participate in determining eligibility for completion examinations. Shenzhen’s rules make that connection explicit.[15](#ref-15) Those intermediate decisions are enough to give everyday authority real weight.
-
-Remaining in a program therefore does not necessarily signal approval. A person may simply conclude that staying carries a lower prospective cost than restarting. Past investment can influence the decision, but so can genuine future switching costs. It would be wrong to dismiss every decision to stay as an inability to understand sunk costs.
-
-The danger is that **the future becomes collateral for the present**. Because tomorrow’s career must pass through today’s institution, boundaries that ought to be negotiable today are repeatedly postponed.
-
-Seen this way, institutional lag is not always passive. Some arrangements may persist precisely because they have not stopped working for everyone.
-
-Hiring additional staff requires money. Redistributing documentation requires coordination. Protecting teaching time can reduce immediately visible output. Assigning the work to a student who finds refusal difficult may be easier. Under those conditions, leaving the arrangement unchanged has a short-term organizational attraction. This is a proposed mechanism to test against actual budgets, schedules, and assessment systems—not an accusation about every administrator’s motives.
-
-It also explains why replacing a harsh superior with a considerate one may be insufficient. A good supervisor can absorb some pressure on a student’s behalf. They cannot indefinitely use their own additional labor to finance what the institution has left unpaid.
-
-The sharper question is not merely how old the rules are. It is **who can keep them unchanged, and who must pay for their continuity**.
-
-## 5. “For your own good” is not an educational outcome
-
-Hardship alone does not establish exploitation. Nor does the label “teaching hospital” establish that every work assignment is educationally justified.
-
-Clinical documentation illustrates the distinction. Organizing symptoms, evidence, diagnosis, and management is itself a way of learning clinical reasoning. Zhang Qiang, interviewed by Xinhua Daily Telegraph, explicitly recognized the contribution of record-writing to professional foundations and patient safety.[2](#ref-2)
-
-What matters is whether feedback follows, whether errors are explained, and whether improving competence leads to progressively more demanding responsibilities. If the work never progresses and meaningful learning must always happen after hours, the assurance that repetition alone will teach everything deserves scrutiny.
-
-In China Youth Daily’s reporting, a former trainee using the pseudonym Liu Douzi recalled gaining practical knowledge from supervisors who explained their diagnostic reasoning. In the same report, a supervising physician identified as Lin Jie described documentation quality being linked to performance assessments at several levels of the hierarchy.[9](#ref-9)
-
-Those accounts are compatible. Good training exists, and senior doctors can themselves be under substantial pressure. That makes it more important—not less—to distinguish developing tomorrow’s clinicians from simply keeping today’s service running.
+The arrangement addressed a genuine problem. Understanding a lecture does not establish that someone can manage a patient who deteriorates overnight. Moving learning from the lecture room to the bedside, following illness over time and assuming progressively greater responsibility under supervision were advances in clinical education. Intensive participation and a hierarchy of supervision had professional purposes.
 
 <figure class="cm-figure cm-photo">
-<a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg" target="_blank" rel="noopener noreferrer"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg/960px-William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg" width="960" height="1445" loading="lazy" decoding="async" alt="Four archival photographs of bedside examination from the Wellcome Collection" /></a>
-<figcaption>Archival bedside-examination photographs. Wellcome Library, London / Wellcome Collection, L0004900, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Proportionally resized, not cropped; not a scene from Chinese residency training. <a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg">Source</a>.</figcaption>
+<a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg/960px-William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg?utm_campaign=index&amp;utm_content=thumbnail&amp;utm_source=commons.wikimedia.org" width="960" height="1445" loading="lazy" decoding="async" alt="Historical bedside-examination photographs. Collection metadata identifies a biography published in 1925; the photograph dates are unspecified. Item L0004900; scaled proportionally, not cropped." /></a>
+<figcaption>Historical bedside-examination photographs. Collection metadata identifies a biography published in 1925; the photograph dates are unspecified. Item L0004900; scaled proportionally, not cropped. Wellcome Library, London / Wellcome Collection, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg">Image source</a></figcaption>
 </figure>
 
-Two questions can clarify an assignment. How does it improve the trainee’s competence? And would the hospital need someone else to do it if the trainee were absent?
+When Peking Union Medical College Hospital opened in Beijing in 1921, it adopted a residency system. Its institutional history presents residence, continuing responsibility for patients, hierarchical ward rounds, case discussion and reading as parts of a single educational arrangement—not merely an injunction to stay awake.[3](#ref-3)
 
-A “yes” to the second question does not erase educational value. Clinical education and patient care are necessarily intertwined. But it reminds us that **an activity can be learning and labor at the same time. Recognizing the first should not become a reason to deny the second**.
+A 2022 interview with authors of the hospital’s history supplies two telling details. In 1923, its head of medicine, Robertson, moved his outpatient sessions from afternoon to morning to make it easier for residents to admit patients. In 1925, the hospital selected a Chinese chief resident in medicine from among its more senior residents; the young Zhang Xiaoqian was chosen. Developing clinical expertise, including Chinese doctors able to carry the system forward, was part of the institution’s work.[4](#ref-4)
 
-Occupational-health research offers a more serious vocabulary than accusations of fragility. Johannes Siegrist’s effort–reward imbalance model considers not only demands, but how effort relates to compensation, recognition, and occupational prospects.[10](#ref-10)
+None of this makes long hours inherently justified. Nor can the history be reduced to the invention of cheap labour. An institution usually needs more than commands to sustain itself. Here, the commands belonged to an arrangement that also promised teaching, supervision and professional development.
 
-A study published in August 2026 analyzed 504 valid questionnaires collected in April 2025 at four hospitals in southern China. Under its measurement criteria, 83.13% of respondents experienced some degree of burnout, including mild burnout; 37.5% of the whole sample experienced moderate or severe burnout. This was not a nationally representative sample, and its cross-sectional analysis cannot establish causal direction.[11](#ref-11)
+Selective inheritance begins when the visible form is mistaken for the substance. A student’s presence is easy to check. Whether a teacher has carefully explained a case is harder to audit. Filling a night roster can be done immediately. Protecting a senior doctor’s time to teach costs the hospital something.
 
-<figure class="cm-figure">
-<a href="/images/compressed-modernity/burnout-en.svg"><img src="/images/compressed-modernity/burnout-en.svg" width="900" height="550" loading="lazy" alt="In a sample of 504 trainees, any-degree burnout was 83.13%; moderate or severe burnout, a subset, was 37.5% of the same sample" /></a>
-<figcaption>Figure 3. The burden—and the denominator. Redrawn from the study. Categories overlap and must not be added. Survey conducted in 2025; paper published in 2026.[11]</figcaption>
+If an institution inherits the resident’s constant availability without making a comparable commitment to the teacher’s availability, it has not inherited the whole PUMC tradition. It has retained the part most convenient to use.
+
+<figure class="cm-figure cm-photo">
+<a href="https://commons.wikimedia.org/wiki/File:Old_building_of_Peking_Union_Medical_College_Hospital_(20180821142741).jpg"><img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/3/30/Old_building_of_Peking_Union_Medical_College_Hospital_%2820180821142741%29.jpg/1280px-Old_building_of_Peking_Union_Medical_College_Hospital_%2820180821142741%29.jpg?utm_campaign=index&amp;utm_content=thumbnail&amp;utm_source=commons.wikimedia.org" width="1280" height="853" loading="lazy" decoding="async" alt="The old PUMC Hospital building, photographed on 21 August 2018. An architectural reference image, not a photograph from 1921; scaled proportionally, not cropped." /></a>
+<figcaption>The old PUMC Hospital building, photographed on 21 August 2018. An architectural reference image, not a photograph from 1921; scaled proportionally, not cropped. N509FZ / Wikimedia Commons, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. <a href="https://commons.wikimedia.org/wiki/File:Old_building_of_Peking_Union_Medical_College_Hospital_(20180821142741).jpg">Image source</a></figcaption>
 </figure>
 
-These figures are not a diagnosis of an entire national workforce. But when published accounts repeatedly describe similar difficulties, and research identifies substantial psychological burden, it becomes harder to reduce the issue to individual weakness.
+## 2. The work unit assigned more than work
 
-Psychological support matters. When the underlying problem concerns schedules, compensation, or assessment power, however, another resilience seminar cannot substitute for a roster that actually permits recovery.
+After the arrival of modern clinical training, another powerful organisational logic took shape in China: the state would educate specialists and allocate them to the institutions that needed them.
 
-## 6. Other countries have the argument too
+The Decision on Reforming the School System, promulgated on 1 October 1951, defined higher education in terms of producing advanced specialist personnel for national development. It explicitly assigned the government responsibility for allocating graduates to work. Published on the front page of People’s Daily two days later, the document placed universities inside a system for organising the supply of trained personnel, rather than treating education simply as an individual purchase followed by entry into a labour market.[5](#ref-5)
 
-It would be equally misleading to present this as a uniquely Chinese problem.
+This helps explain why accepting an assignment was more than an appeal to good character. Education, posts and the deployment of personnel belonged to the same administrative arrangement. The state could send specialists to places and institutions they might not have chosen. Individual choice was restricted. The corresponding commitment was that finding work was not left entirely to the graduate.
 
-American residency remains demanding. In its 2026 Common Program Requirements, ACGME retains a limit of 80 hours of clinical and educational work per week, averaged over four weeks. The definition includes in-house work, clinical work performed at home, and moonlighting. This is an accreditation requirement, not a general federal labor statute.[12](#ref-12)
+That commitment remained explicit in a State Council notice in 1990. For undergraduates and graduate students admitted through the national plan who qualified to graduate and accepted national needs, the state reaffirmed its responsibility for job allocation. The notice also required corresponding arrangements in wage and personnel plans. The conditions matter: a placement was not a right to choose a leading hospital in a major city.[6](#ref-6)
 
-An 80-hour limit is hardly evidence of an easy professional apprenticeship. The useful comparison is whether boundaries can be specified, recorded, and made an institutional responsibility rather than a test of personal endurance. The same requirements say residents must be able to raise concerns without fear of intimidation or retaliation.[12](#ref-12)
+It is therefore misleading to explain obedience under low cash wages solely through a generation’s greater selflessness. For those covered by the relevant arrangements, an institutional connection linked education to employment. The 1998 decision to end in-kind housing allocation reveals another part of the preceding bargain: in the urban work-unit system, housing had been something institutions were expected to address, not only a commodity individuals bought on the market.[7](#ref-7)
 
-Those boundaries remain contested. The Committee of Interns and Residents’ early-2025 account of its organizing activity describes resident union elections across several hospitals. The organization’s own reporting is evidence that questions of compensation and voice have not disappeared simply because a country became wealthy.[13](#ref-13)
+This was no golden age. Allocated work could restrict mobility. Work-unit housing did not mean everyone promptly received an adequate home. Administrative rank, scarcity and unequal allocation could leave young people waiting for years. The arrangement did not offer a full modern package of individual rights. It bundled provision together with dependence.
 
-Nor does China have to wait for a distant new equilibrium. A 2021 policy on “two equal treatments” addressed fresh-graduate recruitment status after residency and professional treatment of residency-qualified clinicians with bachelor’s degrees. But equal treatment after completion does not automatically resolve differences during training.[14](#ref-14)
+Nevertheless, a serious comparison of generations cannot count sacrifice alone. It must also ask what institutions once promised to handle, and what they subsequently returned to the individual.
 
-Shenzhen offers a more immediate example. Rules effective from January 2024 require training bases to provide workload-related performance allowances to medical professional-degree students who have obtained physician qualification and undertake clinical work.[15](#ref-15)
+A supervisor today may still control a student’s immediate evaluation while lacking the authority—or ability—to guarantee the job that follows graduation. Calling both relationships “training” does not make their terms equivalent.
 
-The provision does not establish nationwide equal pay, and a written rule alone does not demonstrate implementation. Its significance is more basic: **an institution can recognize that a person is still learning without denying that the person already performs valuable work**.
+## 3. Hospitals acquired operating accounts; individuals acquired new bills
 
-Compressed modernity must not become a prescription to wait—as though another twenty years of development would resolve the conflict by itself. Problems postponed within organizational relationships require changes to those relationships.
+The old arrangement did not change in a single moment. The hospital’s accounts and the young person’s accounts were rewritten in stages.
 
-## 7. Make “we are training you” an auditable promise
+In 1985, the State Council endorsed a Ministry of Health report on reforming health services. Reading the document is more revealing than simply declaring that hospitals became marketised. It described services unable to meet demand, insufficient funding and investment, low charges, institutional deficits and overly rigid management. Reform was intended to expand provision and improve efficiency.[8](#ref-8)
 
-Reform need not begin with the grandest slogan. It can begin by making three things less dependent on guesswork.
+The report increased hospital autonomy, proposed capped subsidies for specified recurrent expenses, and promoted internal management that connected responsibilities, powers and incentives. It did not instruct hospitals to pursue revenue regardless of patients. On the contrary, it explicitly rejected treating clinical decisions as purely economic questions. The policy sought to develop services, improve management and preserve medicine’s purposes simultaneously.[8](#ref-8)
 
-**First, identity should not become clear only when additional duties are imposed.** Training agreements should specify responsibilities, supervision, compensation, night work, rest, leave, and requirements for making up missed training. Arrangements may legitimately differ with qualifications, competence, and work performed. Those differences need reasons; “you are still a student” cannot answer every question. Staffing shortages must not turn someone without the necessary qualifications and competence into an independent practitioner.[15](#ref-15)
+The tension becomes concrete here. If an organisation must pay greater attention to revenue and efficiency without adequately funding teaching, supervision and rest, teaching can look like time lost from seeing patients, while work trainees can perform looks like available staffing. This is not a claim that a 1985 document caused every subsequent overtime shift. It identifies a recurring problem: **hospitals must provide services, while training takes experienced doctors’ time. Both costs cannot be paid out of the junior doctor’s night.**
 
-**Second, the assessor should not be the only route of appeal.** A trainee should not have to complain about an unreasonable assignment solely to the person who assigned it. Review outside the immediate supervisory relationship, clear response deadlines, and enforceable protection against retaliation matter more than a poster inviting feedback. Recognition of completed training and reasonable transfer arrangements also deserve discussion, while maintaining competence requirements. Reducing switching costs need not mean lowering medical standards.
+Graduates’ relationship with employment was also changing. The State Council’s 1994 implementation guidelines for the national education reform programme promoted tuition payments and independent job-seeking for most graduates, with a phased transition. This did not make higher education worthless. It redefined the connection between receiving that education and obtaining an administrative placement.[9](#ref-9)
 
-**Third, hospitals must actually finance education.** That means more than increasing a trainee’s allowance. It means protecting supervisors’ teaching time, providing appropriate support staff, reducing duplicative reporting, and allowing educational quality to influence real resource decisions. The US National Academies’ 2019 systems report likewise placed work and learning environments at the center of the response to clinician burnout, rather than relying solely on individuals to become more resilient.[16](#ref-16)
+In 1998, urban housing reform called for an end to in-kind allocation beginning in the second half of the year and a gradual shift to monetised provision. The new arrangements included housing provident funds, individual mortgages and subsidies for eligible recipients; support was not simply abolished. But accommodation increasingly had to be paid for through monetary income and household resources rather than obtained through the old unit-based allocation system.[7](#ref-7)
 
-Assessment of implementation should move from paperwork toward experience: how long people actually work; whether promised rest occurs; whether feedback is specific; whether responsibilities progress with competence; and what happens after someone reports a problem.
+Placed alongside each other, these documents show the direction of change. Hospitals were expected to manage their operations more actively. Graduates were expected to enter a job market. Housing increasingly became a cash expense. None of those changes automatically transformed a trainee inside a hospital into an employee free to negotiate terms.
 
-None of this abolishes difficulty. It gives difficulty a defensible purpose, a reasonable boundary, and someone who can be held accountable.
+A young person could be required to live at market prices while still bargaining from an apprentice’s position.
 
-## 8. The young person beyond the hospital
+Hospital reform subsequently changed direction in important ways. The reforms launched in 2009 reaffirmed the public-interest character of health services. In 2017, comprehensive public-hospital reform was extended nationwide and drug mark-ups were abolished. Present-day hospitals cannot be described as photocopies of a 1985 policy. The recurring question is whether successive changes in operation and payment also settled who would fund teaching and protect trainees.[10](#ref-10)[11](#ref-11)
 
-A handful of hospitals cannot explain the condition of an entire generation. Medicine has distinctive constraints: patients cannot always wait, clinical progression cannot simply be skipped, and independent practice requires rigorous thresholds.
+<figure class="cm-figure" id="fig-history">
+<a href="/images/compressed-modernity/history-en.svg"><img src="/images/compressed-modernity/history-en.svg" width="1000" height="1850" loading="lazy" alt="Figure 1. A changing institutional bargain, 1889–2021. Selected milestones across different reform processes; dates are not spaced to scale. Based on the institutional histories and original policies cited in the text. Open the SVG to enlarge." /></a>
+<figcaption>Figure 1. A changing institutional bargain, 1889–2021. Selected milestones across different reform processes; dates are not spaced to scale. Based on the institutional histories and original policies cited in the text. Open the SVG to enlarge.</figcaption>
+</figure>
 
-Yet the case suggests questions worth testing in other occupations. When young people spend years categorized as “still being trained,” who decides when that condition ends? When an organizational system links the credentials required for entry to the labor performed each day, who can refuse an unreasonable bargain? When rewards are deferred, who is responsible for ensuring that the promise is not perpetually extended?
+## 4. From selecting a professional core to setting an industry-wide threshold
 
-That is where compressed modernity is useful—and where it reaches its limit. It makes the different speeds of institutional change visible. Analysis of actual work arrangements then asks how those gaps become lower costs for some and higher costs for others.
+Residency training itself did not travel in a straight line from 1921 to today.
 
-A career predicament is not merely a young person’s psychological problem, nor merely an older generation’s moral failure. It should not be treated as an unavoidable toll of modernization, payable only by those with the least seniority.
+A national development report on the system recalls that the training proposed in 1962 focused on selecting outstanding medical graduates to develop clinical teachers and professional backbones. National implementation later stalled during the Cultural Revolution, while some hospitals maintained their own traditions. Local continuity, national interruption and subsequent re-institutionalisation were all parts of the history.[12](#ref-12)
 
-A good system of medical education should produce people willing to take responsibility for patients.
+In 1993, the Ministry of Health issued trial measures for standardised clinical residency training. Its implementation notice was pragmatic: localities should work with their circumstances; those yet to begin could start at medical-school-affiliated and provincial hospitals, then expand. It recognised uneven educational and health-service capacity. It did not announce that every hospital already possessed equivalent training resources.[13](#ref-13)
 
-**It should also answer who takes responsibility for those people while they are becoming doctors.**
+National guidance issued at the end of 2013 brought a further shift. With “5+3” as the main model, it sought to establish accredited training bases and common assessment. The policy called for every province to launch training by 2015 and for newly entering clinical doctors with bachelor’s degrees or above to undergo residency training by 2020. Its purpose was to establish a baseline of competence less dependent on the medical school attended or the first employer encountered.[14](#ref-14)
 
-<div class="cm-endnote">Source note: This is an analytical feature based on published interviews, institutional documents, and research, not new field interviews conducted by the author. Names follow the original reports, including their pseudonyms. Conceptual diagrams present the essay’s argument; empirical figures retain their original sample and time frame. Sources checked through September 9, 2026.</div>
+This history contains at least two different educational tasks: selecting a professional core for particular institutions, and establishing an entry standard across an industry.
+
+Both require rigorous training. They cannot simply rely on identical social assumptions. Once an arrangement becomes a general threshold, it must accommodate people from different family backgrounds, with different financial resources and professional goals. It cannot assume that every aspiring clinician has a household able to provide prolonged support. Nor can the eventual success of a few eminent doctors establish that everyone who bears comparable costs will receive comparable rewards.
+
+The problem is not only that standards became more demanding. When those standards apply much more widely, the supporting system must expand as well.
+
+## 5. Training for the profession, rather than belonging to one employer
+
+Shanghai’s residency reform, launched in 2010, offers a particularly revealing turning point.
+
+In 2024, Shangguan News interviewed reform participants including Gao Jie-chun about the effort to establish a public training platform and common standards. Graduates entering different institutions could develop very different clinical abilities. A doctor trained entirely by one hospital or department might not receive sufficiently broad, balanced rotations.[15](#ref-15)
+
+Another explanation in the report was more practical. Once a young doctor belonged to a particular department, rotation elsewhere could conflict with that department’s staffing needs. Separating training to some degree from a single employer’s claim on the trainee—developing a professional for the wider health system rather than simply a member of one unit—was intended to reduce that constraint. The report also identified a consequence: some trainees would have to seek employment again after completing the programme.[15](#ref-15)
+
+It would be simplistic to read this only as the removal of a secure job. Reform sought to address precisely the restrictions that unit-based arrangements could impose on training quality and mobility. Freedom from one employer could enlarge a doctor’s choices.
+
+But larger choices require practical connections: credentials recognised across institutions, continuity of support, recruitment rules that do not treat three years of training as a disadvantage, and training providers that do not reduce participants to temporary staffing.
+
+Without those connections, a difficult intermediate position emerges. A young person is no longer an insider whose institution will organise a longer-term career, yet remains subject to the immediate obedience expected of someone highly dependent on it.
+
+The 2021 policy implementing “two forms of equal treatment” addressed this transition. Eligible socially recruited trainees could receive fresh-graduate treatment when seeking health-service employment in the year they qualified. Bachelor’s-qualified clinical doctors who completed residency were to receive specified treatment equivalent to holders of relevant clinical professional master’s degrees in recruitment, professional titles, appointment and pay. This repaired parts of the training–employment interface. It neither guaranteed a permanent public-sector post nor established, merely by appearing in a document, that every employer had complied.[16](#ref-16)
+
+The historical point is not that the old system never changed. It is that **when an old connection is removed, somebody must take responsibility for constructing its replacement.**
+
+## 6. Three years were integrated; institutional status was not
+
+A parallel reform connected clinical professional-master’s education with residency training.
+
+The medical–education coordination reforms of 2014 promoted this connection. The 2015 national training framework specified a usual three-year master’s programme with at least 33 months of actual clinical training, alongside coursework and a thesis. An important purpose was to reduce duplication—not to make every student complete a three-year master’s and then invariably repeat another three-year residency.[17](#ref-17)[18](#ref-18)
+
+The difficulty appears where two different documents meet.
+
+The 2013 residency guidance distinguished employer-sponsored trainees, socially recruited trainees and those holding postgraduate-student status. Sponsored trainees retained their original personnel and wage relationships. Living support for socially recruited trainees was to be determined with reference to comparable residents at the training base. Postgraduate students remained subject to postgraduate-education rules, with the base able to provide appropriate additional support following assessment. Similar clinical tasks did not automatically attract the same payment rules.[14](#ref-14)
+
+In 2015, the master’s framework explicitly recognised a dual position: the participant was both a postgraduate student and a resident in training, managed by the university and training base. Dual status connected the obligations. The words “both a student and a resident” did not, by themselves, combine two funding systems into a unified package of support.[18](#ref-18)
+
+That is why the complaint that one is a doctor for work but a student for pay has explanatory force. It does more than express dissatisfaction. It identifies an institutional junction: clinical work is organised around the service role, while remuneration can return to the admissions category.
+
+The national framework also deserves to be read rather than invoked vaguely. It did not demand high-impact research papers from every student. It allowed several thesis formats, including summaries of clinical experience, evidence-based research and literature reviews. It also required at least two half-days of concentrated learning each month during rotations. If a programme adds escalating research demands without adjusting clinical commitments and supervision, those additions require an institutional explanation. They cannot all be attributed to national policy.[18](#ref-18)
+
+Integration can save a young person years. When different managers decline to rank their demands, however, a shorter route can become a more crowded timetable.
+
+<figure class="cm-figure" id="fig-time">
+<a href="/images/compressed-modernity/dual-track-en.svg"><img src="/images/compressed-modernity/dual-track-en.svg" width="900" height="540" loading="lazy" alt="Figure 2. Two tracks, one three-year window. The 2015 curriculum requires at least 33 months of clinical training alongside academic objectives. Schematic, not a rota; blank space is not leave. Open the SVG to enlarge." /></a>
+<figcaption>Figure 2. Two tracks, one three-year window. The 2015 curriculum requires at least 33 months of clinical training alongside academic objectives. Schematic, not a rota; blank space is not leave. Open the SVG to enlarge.</figcaption>
+</figure>
+
+## 7. How an institution reproduces itself
+
+History explains the present only when it reaches the mechanisms of transmission.
+
+An intern-management policy on the Tianjin Stomatological Hospital website, dated 23 November 2014, contains several kinds of rules side by side. Ward interns are assigned a 24-hour responsibility arrangement. Lateness, early departure and unauthorised absence affect rotation marks. Interns lack independent prescribing authority; documentation requires senior review and signatures, and procedures require permission and guidance. This is evidence of what the published policy says—not proof that every student actually worked continuously for 24 hours.[19](#ref-19)
+
+The document shows how responsibility becomes connected to evaluation. One set of rules defines what students must do, what they may do, whose approval they need, and how non-compliance can affect their results.
+
+That structure is not inherently illegitimate. Clinical competence must be assessed; patient safety requires supervision. The danger is that powers designed for education and safety may also be used to solve staffing problems unrelated to learning. When rotation results, graduation, recommendations and task allocation sit close together, it becomes harder for a student to say what an ordinary short-term worker might say: this task is outside our agreement.
+
+The first route of transmission is **the ease with which rules can be copied**. Attendance requirements can be reproduced in a handbook and a rota. Good supervision requires fresh investment in every cohort. What is administratively easiest to reproduce is not necessarily what is educationally most valuable.
+
+The second is **the reuse of old arrangements by present-day incentives**. A department that relies on students and trainees for routine work will worry about who replaces them if their service hours fall—even when its leaders care sincerely about education. A tradition may persist not simply because it is old, but because current staffing and budgets depend on it. A change in language is insufficient without replacement staff and funded teaching time.
+
+The third is **evaluation power making exit expensive**. Years already spent in education, completed rotations and dependence on a thesis supervisor all affect the practical cost of refusing a task. Apparent willingness to continue does not establish a fair bargain. Nor does it mean there are literally no alternatives: the price of those alternatives differs sharply between households.
+
+The fourth is **experience being selected and retold as morality**. Those who remain and advance have more opportunities to tell the story of their success. Listening only to those stories makes it easy to turn “I suffered and later succeeded” into “suffering caused my success,” then into “the next generation must repeat all of it.” Losses that contributed nothing to education can acquire legitimacy along the way.
+
+In 1994, Hafferty and Franks discussed medicine’s hidden curriculum: students acquire ethics and a professional identity not only from formal lessons, but from the organisation’s everyday conduct. A hospital’s treatment of its youngest members through rosters and feedback is itself a lesson, whatever it says about respect in the classroom.[20](#ref-20)
+
+This is not simply a chain in which bad predecessors mistreat good successors. The more difficult possibility is that arrangements combining close control with weak bargaining power can be reliably reproduced by people who are not individually malicious.
+
+<figure class="cm-figure" id="fig-inheritance">
+<a href="/images/compressed-modernity/inheritance-en.svg"><img src="/images/compressed-modernity/inheritance-en.svg" width="1000" height="1260" loading="lazy" alt="Figure 3. How arrangements travel across generations. The essay’s analytical framework of selective inheritance—not an identified causal effect or a description of every hospital. Open the SVG to enlarge." /></a>
+<figcaption>Figure 3. How arrangements travel across generations. The essay’s analytical framework of selective inheritance—not an identified causal effect or a description of every hospital. Open the SVG to enlarge.</figcaption>
+</figure>
+
+## 8. The collision is not merely a problem of excessive expectations
+
+Only now does compressed modernity become a concrete explanation.
+
+Kyung-Sup Chang’s concept concerns more than rapid growth. Institutions and ways of life drawn from different historical moments and social origins coexist within compressed time and space. In medical education, residential training, work-unit management, market-based employment, standardised assessment and postgraduate education do not simply replace one another. They overlap.[21](#ref-21)
+
+One person may be expected to remain continuously available like an old-style resident, accept assignments like a work-unit member, complete academic requirements like a graduate student, and bear employment and living risks like an individual in a market.
+
+That is not the complete repetition of any earlier generation’s circumstances.
+
+Educational expansion also changes the comparison. China’s Ministry of Education reported a gross higher-education enrolment ratio of 60.8% for 2024. Wider participation is an achievement. It also makes it untenable to assume that a university credential alone will reproduce the career arrangements associated with a scarcer supply of graduates. Entering a profession, obtaining its qualifications and securing a particular desirable job are distinct outcomes.[22](#ref-22)
+
+In Initium’s 2024 reporting, a trainee interviewed under a pseudonym discussed monthly support during rotations, an increase after obtaining medical licensure, and the difficulty of paying ordinary living costs. The value of that testimony is not that it establishes a single national wage. It reminds us that rent and everyday bills do not wait for institutional status to be clarified.[23](#ref-23)
+
+Explaining dissatisfaction solely through relative deprivation can understate a material change. If a similar three-year commitment once connected to a comparatively determinate placement but now more often ends at another competitive labour-market entrance, the shift is not only in expectations. It is also in who bears the risk.
+
+Young people today have gained forms of mobility and choice unavailable to many predecessors. The answer need not be a return to allocated jobs. The point is different: **institutions cannot demand that individuals independently bear market risks while continuing to claim organisational obedience without corresponding boundaries.**
+
+Some families can finance the transition. Others cannot. If training persistently depends on private support, medicine risks adding a test of household resources to its tests of academic ability. That is a design problem to prevent, not a moral judgment on any group of students.
+
+## 9. The United States did not wait for tradition to modernise itself
+
+Explaining the whole problem through Chinese tradition would also misread history.
+
+In 1999, the US National Labor Relations Board decided the Boston Medical Center case. The disputed distinction is immediately recognisable: were people who already held medical degrees, cared for patients and continued to train in a hospital primarily students, or employees? The employer relied on earlier precedents to place them chiefly in the educational category. The Board overturned the relevant precedents and held that the interns, residents and fellows in the case were employees under the National Labor Relations Act even though their work also had an educational purpose.[24](#ref-24)
+
+This was not the first US residents’ union, and it does not determine the legal status of students in China. It illustrates a more basic shift: **an educational relationship and an employment relationship can coexist. Recognising learning need not erase recognition of work.**
+
+Limits on hours were not an automatic by-product of economic growth either. Libby Zion’s death in 1984 and the ensuing controversy brought fatigue, supervision and patient safety into public debate. New York introduced rules on resident hours and supervision in 1989. The case cannot be reduced to an uncontested, single-cause account of a death, but it did contribute to institutional scrutiny.[25](#ref-25)[26](#ref-26)
+
+The ACGME’s 2002–2003 annual report records the implementation of new nationwide accreditation requirements on 1 July 2003 and explicitly describes public concerns and pressure from proposed state and federal legislation. Reform involved external constraints, not only goodwill within medicine. Central requirements included an average 80-hour weekly ceiling, with subsequent changes continuing to address education, handovers and safety.[27](#ref-27)[28](#ref-28)
+
+Eighty hours is itself a warning against depicting an ideal world free of overwork. The lesson is not that the West solved the problem and China should wait its turn. People and organisations had to define fatigue as a systems issue, make supervision a senior responsibility, and establish terms of work and representation that could be negotiated and enforced.
+
+Asking the youngest participants to change their attitude towards hardship does not produce those arrangements.
+
+
+
+## 10. Rewrite the terms of the bargain
+
+Institutional lag is not one century-old rule mysteriously surviving to the present. It is better understood here as a succession of reforms whose connections remain incomplete.
+
+Clinical training established demanding participation. The work-unit system joined obedience to institutional provision. Market reforms changed hospitals’ and individuals’ accounts. Residency reform extended common standards. The integration of professional degrees connected further tasks. Each responded to real problems. Yet the gaps between changes are often felt first by those with the least standing and the weakest ability to refuse.
+
+Improvement requires more than an instruction to care about young people.
+
+Teaching responsibilities must be returned to the institutions providing education. Every rotation should have assessable learning objectives, qualified supervision and time for feedback. Repetition is not necessarily devoid of educational value, but a hospital should be able to explain how it develops competence. Supervising students must count in teachers’ workloads and resources, rather than being something added for free after all clinical and research duties have been completed.
+
+Admissions categories must not swallow clinical contributions. Different participants may have different legal relationships, but basic living support, compensation commensurate with assigned tasks, rest and safety cannot simply be pushed back and forth between university and hospital. If a qualification is broadly required, its costs cannot depend primarily on each family solving the problem privately.
+
+Legitimate professional evaluation must also be separated from demands for unlimited obedience. Complaints about inappropriate tasks, fatigue or inadequate supervision need routes beyond the immediate evaluator. Transfers and the recognition of completed training should minimise the losses attached to legitimate exit. Without affordable ways to leave or seek review, formally reciprocal choice can be very thin.
+
+Not all these obligations are recent inventions. China’s 2008 interim rules on clinical practice in medical education already required practice under supervision and specified responsibilities for document review and management. Looking backwards reveals not only what students were expected to do, but what institutions were already expected to provide.[29](#ref-29)
+
+Finally, hospitals must answer a direct question. If students’ and trainees’ service hours are reduced, does the resulting gap arise from educational requirements, or from operating needs that ought to be covered by the staffing establishment? There is nothing discreditable about the latter: hospitals do need people to work. What requires explanation is why the cost of that work can remain persistently misclassified.
+
+The patch of sunlight He Yi remembered should not become an attractive story about endurance. It should prompt a practical question: how can a hospital organise its time so that young doctors learn to care for patients while those providing care can also live ordinary lives?
+
+**The previous generation’s experience can be a source of knowledge. It is not automatically a debt owed by the next. What deserves to be passed on is the responsibility to develop independent doctors—not the obligation to honour a bargain whose circumstances have changed and whose duties alone remain.**
+
+<div class="cm-endnote">
+<p><strong>About the sources.</strong> This is a reported-source essay based on historical documents, institutional histories and published interviews; no new field interviews were conducted. Personal accounts and pseudonyms come from the identified original reporting. Laws and policies explain arrangements at the time of their adoption, not uniform current implementation or the legal status of every individual trainee. The original diagrams organise the argument; they are not statistical measurements of historical hours, pay or causal effects. “Selective inheritance” is an analytical interpretation, not a claim that an unbroken legal institution has existed since 1921.</p>
+</div>
+
 
 ## Sources and references
 
 <div class="cm-references">
-<p id="ref-1">[1] Cai Xiaoyi, Zhou Song &amp; Yu Xindu. <a href="https://news.cctv.com/2024/03/23/ARTIjvkYZGHBTxop5C4c7lWQ240323.shtml">Professional master’s students caught in residency certification</a> [Chinese]. Red Star News; republished by CCTV, March 23, 2024.</p>
-<p id="ref-2">[2] Chen Xiyuan. <a href="https://www.xinhuanet.com/20240331/84c52eb23c6f418c8db15a23322867c9/c.html">Bridging the double standard in the treatment of medical professional master’s trainees</a> [Chinese]. Xinhua Daily Telegraph, March 31, 2024.</p>
-<p id="ref-3">[3] Chang, K.-S. (2010). <a href="https://doi.org/10.1111/j.1468-4446.2010.01321.x">The second modern condition? Compressed modernity as internalized reflexive cosmopolitization</a>. <em>The British Journal of Sociology</em>, 61(3), 444–464.</p>
-<p id="ref-4">[4] National Health and Family Planning Commission and six other departments. <a href="https://www.nhc.gov.cn/wjw/c100175/201401/f30492c1678b41fe961dba55e5909364.shtml">Guiding opinions on establishing standardized residency training</a> [Chinese]. Document 2013/56, December 31, 2013.</p>
-<p id="ref-5">[5] Academic Degrees Committee of the State Council. <a href="https://yz.chsi.com.cn/kyzx/zyss/201506/20150618/1482166946.html">Guiding curriculum for the professional master’s degree in clinical medicine</a> [Chinese]. May 29, 2015; published on CHSI June 18, 2015. See Articles 3, 5, and 7–10. Graduation and degree conferral are distinct; the framework also provides alternative pathways and later degree conferral.</p>
-<p id="ref-6">[6] Initium Media. <a href="https://theinitium.com/20240417-mainland-medical-student-residency-training-suicides-zh-hans/">Students when discussing pay, doctors when discussing work: the apprenticeship predicament</a> [Chinese]. April 17, 2024.</p>
-<p id="ref-7">[7] Ministry of Education. <a href="https://www.moe.gov.cn/jyb_sjzl/moe_560/s8492/s8493/201412/t20141216_181724.html">Gross enrollment rates by education level</a>. Historical table: higher education, 1998, 9.8%.</p>
-<p id="ref-8">[8] Ministry of Education. <a href="https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202506/t20250611_1193760.html">Statistical bulletin on national education development in 2024</a> [Chinese]. June 11, 2025. Higher-education gross enrollment rate: 60.8%.</p>
-<p id="ref-9">[9] Wu Xinyu &amp; Xie Yang. <a href="https://zqb.cyol.com/html/2024-04/16/nw.D110000zgqnb_20240416_1-07.htm">How to improve the path from residency to medical practice</a> [Chinese]. China Youth Daily, April 16, 2024. Liu Douzi and Lin Jie are pseudonyms in the original.</p>
-<p id="ref-10">[10] Siegrist, J. (1996). <a href="https://doi.org/10.1037/1076-8998.1.1.27">Adverse health effects of high-effort/low-reward conditions</a>. <em>Journal of Occupational Health Psychology</em>, 1(1), 27–41.</p>
-<p id="ref-11">[11] Jiang, Y., et al. (2026). <a href="https://doi.org/10.1371/journal.pone.0356791">How do young chinese physicians cope with stress under standardized training? Investigating perceived stress, depression, and their interrelationships</a>. <em>PLOS ONE</em>, published August 24, 2026. Four hospitals; 504 valid questionnaires collected April 1–20, 2025; not nationally representative.</p>
-<p id="ref-12">[12] ACGME. <a href="https://www.acgme.org/globalassets/pfassets/programrequirements/2026-prs/cprresidency_2026.pdf">Common Program Requirements (Residency), including FAQs</a>. Effective July 1, 2026. Sections 2.6.g (reporting concerns without retaliation) and 6.20 (work hours, PDF page 47).</p>
-<p id="ref-13">[13] Committee of Interns and Residents. <a href="https://www.cirseiu.org/physicians-close-out-2024-with-stunning-east-coast-organizing/">Physicians Close Out 2024 With Stunning East Coast Organizing</a>. February 13, 2025. The union’s own account of organizing activity.</p>
-<p id="ref-14">[14] National Health Commission. <a href="https://www.nhc.gov.cn/qjjys/c100015/202109/230892f878bf4b56abeabadb3d93b284.shtml">Policy explanation: implementing the “two equal treatments” for standardized residency training</a> [Chinese]. 2021. Not a universal equal-pay rule for all trainee categories during training.</p>
-<p id="ref-15">[15] Shenzhen Health Commission and four other departments. <a href="https://wjw.sz.gov.cn/xxgk/gfxwjml/xxyxgfxwjml/content/post_11060878.html">Shenzhen implementation measures for standardized residency training</a> [Chinese]. Document 2023/5; published December 20, 2023, effective January 1, 2024. Articles 31–35 and 41–43.</p>
-<p id="ref-16">[16] National Academies of Sciences, Engineering, and Medicine. (2019). <a href="https://www.ncbi.nlm.nih.gov/books/NBK552613/">Taking Action Against Clinician Burnout: A Systems Approach to Professional Well-Being</a>. Washington, DC: The National Academies Press. DOI: <a href="https://doi.org/10.17226/25521">10.17226/25521</a>.</p>
-<p id="ref-17">[17] tanakawho. <a href="https://commons.wikimedia.org/wiki/File:Hospital_corridor_2.jpg">Hospital corridor 2</a>. Photograph, 2007. <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>.</p>
-<p id="ref-18">[18] Li Zhihao. <a href="https://lw.news.cn/2024-06/24/c_1310779276.htm">Steadying the residency path for medical professional master’s students</a> [Chinese]. Outlook Weekly, June 24, 2024.</p>
-<p id="ref-19">[19] Wellcome Library, London. <a href="https://commons.wikimedia.org/wiki/File:William_Osler_at_bedside_of_patients._Wellcome_L0004900.jpg">William Osler at bedside of patients</a>, L0004900. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
+<p id="ref-1">[1] Wu Xinyu &amp; Xie Yang. <a href="https://mzqb.cyol.com/html/2024-04/16/content_355345.htm">How can the path through residency work better?</a>. 2024-04-16. China Youth Daily; published interviews. He Yi is the source’s pseudonym.</p>
+<p id="ref-2">[2] Johns Hopkins Medicine. <a href="https://www.hopkinsmedicine.org/medicine/education/osler-medical-residency/overview">Osler Medical Residency — Overview</a>. institutional history. Institutional account of in-house residency, bedside teaching and early training duration.</p>
+<p id="ref-3">[3] PUMCH. <a href="https://www.pumch.cn/detail/27024.html">PUMC History: the residency system</a>. 2021-10-25. An institutional retrospective, not a contemporaneous 1921 record.</p>
+<p id="ref-4">[4] PUMC Press. <a href="https://www.pumch.cn/detail/29223.html">Inside four institutions of PUMC internal medicine</a>. 2022-09-13. Interview with institutional-history authors; the 1923 scheduling change and 1925 chief-resident selection.</p>
+<p id="ref-5">[5] Government Administration Council. <a href="https://cn.govopendata.com/renminribao/1951/10/03/1/">Decision on Reforming the School System</a>. 1951-10-01. Online transcription of People’s Daily, 3 October 1951, p. 1, section V. Not a scanned original.</p>
+<p id="ref-6">[6] State Council. <a href="https://zh.wikisource.org/wiki/国务院关于做好一九九〇年高等学校毕业生分配工作的通知">Notice on the allocation of higher-education graduates in 1990</a>. 1990-04-14. Guo Fa [1990] No. 23, clause 3; Wikisource transcription with its original government-source link. Placement was conditional.</p>
+<p id="ref-7">[7] State Council. <a href="https://www.beijing.gov.cn/zhengce/zhengcefagui/qtwj/201309/t20130924_776668.html">Notice on deepening urban housing reform and accelerating housing construction</a>. 1998-07-03. Guo Fa [1998] No. 23; Beijing government reproduction. Ending in-kind allocation did not end all housing support.</p>
+<p id="ref-8">[8] State Council &amp; Ministry of Health. <a href="https://m.055110.com/law/1/29094.html">Notice endorsing the report on policy questions in health-service reform</a>. 1985-04-25. Reproduction of the historical policy text: scarcity, autonomy, capped subsidies and medical purposes. Not a statement of present legal validity.</p>
+<p id="ref-9">[9] State Council. <a href="https://jyt.hunan.gov.cn/jyt/sjyt/xxgk/zcfg/flfg/201702/t20170214_3989964.html">Implementation guidelines for the Outline of Education Reform and Development</a>. 1994-07-03. Guo Fa [1994] No. 39, section 16; Hunan education authority reproduction. The transition was phased.</p>
+<p id="ref-10">[10] NDRC. <a href="https://www.ndrc.gov.cn/xwdt/gdzt/2009gmjj2010gmjj/2009gmjj/201004/t20100408_1198204.html">The launch of comprehensive health-system reform</a>. 2010-04-08. Official retrospective on the public-interest orientation of the 2009 reforms.</p>
+<p id="ref-11">[11] Xinhua. <a href="https://www.xinhuanet.com/politics/2017-12/28/c_1122181948.htm">Drug mark-ups abolished as health reform enters a new phase</a>. 2017-12-28. Contemporary reporting on public-hospital reform and the removal of drug mark-ups.</p>
+<p id="ref-12">[12] NHFPC. <a href="https://wjw.hubei.gov.cn/zfxxgk/fdzdgknr/qtzdgknr/hygq/202008/t20200807_2753247.shtml">Summary of the 2014 report on the development of standardised residency training</a>. 2015-02. February 2015 briefing; Hubei’s copy is dated 25 March 2015. Covers the 1962 plan, national interruption, local continuity and the 1993 trial.</p>
+<p id="ref-13">[13] Ministry of Health. <a href="https://bzrmyy.com.cn/html/zyysgfhpx/20130311/1893.html">Notice implementing trial measures for standardised clinical residency training</a>. 1993-02-17. Wei Jiao Fa [1993] No. 1; hospital reproduction. Describes phased, locally conditioned implementation.</p>
+<p id="ref-14">[14] NHFPC and six other departments. <a href="https://www.nhc.gov.cn/wjw/c100175/201401/f30492c1678b41fe961dba55e5909364.shtml">Guidance on establishing standardised residency training</a>. 2013-12-31. Guo Wei Ke Jiao Fa [2013] No. 56. Timetable, status-dependent support, funding and educational integration.</p>
+<p id="ref-15">[15] Huang Yangzi. <a href="https://www.jfdaily.com/wx/detail.do?id=736696">Why residency is still necessary—and how its trainees can be supported</a>. 2024-04-11. Shangguan News interviews with reform participants and training administrators; Shanghai’s 2010 reform and post-training job-seeking.</p>
+<p id="ref-16">[16] Four central departments. <a href="https://www.tjskq.com/system/2023/05/30/030111303.shtml">Notice implementing two forms of equal treatment for residency graduates</a>. 2021-08-04. Guo Wei Ban Ke Jiao Fa [2021] No. 18; reproduced by Tianjin Stomatological Hospital on 30 May 2023.</p>
+<p id="ref-17">[17] Ministry of Education and five other departments. <a href="https://yz.chsi.com.cn/kyzx/zcdh/201411/20141128/1410988030.html">Guidance on coordinating medicine and education to reform clinical training</a>. 2014. Jiao Yan [2014] No. 2; full text reproduced by CHSI on 28 November 2014, including integration from 2015.</p>
+<p id="ref-18">[18] State Council Academic Degrees Committee. <a href="https://yz.chsi.com.cn/kyzx/zyss/201506/20150618/1482166946.html">Guiding framework for the clinical medicine professional master’s degree</a>. 2015-05-29. Attachment 1, Xue Wei [2015] No. 9; CHSI reproduction, 18 June 2015. Duration, 33 clinical months, protected learning, thesis formats and dual status.</p>
+<p id="ref-19">[19] Tianjin Stomatological Hospital. <a href="https://www.tjskq.com/system/2014/11/23/000036995.shtml">Intern-management rules of Nankai University Stomatological Hospital</a>. 2014-11-23. A published institutional policy, not observational evidence of every intern’s hours or a rule for all hospitals.</p>
+<p id="ref-20">[20] Hafferty, F. W.; Franks, R. <a href="https://pubmed.ncbi.nlm.nih.gov/7945681/">The hidden curriculum, ethics teaching, and the structure of medical education</a>. 1994. Academic Medicine, 69(11):861–871. DOI: 10.1097/00001888-199411000-00001.</p>
+<p id="ref-21">[21] Chang, K.-S. <a href="https://doi.org/10.1111/j.1468-4446.2010.01321.x">The second modern condition? Compressed modernity as internalized reflexive cosmopolitization</a>. 2010. British Journal of Sociology, 61(3):444–464. A theoretical framework, not a direct causal test of this essay’s mechanisms.</p>
+<p id="ref-22">[22] Ministry of Education. <a href="https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202506/t20250611_1193760.html">Statistical bulletin on national education development in 2024</a>. 2025-06-11. 60.8% is the 2024 gross higher-education enrolment ratio, not unemployment or a measure of returns to a degree.</p>
+<p id="ref-23">[23] Initium Media. <a href="https://theinitium.com/20240417-mainland-medical-student-residency-training-suicides-zh-hans/">Students for pay, doctors for work: residents’ apprenticeship predicament</a>. 2024-04-17. Published interviews; individual accounts are not treated as national estimates.</p>
+<p id="ref-24">[24] National Labor Relations Board. <a href="https://nlrbresearch.com/pdfs/09031d45800c0a12.pdf">Boston Medical Center Corporation, 330 NLRB 152</a>. 1999-11-26. Case 1–RC–20574; a repository copy of the original decision, opening page and reasoning. Its legal scope is not universal.</p>
+<p id="ref-25">[25] Leape, L. L. <a href="https://link.springer.com/chapter/10.1007/978-3-030-71123-8_18">Sleepy Doctors: Work Hours and the Accreditation Council for Graduate Medical Education</a>. 2021. Making Healthcare Safe, pp.267–291. Historical account of the 1984 case and reform, without a single-cause attribution.</p>
+<p id="ref-26">[26] American Medical Association, Council on Medical Education. <a href="https://councilreports.ama-assn.org/councilreports/downloadreport?uri=/councilreports/CME_Report_5_I_23_final_annotated.pdf">Organizations to Represent the Interests of Resident and Fellow Physicians</a>. 2023. Report 5-I-23, printed p.3; the 1989 New York rules on hours and supervision.</p>
+<p id="ref-27">[27] Accreditation Council for Graduate Medical Education. <a href="https://www.acgme.org/globalassets/pdfs/an_2002-03annrep.pdf">Annual Report 2002–2003</a>. 2003. Executive director’s report, printed p.4: implementation on 1 July 2003 and external legislative pressure.</p>
+<p id="ref-28">[28] Riebschleger, M.; Nasca, T. J. <a href="https://www.acgme.org/globalassets/PDFs/jgme-11-00-29-37.pdf">New Duty Hour Limits: Discussion and Justification</a>. 2011. ACGME companion publication, chapter 5, pp.29–37; an 80-hour maximum averaged over four weeks.</p>
+<p id="ref-29">[29] Ministry of Health &amp; Ministry of Education. <a href="https://jwc.jzmu.edu.cn/info/1209/1926.htm">Interim rules on clinical practice in medical education</a>. 2008-08-18. University reproduction; responsibilities for supervision, document review and management.</p>
 </div>
 
-<p class="cm-colophon">Text: Jia-Hao (Jay) Ji · Original SVG illustrations produced for this blog. Photograph credits and licenses appear in the captions. Use of an image does not imply endorsement by its creator or holding institution.</p>
+<p class="cm-colophon">Image credits and licences appear in their captions; original files are linked. Sources checked through 9 September 2026.</p>
 
 </div>
