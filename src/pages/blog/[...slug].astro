@@ -1,47 +1,25 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
+import {type CollectionEntry,getCollection} from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
-
-export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}));
-}
-type Props = CollectionEntry<'blog'>;
-
-const post = Astro.props;
-const { Content, headings } = await post.render();
+import {SITE,AUTHOR,languageOf,postPath,translations,readingMinutes} from '../../lib/site.mjs';
+export async function getStaticPaths(){return (await getCollection('blog')).map(post=>({params:{slug:post.slug},props:post}));}
+type Props=CollectionEntry<'blog'>;
+const post=Astro.props;
+const {Content,headings}=await post.render();
+const lang=languageOf(post),zh=lang==='zh-CN';
+const alternates=translations(post,await getCollection('blog'));
+const url=SITE+postPath(post);
+const structuredData={'@context':'https://schema.org','@graph':[AUTHOR,{'@type':'BlogPosting','@id':url+'#article',url,mainEntityOfPage:url,headline:post.data.title,description:post.data.description,datePublished:post.data.pubDate.toISOString(),dateModified:(post.data.updatedDate||post.data.pubDate).toISOString(),inLanguage:lang,author:{'@id':AUTHOR['@id']},publisher:{'@id':AUTHOR['@id']},image:new URL(post.data.heroImage||'/social-image.svg',SITE).href},{'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Home',item:SITE+'/'},{'@type':'ListItem',position:2,name:'Blog',item:SITE+'/blog/'},{'@type':'ListItem',position:3,name:post.data.title,item:url}]}]};
+const math=/\\\(|\\\[|\$\$|\$[^\n$]+\$/.test(post.body);
+const mermaid=/mermaid/.test(post.body);
 ---
-
-<Layout 
-	title={post.data.title} 
-	description={post.data.description}
-	lang={post.data.lang ?? 'en'}
-	image={post.data.heroImage}
-	externalScripts={post.data.externalScripts}
-	localScripts={post.data.localScripts}
-	localStyles={post.data.localStyles}
-	maxWidth="max-w-7xl"
->
-	<div class="flex flex-col lg:flex-row lg:gap-12 relative">
-		<TableOfContents headings={headings} />
-
-		<article class="prose prose-lg prose-indigo dark:prose-invert w-full max-w-4xl mx-auto flex-1 min-w-0">
-			<div class="mb-8 text-center">
-				<h1 class="mb-2 text-gray-900 dark:text-white !text-4xl md:!text-5xl !leading-tight">{post.data.title}</h1>
-				<time datetime={post.data.pubDate.toISOString()} class="text-gray-500 dark:text-gray-400">
-					{post.data.pubDate.toLocaleDateString(post.data.lang ?? 'en-us', {
-						year: 'numeric',
-						month: 'long',
-						day: 'numeric',
-					})}
-				</time>
-			</div>
-			
-			<Content />
-		</article>
-	</div>
+<Layout title={post.data.title} description={post.data.description} lang={lang} image={post.data.heroImage} externalScripts={post.data.externalScripts} localScripts={post.data.localScripts} localStyles={post.data.localStyles} maxWidth="max-w-7xl" math={math} mermaid={mermaid} noindex={post.slug==='hello-world'} article={true} published={post.data.pubDate.toISOString()} modified={(post.data.updatedDate||post.data.pubDate).toISOString()} alternates={alternates} structuredData={structuredData}>
+  <div class="relative flex flex-col lg:flex-row lg:gap-12"><TableOfContents headings={headings} />
+    <article class="prose prose-lg prose-indigo dark:prose-invert mx-auto w-full min-w-0 max-w-4xl flex-1">
+      <div class="mb-8 text-center"><h1 class="article-title mb-4 !text-4xl !leading-tight text-gray-900 dark:text-white md:!text-5xl">{post.data.title}</h1><div class="article-meta text-gray-500 dark:text-gray-400"><span>Jia-Hao (Jay) Ji</span><time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString(lang,{year:'numeric',month:'long',day:'numeric'})}</time><span>{zh?`约 ${readingMinutes(post.body)} 分钟`:`${readingMinutes(post.body)} min read`}</span></div></div>
+      <Content />
+      <aside class="site-subscribe not-prose" aria-label={zh?'订阅更新':'Subscribe'}><h2 class="text-xl font-bold">{zh?'继续阅读，保持联系':'Keep reading. Stay in touch.'}</h2><p class="mt-2 text-gray-600 dark:text-gray-300">{zh?'医学、人工智能与社会观察。用 RSS 接收下一篇文章。':'Research, medicine and society. Receive new articles in your RSS reader.'}</p><a href="/subscribe/">{zh?'订阅更新 →':'Subscribe →'}</a><a href="/blog/">{zh?'更多文章 →':'More articles →'}</a></aside>
+    </article>
+  </div>
 </Layout>

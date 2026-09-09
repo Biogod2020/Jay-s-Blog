@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {xml,feed,languageOf,publicPosts,distinctPosts,translations,readingMinutes} from '../src/lib/site.mjs';
+const p=(slug,title='Example',lang='en')=>({slug,body:'Some text.',data:{title,description:'A & B < C',pubDate:new Date('2026-09-09'),lang}});
+test('XML escapes all reserved characters and strips invalid controls',()=>assert.equal(xml('&<>"\'\u0001'),'&amp;&lt;&gt;&quot;&apos;'));
+test('Historical Chinese posts get Chinese metadata',()=>assert.equal(languageOf(p('legacy','中文文章')),'zh-CN'));
+test('Explicit English translations stay English',()=>assert.equal(languageOf(p('article-en')),'en'));
+test('Sample post is excluded from discovery',()=>assert.equal(publicPosts([p('hello-world'),p('real')]).length,1));
+test('Home groups real translation pairs',()=>assert.deepEqual(distinctPosts([p('essay-en'),p('essay'),p('other-en')]).map(p=>p.slug),['essay','other-en']));
+test('Only existing translated pages receive hreflang',()=>assert.equal(translations(p('essay'),[p('essay')]).length,0));
+test('Translation pairs link both versions',()=>assert.equal(translations(p('essay','中文'),[p('essay','中文'),p('essay-en')]).length,2));
+test('RSS contains escaped text and permanent absolute GUIDs',()=>{const s=feed([p('sample')]);assert.ok(s.includes('A &amp; B &lt; C'));assert.ok(s.includes('<guid isPermaLink="true">https://jiahaoblog.com/blog/sample/</guid>'));});
+test('Language feeds are disjoint and cover all articles',()=>{const a=p('zh','中文'),b=p('en');assert.ok(!feed([a,b],'zh').includes('/blog/en/'));assert.ok(!feed([a,b],'en').includes('/blog/zh/'));});
+test('Editing an article does not change its RSS GUID',()=>{const a=p('entry'),b=p('entry');b.data.updatedDate=new Date('2026-09-10');assert.equal(feed([a]).match(/<guid.*?<\/guid>/)[0],feed([b]).match(/<guid.*?<\/guid>/)[0]);});
+test('Reading time ignores script and style bodies',()=>assert.equal(readingMinutes('<script>'+('hello '.repeat(10000))+'</script>one'),1));
+test('Mixed-language reading time is positive',()=>assert.ok(readingMinutes('医学'.repeat(1000))>=5));

@@ -1,177 +1,92 @@
 ---
-import ThemeToggle from "../components/ThemeToggle.astro";
-import AuraBackground from "../components/AuraBackground.astro";
-import "../styles/global.css";
-
+import ThemeToggle from '../components/ThemeToggle.astro';
+import AuraBackground from '../components/AuraBackground.astro';
+import '../styles/global.css';
+import { SITE, AUTHOR } from '../lib/site.mjs';
 interface Props {
-  title: string;
-  description?: string;
-  image?: string;
-  externalScripts?: string[];
-  localScripts?: string[];
-  localStyles?: string[];
-  maxWidth?: string;
-  lang?: string;
+  title: string; description?: string; image?: string;
+  externalScripts?: string[]; localScripts?: string[]; localStyles?: string[];
+  maxWidth?: string; lang?: string; math?: boolean; mermaid?: boolean;
+  noindex?: boolean; article?: boolean; published?: string; modified?: string;
+  alternates?: {lang:string;href:string}[]; structuredData?: Record<string,unknown>;
 }
-
-const {
-  title,
-  description = "Jia-Hao Ji — M.D. candidate and AI researcher building agentic and multimodal systems for biomedical discovery.",
-  image = "/social-image.svg",
-  externalScripts = [],
-  localScripts = [],
-  localStyles = [],
-  maxWidth = "max-w-4xl",
-  lang = "en",
-} = Astro.props;
-
-const useChineseFont = lang.toLowerCase().startsWith("zh");
-const navItems = [
-  { href: "/", label: "Home", hideOnMobile: false },
-  { href: "/#research", label: "Research", hideOnMobile: true },
-  { href: "/blog", label: "Blog", hideOnMobile: false },
-  { href: "/about", label: "About", hideOnMobile: true },
-];
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const { title, description='Jia-Hao Ji — M.D. candidate and AI researcher building agentic and multimodal systems for biomedical discovery.', image='/social-image.svg', externalScripts=[],localScripts=[],localStyles=[],maxWidth='max-w-4xl',lang='en',math=false,mermaid=false,noindex=false,article=false,published,modified,structuredData } = Astro.props;
+const zh = lang.startsWith('zh');
+const path = Astro.url.pathname;
+const canonicalPath = path.endsWith('/') || /\.[a-z0-9]+$/i.test(path) ? path : `${path}/`;
+const canonicalURL = new URL(canonicalPath, Astro.site || SITE);
+const aboutPair = /^\/about(?:\/zh)?\/?$/.test(path) ? [{lang:'en',href:'/about/'},{lang:'zh-CN',href:'/about/zh/'}] : [];
+const alternates = Astro.props.alternates || aboutPair;
+const graph = structuredData || {'@context':'https://schema.org','@graph':[AUTHOR,{'@type':'WebSite','@id':`${SITE}/#website`,url:`${SITE}/`,name:'Jay’s Blog',inLanguage:['en','zh-CN'],author:{'@id':AUTHOR['@id']}}]};
+const navItems = [{href:'/',label:zh?'首页':'Home'},{href:'/#research',label:zh?'研究':'Research',compact:true},{href:'/blog/',label:zh?'文章':'Blog'},{href:zh?'/about/zh/':'/about/',label:zh?'关于':'About',compact:true},{href:'/subscribe/',label:zh?'订阅':'RSS'}];
 ---
-
 <!doctype html>
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"
-    ></script>
-    <script is:inline>
-      document.addEventListener("DOMContentLoaded", () => {
-        // @ts-ignore
-        if (window.mermaid) {
-          // @ts-ignore
-          mermaid.initialize({ startOnLoad: true, theme: "neutral" });
-        }
-      });
-    </script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <script is:inline>
-      window.MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          displayMath: [['$$', '$$'], ['\\[', '\\]']],
-          processEscapes: true
-        },
-        options: {
-          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-        }
-      };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" is:inline></script>
-
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Jay’s Blog · All articles" href={`${SITE}/rss.xml`} />
+    <link rel="alternate" type="application/rss+xml" title="Jay’s Blog · 中文" href={`${SITE}/rss/zh.xml`} />
+    <link rel="alternate" type="application/rss+xml" title="Jay’s Blog · English" href={`${SITE}/rss/en.xml`} />
+    {alternates.map(a => <link rel="alternate" hreflang={a.lang} href={new URL(a.href,SITE)} />)}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="/styles/site-enhancements.css" rel="stylesheet" />
+    <meta property="og:type" content={article?'article':'website'} />
+    <meta property="og:site_name" content="Jay’s Blog" />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url)} />
-    <meta property="og:locale" content={useChineseFont ? "zh_CN" : "en_US"} />
-
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.url)} />
-
-    {
-      localStyles.map((style) => (
-        <link rel="stylesheet" href={style} />
-      ))
-    }
-    {
-      externalScripts.map((script) => (
-        <script src={script} is:inline></script>
-      ))
-    }
-
+    <meta property="og:image" content={new URL(image,SITE)} />
+    <meta property="og:locale" content={zh?'zh_CN':'en_US'} />
+    {published && <meta property="article:published_time" content={published} />}
+    {modified && <meta property="article:modified_time" content={modified} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(image,SITE)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(graph).replace(/</g,'\\u003c')} />
+    {localStyles.map(style => <link rel="stylesheet" href={style} />)}
+    {math && <script is:inline>
+      window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+    </script>}
+    {math && <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer is:inline />}
+    {mermaid && <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js" defer is:inline />}
+    {mermaid && <script is:inline>document.addEventListener('DOMContentLoaded',()=>{if(window.mermaid)window.mermaid.initialize({startOnLoad:true,theme:document.documentElement.classList.contains('dark')?'dark':'neutral'});});</script>}
+    {externalScripts.map(src => <script src={src} is:inline />)}
     <title>{title}</title>
     <script is:inline>
-      if (
-        localStorage.getItem("color-theme") === "dark" ||
-        (!("color-theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+      (()=>{let theme;try{theme=localStorage.getItem('color-theme');}catch{}const dark=theme?theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',dark);})();
     </script>
   </head>
-  <body
-    class="relative bg-gray-50 text-gray-900 antialiased transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100"
-    style={useChineseFont ? "font-family: 'Noto Sans SC', Inter, system-ui, sans-serif;" : undefined}
-  >
+  <body class="relative bg-gray-50 text-gray-900 antialiased transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100" style={zh?"font-family:'Noto Sans SC',Inter,system-ui,sans-serif;":undefined}>
+    <a class="skip-link" href="#main-content">{zh?'跳到正文':'Skip to content'}</a>
     <AuraBackground />
-    <header
-      class="sticky top-0 z-50 bg-white/80 shadow-sm backdrop-blur-md transition-colors duration-300 dark:bg-gray-800/80"
-    >
-      <nav
-        class={`mx-auto flex items-center justify-between gap-3 px-4 py-4 ${maxWidth}`}
-      >
-        <a
-          href="/"
-          class="shrink-0 text-lg font-bold text-indigo-600 dark:text-indigo-400 md:text-xl"
-        >
-          Jia-Hao Ji
-        </a>
-        <div class="flex items-center gap-2 text-xs sm:gap-3 sm:text-sm md:gap-4 md:text-base">
-          {
-            navItems.map((item) => (
-              <a
-                href={item.href}
-                class:list={[
-                  "transition hover:text-indigo-600 dark:hover:text-indigo-400",
-                  item.hideOnMobile && "hidden sm:inline",
-                ]}
-              >
-                {item.label}
-              </a>
-            ))
-          }
+    <header class="sticky top-0 z-50 bg-white/80 shadow-sm backdrop-blur-md dark:bg-gray-800/80">
+      <nav aria-label={zh?'主导航':'Main navigation'} class={`mx-auto flex items-center justify-between gap-3 px-4 py-4 ${maxWidth}`}>
+        <a href="/" class="shrink-0 text-lg font-bold text-indigo-600 dark:text-indigo-400 md:text-xl">Jia-Hao Ji</a>
+        <div class="flex items-center gap-3 text-xs sm:text-sm md:gap-4 md:text-base">
+          {navItems.map(item=><a href={item.href} aria-current={canonicalPath===item.href?'page':undefined} class:list={['transition hover:text-indigo-600 dark:hover:text-indigo-400',item.compact&&'hidden sm:inline']}>{item.label}</a>)}
+          <details class="relative sm:hidden site-menu"><summary aria-label={zh?'更多导航':'More navigation'}>☰</summary><div class="absolute right-0 top-10 w-40 rounded-xl border border-gray-200 bg-white p-4 shadow-xl dark:border-gray-700 dark:bg-gray-800"><a href="/#research">{zh?'研究':'Research'}</a><a href={zh?'/about/zh/':'/about/'}>{zh?'关于我':'About me'}</a></div></details>
           <ThemeToggle />
         </div>
       </nav>
     </header>
-
-    <main class={`mx-auto min-h-[80vh] px-4 py-8 ${maxWidth}`}>
-      <slot />
-    </main>
-
-    <footer
-      class="mt-12 border-t bg-white transition-colors duration-300 dark:border-gray-700 dark:bg-gray-800"
-    >
-      <div
-        class={`mx-auto px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400 ${maxWidth}`}
-      >
-        &copy; {new Date().getFullYear()} Jia-Hao Ji. Built with Astro.
+    <main id="main-content" class={`mx-auto min-h-[80vh] px-4 py-8 ${maxWidth}`} tabindex="-1"><slot /></main>
+    <footer class="mt-12 border-t border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-700 dark:bg-gray-800/80">
+      <div class={`mx-auto flex flex-wrap items-center justify-between gap-4 px-4 py-8 text-sm text-gray-500 dark:text-gray-400 ${maxWidth}`}>
+        <p>&copy; {new Date().getFullYear()} Jia-Hao Ji. Built with Astro.</p>
+        <div class="flex flex-wrap gap-4"><a href="/subscribe/">{zh?'订阅更新':'Subscribe'}</a><a href="/rss/zh.xml">中文 RSS</a><a href="/rss/en.xml">English RSS</a><a href="https://github.com/Biogod2020" rel="me">GitHub</a></div>
       </div>
     </footer>
-
-    {
-      localScripts.map((script) => (
-        <script src={script} is:inline></script>
-      ))
-    }
+    {localScripts.map(src=><script src={src} is:inline />)}
   </body>
 </html>

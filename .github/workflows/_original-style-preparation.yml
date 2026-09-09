@@ -1,0 +1,58 @@
+name: Prepare and verify original-style upgrade
+on:
+  push:
+    branches: [update/original-style-rss-photos]
+permissions:
+  contents: write
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: update/original-style-rss-photos
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install one-time image and browser tooling
+        run: python -m pip install Pillow requests playwright
+      - name: Preserve source copy and acquire attributed photographs
+        run: python scripts/_finish_original_style.py
+      - name: Build the complete static site
+        run: |
+          npm ci
+          npm run build
+          node --test tests/site.test.mjs
+          python scripts/verify_site.py
+      - name: Check desktop, mobile, dark mode and no-JavaScript rendering
+        env:
+          QA_OUTPUT: ${{ runner.temp }}/site-qa
+        run: |
+          python -m playwright install --with-deps chromium
+          python scripts/visual_check.py
+      - name: Commit verified source and local image assets to the working branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/content/blog src/pages/index.astro public/images/compressed-modernity/photos public/images/profile docs/medical-training-photo-sources.json
+          git commit -m 'Preserve original homepage design and enrich the bilingual essay with attributed photographs'
+          git push origin HEAD:update/original-style-rss-photos
+          git rev-parse HEAD >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain rendered pages and visual evidence for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-style-qa
+          path: |
+            ${{ runner.temp }}/site-qa
+            docs/medical-training-photo-sources.json
+            dist/index.html
+            dist/blog/compressed-modernity-medical-training/index.html
+            public/images/compressed-modernity/photos
+          if-no-files-found: warn

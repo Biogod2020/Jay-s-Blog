@@ -1,78 +1,26 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { getCollection } from "astro:content";
-
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import {publicPosts,languageOf,postPath,readingMinutes} from '../../lib/site.mjs';
+const posts=publicPosts(await getCollection('blog'));
 ---
-
-<Layout title="Blog Archive - Jiahao's Blog">
-  <section class="py-20 bg-gray-50 dark:bg-gray-900 min-h-screen">
-    <div class="max-w-4xl mx-auto px-4">
-      <div class="text-center mb-16">
-        <h1
-          class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4"
-        >
-          Blog Archive
-        </h1>
-        <p class="text-xl text-gray-600 dark:text-gray-400">
-          Exploring ideas, one post at a time.
-        </p>
-      </div>
-
-      <div class="space-y-8">
-        {
-          posts.map((post) => (
-            <article class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 p-6 md:p-8 border border-gray-100 dark:border-gray-700 group">
-              <div class="flex flex-col gap-4">
-                <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-                  <time datetime={post.data.pubDate.toISOString()}>
-                    {post.data.pubDate.toLocaleDateString("en-us", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-                  <span class="w-1 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
-                  <span>Article</span>
-                </div>
-
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                  <a href={`/blog/${post.slug}`}>{post.data.title}</a>
-                </h2>
-
-                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  {post.data.description}
-                </p>
-
-                <div class="pt-4">
-                  <a
-                    href={`/blog/${post.slug}`}
-                    class="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-medium hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
-                  >
-                    Read full article
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-    </div>
+<Layout title="Blog Archive | Jia-Hao Ji" description="Research notes, technical experiments and essays on medicine, AI and society by Jia-Hao Ji." maxWidth="max-w-5xl">
+  <section class="py-10 md:py-16">
+    <div class="mb-10 text-center"><p class="mb-3 text-xs font-bold uppercase tracking-[.2em] text-indigo-600 dark:text-indigo-400">Ideas &amp; field notes</p><h1 class="text-4xl font-extrabold md:text-5xl">Blog <span class="text-gradient">Archive</span></h1><p class="mt-4 text-gray-600 dark:text-gray-400">Research, medicine, technology and society · 研究、医学与社会</p><p class="mt-4"><a class="font-semibold text-indigo-600 dark:text-indigo-400" href="/subscribe/">Subscribe via RSS / 订阅更新 →</a></p></div>
+    <form class="archive-controls mb-5 grid gap-3 sm:grid-cols-[1fr_180px]" role="search" onsubmit="return false"><label><span class="sr-only">Search articles / 搜索文章</span><input id="article-search" type="search" placeholder="Search titles and summaries / 搜索标题与摘要" autocomplete="off" /></label><label><span class="sr-only">Language / 语言</span><select id="article-language"><option value="all">全部 / All languages</option value="zh-CN">中文</option><option value="en">English</option></select></label></form>
+    <p id="archive-count" aria-live="polite" class="mb-7 text-sm text-gray-500 dark:text-gray-400">{posts.length} articles / 篇文章</p>
+    <div class="space-y-6">{posts.map(post=><article class="archive-card group rounded-2xl border border-gray-100 bg-white/80 p-6 shadow-sm backdrop-blur-sm transition hover:shadow-lg dark:border-gray-700 dark:bg-gray-800/80 md:p-8" data-language={languageOf(post)} data-search={`${post.data.title} ${post.data.description}`.toLocaleLowerCase()}>
+      <div class="mb-4 flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400"><time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toISOString().slice(0,10)}</time><span class="rounded-full bg-indigo-50 px-2 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">{languageOf(post)==='zh-CN'?'中文':'English'}</span><span>{readingMinutes(post.body)} min</span></div>
+      <h2 class="text-xl font-bold leading-relaxed transition group-hover:text-indigo-600 dark:group-hover:text-indigo-400 md:text-2xl"><a href={postPath(post)}>{post.data.title}</a></h2><p class="mt-4 leading-relaxed text-gray-600 dark:text-gray-300">{post.data.description}</p><a href={postPath(post)} class="mt-5 inline-block text-sm font-semibold text-indigo-600 dark:text-indigo-400">{languageOf(post)==='zh-CN'?'阅读全文 →':'Read article →'}</a>
+    </article>)}</div>
+    <p id="archive-empty" hidden class="rounded-xl border border-gray-200 p-8 text-center dark:border-gray-700">没有找到匹配的文章。Try another search.</p>
+    <noscript><p class="mt-6">所有文章已列在本页。搜索筛选需要 JavaScript，阅读文章不需要。</p></noscript>
   </section>
 </Layout>
+<script>
+  const input=document.querySelector<HTMLInputElement>('#article-search');
+  const language=document.querySelector<HTMLSelectElement>('#article-language');
+  const cards=[...document.querySelectorAll<HTMLElement>('.archive-card')];
+  const filter=()=>{let count=0;const terms=(input?.value||'').toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);for(const card of cards){const show=(language?.value==='all'||card.dataset.language===language?.value)&&terms.every(t=>card.dataset.search?.includes(t));card.hidden=!show;if(show)count++;}const counter=document.querySelector('#archive-count');if(counter)counter.textContent=`${count} / ${cards.length} articles`;const empty=document.querySelector<HTMLElement>('#archive-empty');if(empty)empty.hidden=count!==0;};
+  input?.addEventListener('input',filter);language?.addEventListener('change',filter);
+</script>

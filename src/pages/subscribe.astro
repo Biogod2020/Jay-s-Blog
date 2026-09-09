@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import {SITE} from '../lib/site.mjs';
+const feeds=[{title:'全部文章',subtitle:'All articles · 中文 + English',path:'/rss.xml'},{title:'中文文章',subtitle:'医学、人工智能与社会观察',path:'/rss/zh.xml'},{title:'English',subtitle:'Research, medicine and society',path:'/rss/en.xml'}];
+---
+<Layout title="订阅更新 · RSS | Jay’s Blog" description="通过 RSS 订阅 Jay 的研究、医学与社会观察文章。无需注册，没有邮件名单。" lang="zh-CN" maxWidth="max-w-6xl">
+  <section class="py-12 md:py-20">
+    <div class="mx-auto mb-12 max-w-3xl text-center"><span class="rounded-full border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm text-indigo-600 dark:border-indigo-800 dark:bg-indigo-950/50 dark:text-indigo-300">Stay in the loop</span><h1 class="mt-7 text-4xl font-extrabold tracking-tight md:text-5xl">把新文章，带到你的<span class="text-gradient">阅读器</span></h1><p class="mt-6 text-lg leading-relaxed text-gray-600 dark:text-gray-300">复制订阅地址，添加到常用的 RSS 阅读器。文章更新会随订阅源送达，无需注册，也不需要留下邮箱。</p><p class="mt-3 text-sm text-gray-500 dark:text-gray-400" lang="en">Add a feed URL to your RSS reader. No account or mailing list required.</p></div>
+    <div class="grid gap-6 md:grid-cols-3">{feeds.map(f=><article class="rounded-2xl border border-indigo-100 bg-white/80 p-7 shadow-sm backdrop-blur-sm dark:border-gray-700 dark:bg-gray-800/80"><h2 class="text-2xl font-bold">{f.title}</h2><p class="mt-3 min-h-12 text-sm text-gray-500 dark:text-gray-400">{f.subtitle}</p><a href={f.path} class="my-5 block break-all rounded-lg bg-indigo-50 p-3 text-sm text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">{SITE}{f.path}</a><button type="button" data-copy-feed={`${SITE}${f.path}`} class="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">复制订阅地址</button><p class="mt-2 text-xs text-gray-500" aria-live="polite"></p></article>)}</div>
+    <div class="mx-auto mt-12 max-w-3xl rounded-2xl border border-gray-200 bg-white/60 p-7 dark:border-gray-700 dark:bg-gray-800/50"><h2 class="text-xl font-bold">读什么？</h2><p class="mt-3 leading-relaxed text-gray-600 dark:text-gray-300">这里记录医学与人工智能研究、技术实验和社会观察。订阅源提供标题、摘要与原文链接，完整图文和交互演示保留在博客中。</p><p class="mt-4"><a href="/blog/" class="font-semibold text-indigo-600 dark:text-indigo-400">先看看文章归档 →</a></p></div>
+  </section>
+</Layout>
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-feed]').forEach(button=>button.addEventListener('click',async()=>{
+    const message=button.nextElementSibling;
+    try{await navigator.clipboard.writeText(button.dataset.copyFeed!);if(message)message.textContent='已复制 / Copied';}
+    catch{if(message)message.textContent='请选中上方地址后复制。';}
+  }));
+</script>
