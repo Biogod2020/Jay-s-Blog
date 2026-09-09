@@ -13,6 +13,8 @@ const { title, description = SITE.description, image = '/avatar.jpg', lang = 'en
   externalScripts = [], localScripts = [], localStyles = [], maxWidth = 'max-w-6xl',
   alternates = [], noindex = false, article, structuredData, math = false, mermaid = false, icons = false,
 } = Astro.props;
+// Preserve the browser global expected by legacy inline article scripts; do not follow an unpinned major release.
+const pinnedExternalScripts = [...new Set(externalScripts.map(src => src === 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js' ? 'https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js' : src))];
 const zh = lang.startsWith('zh');
 const home = zh ? '/zh/' : '/';
 const about = zh ? '/about/zh/' : '/about/';
@@ -69,7 +71,7 @@ const graph = structuredData ?? { '@context': 'https://schema.org', '@type': 'We
   </script>
   {icons && <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />}
   {localStyles.map(href => <link rel="stylesheet" href={href} />)}
-  {externalScripts.map(src => <script src={src} is:inline></script>)}
+  {pinnedExternalScripts.map(src => <script src={src} is:inline></script>)}
   {math && <script is:inline>
     window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
   </script>}

@@ -2,7 +2,7 @@ name: Build, check and deploy
 
 on:
   push:
-    branches: [main, refactor/rss-discovery-editorial]
+    branches: [main]
     paths-ignore: ['docs/**', 'README.md', '.memory/**', 'wechat_version/**']
   pull_request:
     branches: [main]
