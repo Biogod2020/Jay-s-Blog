@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import Layout from '../layouts/Layout.astro';
+import PostList from './PostList.astro';
+import { SITE, research, homeAlternates, type Language } from '../lib/site';
+import { getPosts, homepagePosts } from '../lib/posts';
+interface Props { lang?: Language; }
+const { lang = 'en' } = Astro.props;
+const zh = lang === 'zh-CN';
+const about = zh ? '/about/zh/' : '/about/';
+const posts = homepagePosts(await getPosts(), lang);
+---
+<Layout title={zh ? '纪家灏 | 医学与人工智能研究' : 'Jia-Hao Ji | Medicine & AI Research'} description={zh ? SITE.descriptionZh : SITE.description} lang={lang} alternates={homeAlternates}>
+  <section class="hero" aria-labelledby="home-title">
+    <div>
+      <p class="eyebrow">{zh ? '复旦大学上海医学院 · 医学博士在读' : 'Fudan University · MD candidate'}</p>
+      <h1 id="home-title">{zh ? '纪家灏' : 'Jia-Hao Ji'} <span>{zh ? 'Jay' : '(Jay)'}</span></h1>
+      <p class="hero-lead">{zh ? '临床医学出发，研究人工智能如何帮助我们理解疾病、组织证据和完成科学工作。' : 'Working from clinical medicine to AI systems for biomedical research.'}</p>
+      <p class="hero-note">{zh ? '我的工作围绕科学智能体、多模态生物医学AI与可靠多智能体推理。这里记录研究进展、技术实践，以及医学与社会中的问题。' : 'I study scientific agents, multimodal biomedical AI and reliable multi-agent reasoning. This site brings together my research, technical notes and writing on medicine and society.'}</p>
+      <div class="text-links"><a href="#research">{zh ? '研究工作' : 'Selected research'} ↗</a><a href={about}>{zh ? '个人介绍与简历' : 'Profile & CV'} ↗</a><a href={`mailto:${SITE.email}`}>{zh ? '联系我' : 'Contact'}</a></div>
+    </div>
+    <figure class="hero-portrait">
+      <Image src={portrait} width={460} height={530} format="webp" quality={82} alt={zh ? '纪家灏的照片' : 'Portrait of Jia-Hao Ji'} loading="eager" decoding="async" fetchpriority="high" />
+      <figcaption>{zh ? '医学 · AI · 科学研究' : 'Medicine · AI · Scientific research'}<br />{zh ? '中国，上海' : 'Shanghai, China'}</figcaption>
+    </figure>
+  </section>
+  <section id="research" class="section" aria-labelledby="research-title">
+    <div class="section-header"><h2 id="research-title">{zh ? '研究工作' : 'Selected research'}</h2><a href={about}>{zh ? '完整研究经历' : 'Full research profile'} →</a></div>
+    <div class="research-list">{research.map(item => <article class="research-item">
+      <div class="research-meta"><span>{zh ? item.labelZh : item.label}</span>{item.venue}<br />{zh ? '预印本' : 'Preprint'}</div>
+      <div><h3><a href={item.url} lang="en" target="_blank" rel="noopener noreferrer">{item.title}</a></h3><p>{zh ? item.descriptionZh : item.description}</p><a class="paper-link" href={item.url} target="_blank" rel="noopener noreferrer">{zh ? '阅读论文' : 'Read the paper'} ↗</a></div>
+    </article>)}</div>
+  </section>
+  <section class="section" aria-labelledby="writing-title">
+    <div class="section-header"><h2 id="writing-title">{zh ? '最近的文章' : 'Recent writing'}</h2><a href="/blog/">{zh ? '全部文章与搜索' : 'Archive & search'} →</a></div>
+    <PostList posts={posts} lang={lang} />
+  </section>
+  <aside class="subscribe-strip"><div><h2>{zh ? '在你的阅读器里继续阅读' : 'Read on your own terms.'}</h2><p>{zh ? '通过 RSS 订阅更新。无需注册，也无需关注另一个平台。' : 'Follow new writing by RSS. No account, inbox campaign or platform required.'}</p></div><a href="/subscribe/">{zh ? '订阅文章' : 'Subscribe via RSS'} →</a></aside>
+</Layout>

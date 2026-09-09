@@ -1,0 +1,22 @@
+---
+import { postPath, postLanguage, readingMinutes, type Post } from '../lib/posts';
+import type { Language } from '../lib/site';
+interface Props { posts: Post[]; lang?: Language; searchable?: boolean; }
+const { posts, lang = 'en', searchable = false } = Astro.props;
+const zh = lang === 'zh-CN';
+---
+<ol class="writing-list">
+  {posts.map(post => (
+    <li class="writing-row" data-post-row data-language={postLanguage(post)} data-search={searchable ? `${post.data.title} ${post.data.description} ${post.data.tags.join(' ')}`.normalize('NFKC').toLowerCase() : undefined}>
+      <div class="writing-meta">
+        <time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString(zh ? 'zh-CN' : 'en-GB', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })}</time>
+        <span class="language-tag">{postLanguage(post) === 'zh-CN' ? '中文' : 'English'}</span>
+        <span>{zh ? `约 ${readingMinutes(post)} 分钟` : `~${readingMinutes(post)} min read`}</span>
+      </div>
+      <div lang={postLanguage(post)}>
+        <h2><a href={postPath(post)}>{post.data.title}</a></h2>
+        <p>{post.data.description}</p>
+      </div>
+    </li>
+  ))}
+</ol>

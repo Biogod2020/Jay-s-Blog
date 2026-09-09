@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import Layout from '../layouts/Layout.astro';
+import { SITE, profileAlternates, absoluteURL, type Language } from '../lib/site';
+import * as English from '../content/about/narrative.md';
+import * as Chinese from '../content/about/narrative.zh.md';
+interface Props { lang?: Language; }
+const { lang = 'en' } = Astro.props;
+const zh = lang === 'zh-CN';
+const Content = zh ? Chinese.Content : English.Content;
+const structuredData = { '@context': 'https://schema.org', '@type': 'ProfilePage',
+  url: absoluteURL(zh ? '/about/zh/' : '/about/'), inLanguage: lang,
+  mainEntity: { '@type': 'Person', '@id': `${SITE.url}/#person`, name: SITE.author, alternateName: SITE.chineseName,
+    url: `${SITE.url}/about/`, image: absoluteURL('/avatar.jpg'), email: `mailto:${SITE.email}`,
+    affiliation: { '@type': 'CollegeOrUniversity', name: 'Fudan University' }, sameAs: [SITE.github] } };
+---
+<Layout title={zh ? '关于纪家灏 | 医学与AI研究' : 'About Jia-Hao Ji | Research & Experience'} description={zh ? SITE.descriptionZh : SITE.description} lang={lang} alternates={profileAlternates} structuredData={structuredData}>
+  <header class="page-heading"><p class="eyebrow">{zh ? '个人介绍' : 'Profile'}</p><h1>{zh ? '研究，以及我的来路' : 'Research & background'}</h1></header>
+  <div class="profile-layout">
+    <aside class="profile-card" aria-label={zh ? '个人信息与联系' : 'Profile and contact'}>
+      <Image src={portrait} width={380} height={420} quality={82} format="webp" alt={zh ? '纪家灏的照片' : 'Portrait of Jia-Hao Ji'} loading="eager" decoding="async" />
+      <h2>{zh ? '纪家灏' : 'Jia-Hao Ji'}</h2>
+      <p>{zh ? '八年制医学博士在读 · AI研究者' : 'MD candidate · AI researcher'}<br />{zh ? '复旦大学上海医学院' : 'Shanghai Medical College, Fudan University'}</p>
+      <dl><dt>{zh ? '教育经历' : 'Education'}</dt><dd>{zh ? '复旦大学八年制临床医学' : 'Eight-year M.D. programme'}<br />2019–2027</dd><dt>{zh ? '交流经历' : 'Exchange'}</dt><dd>UCLA · 2021–2022</dd></dl>
+      <div class="text-links"><a href={`mailto:${SITE.email}`}>{zh ? '电子邮件' : 'Email'}</a><a href={SITE.github} rel="me">GitHub ↗</a><a href="https://space.bilibili.com/645730045" rel="me">Bilibili ↗</a><a href={zh ? '/Jia-Hao_Ji_CV_zh.pdf' : '/Jia-Hao_Ji_CV.pdf'}>{zh ? '一页简历（PDF）' : 'One-page CV (PDF)'}</a><a href="/Jia-Hao_Ji_Academic_CV.pdf">{zh ? '完整学术简历（英文）' : 'Academic CV (PDF)'}</a></div>
+    </aside>
+    <article class="profile-narrative prose dark:prose-invert"><Content /></article>
+  </div>
+</Layout>
