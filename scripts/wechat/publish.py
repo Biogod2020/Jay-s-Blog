@@ -11,6 +11,7 @@ import tempfile
 from pathlib import Path
 from urllib.parse import urlparse
 
+import cairosvg
 import frontmatter
 import markdown
 import requests
@@ -72,6 +73,22 @@ def guess_suffix(content_type: str | None, fallback: str = ".jpg") -> str:
     return fallback
 
 
+def normalize_svg(path: Path, temporary: bool) -> tuple[Path, bool]:
+    if path.suffix.lower() != ".svg":
+        return path, temporary
+    out = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
+    out.close()
+    out_path = Path(out.name)
+    try:
+        cairosvg.svg2png(url=str(path), write_to=str(out_path))
+    except Exception:
+        out_path.unlink(missing_ok=True)
+        raise
+    if temporary:
+        path.unlink(missing_ok=True)
+    return out_path, True
+
+
 def materialize_image(ref: str, post_path: Path, session: requests.Session) -> tuple[Path, bool]:
     ref = ref.strip()
     if ref.startswith("data:image/"):
@@ -81,7 +98,7 @@ def materialize_image(ref: str, post_path: Path, session: requests.Session) -> t
         tmp = tempfile.NamedTemporaryFile(delete=False, suffix=guess_suffix(mime))
         tmp.write(raw)
         tmp.close()
-        return Path(tmp.name), True
+        return normalize_svg(Path(tmp.name), True)
 
     if ref.startswith("http://") or ref.startswith("https://"):
         resp = session.get(ref, timeout=45)
@@ -90,17 +107,18 @@ def materialize_image(ref: str, post_path: Path, session: requests.Session) -> t
         tmp = tempfile.NamedTemporaryFile(delete=False, suffix=suffix or ".jpg")
         tmp.write(resp.content)
         tmp.close()
-        return Path(tmp.name), True
+        return normalize_svg(Path(tmp.name), True)
 
-    if ref.startswith("/"):
-        candidate = ROOT / "public" / ref.lstrip("/")
+    clean_ref = ref.split("?", 1)[0].split("#", 1)[0]
+    if clean_ref.startswith("/"):
+        candidate = ROOT / "public" / clean_ref.lstrip("/")
     else:
-        candidate = (post_path.parent / ref).resolve()
+        candidate = (post_path.parent / clean_ref).resolve()
         if not candidate.exists():
-            candidate = (ROOT / "public" / ref).resolve()
+            candidate = (ROOT / "public" / clean_ref).resolve()
     if not candidate.exists():
         raise FileNotFoundError(f"Image not found: {ref} (resolved to {candidate})")
-    return candidate, False
+    return normalize_svg(candidate, False)
 
 
 def upload_body_image(token: str, image_ref: str, post_path: Path, session: requests.Session) -> str:
@@ -108,7 +126,7 @@ def upload_body_image(token: str, image_ref: str, post_path: Path, session: requ
     try:
         mime = mimetypes.guess_type(path.name)[0] or "image/jpeg"
         if mime not in {"image/jpeg", "image/png"}:
-            raise RuntimeError(f"Body image must be JPG/PNG for WeChat uploadimg: {image_ref}")
+            raise RuntimeError(f"Body image must be JPG/PNG (SVG is auto-converted): {image_ref}")
         with path.open("rb") as fh:
             resp = session.post(
                 f"{API}/cgi-bin/media/uploadimg",
@@ -127,7 +145,7 @@ def upload_cover(token: str, image_ref: str, post_path: Path, session: requests.
     try:
         mime = mimetypes.guess_type(path.name)[0] or "image/jpeg"
         if mime not in {"image/jpeg", "image/png", "image/gif"}:
-            raise RuntimeError(f"Cover must be JPG/PNG/GIF: {image_ref}")
+            raise RuntimeError(f"Cover must be JPG/PNG/GIF (SVG is auto-converted): {image_ref}")
         with path.open("rb") as fh:
             resp = session.post(
                 f"{API}/cgi-bin/material/add_material",
