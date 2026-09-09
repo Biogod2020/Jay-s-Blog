@@ -1,47 +1,60 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
-
+import { getPosts, postPath, postLanguage, postAlternates, readingMinutes, postFeatures } from '../../lib/posts';
+import { SITE, absoluteURL } from '../../lib/site';
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}));
+  return (await getPosts()).map(post => ({ params: { slug: post.slug }, props: post }));
 }
 type Props = CollectionEntry<'blog'>;
-
 const post = Astro.props;
 const { Content, headings } = await post.render();
+const all = await getPosts();
+const lang = postLanguage(post);
+const zh = lang === 'zh-CN';
+const alternates = postAlternates(post, all);
+const features = postFeatures(post);
+const canonical = absoluteURL(postPath(post));
+const related = all.filter(other => other.slug !== post.slug && postLanguage(other) === lang).slice(0, 3);
+const structuredData = { '@context': 'https://schema.org', '@graph': [
+  { '@type': 'BlogPosting', '@id': `${canonical}#article`, headline: post.data.title, description: post.data.description,
+    url: canonical, mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    datePublished: post.data.pubDate.toISOString(), dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+    inLanguage: lang, image: [absoluteURL(post.data.heroImage ?? '/avatar.jpg')],
+    author: { '@type': 'Person', '@id': `${SITE.url}/#person`, name: SITE.author, url: `${SITE.url}/about/` },
+    publisher: { '@type': 'Person', name: SITE.author, url: SITE.url }, keywords: post.data.tags.join(', '),
+  },
+  { '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'Writing', item: `${SITE.url}/blog/` },
+    { '@type': 'ListItem', position: 3, name: post.data.title, item: canonical },
+  ] },
+] };
 ---
-
-<Layout 
-	title={post.data.title} 
-	description={post.data.description}
-	lang={post.data.lang ?? 'en'}
-	image={post.data.heroImage}
-	externalScripts={post.data.externalScripts}
-	localScripts={post.data.localScripts}
-	localStyles={post.data.localStyles}
-	maxWidth="max-w-7xl"
->
-	<div class="flex flex-col lg:flex-row lg:gap-12 relative">
-		<TableOfContents headings={headings} />
-
-		<article class="prose prose-lg prose-indigo dark:prose-invert w-full max-w-4xl mx-auto flex-1 min-w-0">
-			<div class="mb-8 text-center">
-				<h1 class="mb-2 text-gray-900 dark:text-white !text-4xl md:!text-5xl !leading-tight">{post.data.title}</h1>
-				<time datetime={post.data.pubDate.toISOString()} class="text-gray-500 dark:text-gray-400">
-					{post.data.pubDate.toLocaleDateString(post.data.lang ?? 'en-us', {
-						year: 'numeric',
-						month: 'long',
-						day: 'numeric',
-					})}
-				</time>
-			</div>
-			
-			<Content />
-		</article>
-	</div>
+<Layout title={`${post.data.title} | Jia-Hao Ji`} description={post.data.description} lang={lang} image={post.data.heroImage}
+  externalScripts={post.data.externalScripts} localScripts={post.data.localScripts} localStyles={post.data.localStyles}
+  maxWidth="max-w-7xl" alternates={alternates} article={{ published: post.data.pubDate, modified: post.data.updatedDate }} structuredData={structuredData} {...features}>
+  <header class="post-header">
+    <nav class="breadcrumbs" aria-label={zh ? '面包屑导航' : 'Breadcrumb'}><a href={zh ? '/zh/' : '/'}>{zh ? '首页' : 'Home'}</a><span aria-hidden="true">/</span><a href="/blog/">{zh ? '文章' : 'Writing'}</a></nav>
+    <h1>{post.data.title}</h1>
+    <div class="post-meta"><a href={zh ? '/about/zh/' : '/about/'}>{SITE.author}</a>
+      <time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString(lang, { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}</time>
+      <span>{zh ? `约 ${readingMinutes(post)} 分钟` : `~${readingMinutes(post)} min read`}</span>
+      {post.data.updatedDate && post.data.updatedDate.valueOf() > post.data.pubDate.valueOf() && <span>{zh ? '更新于 ' : 'Updated '}<time datetime={post.data.updatedDate.toISOString()}>{post.data.updatedDate.toLocaleDateString(lang, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })}</time></span>}
+    </div>
+    {alternates.length > 1 && <div class="post-translations">{alternates.filter(item => item.lang !== lang).map(item => <a href={item.href} lang={item.lang} hreflang={item.lang}>{item.lang === 'zh-CN' ? '阅读中文版' : 'Read in English'} →</a>)}</div>}
+  </header>
+  <div class="post-layout">
+    <TableOfContents headings={headings} lang={lang} />
+    <article class="article-body prose dark:prose-invert" data-post={post.slug}><Content /></article>
+  </div>
+  <aside class="post-end"><h2>{zh ? '继续阅读' : 'More writing'}</h2><ul>{related.map(item => <li><a class="text-link" href={postPath(item)}>{item.data.title}</a></li>)}</ul><p><a class="text-link" href="/blog/">{zh ? '全部文章' : 'All writing'}</a> · <a class="text-link" href="/subscribe/">{zh ? '通过 RSS 订阅更新' : 'Follow new writing by RSS'}</a></p></aside>
 </Layout>
+<style is:global>
+  /* Keep heading-free legacy posts full-width, including with JavaScript disabled. */
+  .post-layout:has(> .toc[hidden]) { grid-template-columns: minmax(0, 1fr); }
+  /* The shared article header already supplies these two legacy masthead elements. */
+  .article-body .cm-article > .cm-language,
+  .article-body .cm-article > .cm-deck + .cm-colophon { display: none; }
+</style>

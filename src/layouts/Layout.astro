@@ -1,177 +1,117 @@
 ---
-import ThemeToggle from "../components/ThemeToggle.astro";
-import AuraBackground from "../components/AuraBackground.astro";
-import "../styles/global.css";
-
+import ThemeToggle from '../components/ThemeToggle.astro';
+import { SITE, absoluteURL, jsonLD, type Alternate } from '../lib/site';
+import '../styles/global.css';
 interface Props {
-  title: string;
-  description?: string;
-  image?: string;
-  externalScripts?: string[];
-  localScripts?: string[];
-  localStyles?: string[];
-  maxWidth?: string;
-  lang?: string;
+  title: string; description?: string; image?: string; lang?: string;
+  externalScripts?: string[]; localScripts?: string[]; localStyles?: string[];
+  maxWidth?: string; alternates?: Alternate[]; noindex?: boolean;
+  article?: { published: Date; modified?: Date }; structuredData?: unknown;
+  math?: boolean; mermaid?: boolean; icons?: boolean;
 }
-
-const {
-  title,
-  description = "Jia-Hao Ji — M.D. candidate and AI researcher building agentic and multimodal systems for biomedical discovery.",
-  image = "/social-image.svg",
-  externalScripts = [],
-  localScripts = [],
-  localStyles = [],
-  maxWidth = "max-w-4xl",
-  lang = "en",
+const { title, description = SITE.description, image = '/avatar.jpg', lang = 'en',
+  externalScripts = [], localScripts = [], localStyles = [], maxWidth = 'max-w-6xl',
+  alternates = [], noindex = false, article, structuredData, math = false, mermaid = false, icons = false,
 } = Astro.props;
-
-const useChineseFont = lang.toLowerCase().startsWith("zh");
-const navItems = [
-  { href: "/", label: "Home", hideOnMobile: false },
-  { href: "/#research", label: "Research", hideOnMobile: true },
-  { href: "/blog", label: "Blog", hideOnMobile: false },
-  { href: "/about", label: "About", hideOnMobile: true },
+// Preserve the browser global expected by legacy inline article scripts; do not follow an unpinned major release.
+const pinnedExternalScripts = [...new Set(externalScripts.map(src => src === 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js' ? 'https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js' : src))];
+const zh = lang.startsWith('zh');
+const home = zh ? '/zh/' : '/';
+const about = zh ? '/about/zh/' : '/about/';
+const pathname = Astro.url.pathname.endsWith('/') || /\.[a-z0-9]+$/i.test(Astro.url.pathname) ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = absoluteURL(pathname);
+const widths: Record<string, string> = { 'max-w-4xl': '56rem', 'max-w-6xl': '72rem', 'max-w-7xl': '76rem' };
+const links = [
+  { href: home, text: zh ? '首页' : 'Home' },
+  { href: `${home}#research`, text: zh ? '研究' : 'Research' },
+  { href: '/blog/', text: zh ? '文章' : 'Writing' },
+  { href: about, text: zh ? '关于' : 'About' },
+  { href: '/subscribe/', text: zh ? '订阅' : 'RSS' },
 ];
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const translation = alternates.find(item => item.lang !== lang && item.lang !== 'x-default');
+const graph = structuredData ?? { '@context': 'https://schema.org', '@type': 'WebSite',
+  '@id': `${SITE.url}/#website`, url: SITE.url, name: SITE.name, description: SITE.description,
+  inLanguage: ['en', 'zh-CN'], author: { '@type': 'Person', name: SITE.author, url: `${SITE.url}/about/` } };
 ---
-
 <!doctype html>
 <html lang={lang}>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"
-    ></script>
-    <script is:inline>
-      document.addEventListener("DOMContentLoaded", () => {
-        // @ts-ignore
-        if (window.mermaid) {
-          // @ts-ignore
-          mermaid.initialize({ startOnLoad: true, theme: "neutral" });
-        }
-      });
-    </script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <script is:inline>
-      window.MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          displayMath: [['$$', '$$'], ['\\[', '\\]']],
-          processEscapes: true
-        },
-        options: {
-          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-        }
-      };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" is:inline></script>
-
-    <link rel="canonical" href={canonicalURL} />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url)} />
-    <meta property="og:locale" content={useChineseFont ? "zh_CN" : "en_US"} />
-
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.url)} />
-
-    {
-      localStyles.map((style) => (
-        <link rel="stylesheet" href={style} />
-      ))
-    }
-    {
-      externalScripts.map((script) => (
-        <script src={script} is:inline></script>
-      ))
-    }
-
-    <title>{title}</title>
-    <script is:inline>
-      if (
-        localStorage.getItem("color-theme") === "dark" ||
-        (!("color-theme" in localStorage) &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    </script>
-  </head>
-  <body
-    class="relative bg-gray-50 text-gray-900 antialiased transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100"
-    style={useChineseFont ? "font-family: 'Noto Sans SC', Inter, system-ui, sans-serif;" : undefined}
-  >
-    <AuraBackground />
-    <header
-      class="sticky top-0 z-50 bg-white/80 shadow-sm backdrop-blur-md transition-colors duration-300 dark:bg-gray-800/80"
-    >
-      <nav
-        class={`mx-auto flex items-center justify-between gap-3 px-4 py-4 ${maxWidth}`}
-      >
-        <a
-          href="/"
-          class="shrink-0 text-lg font-bold text-indigo-600 dark:text-indigo-400 md:text-xl"
-        >
-          Jia-Hao Ji
-        </a>
-        <div class="flex items-center gap-2 text-xs sm:gap-3 sm:text-sm md:gap-4 md:text-base">
-          {
-            navItems.map((item) => (
-              <a
-                href={item.href}
-                class:list={[
-                  "transition hover:text-indigo-600 dark:hover:text-indigo-400",
-                  item.hideOnMobile && "hidden sm:inline",
-                ]}
-              >
-                {item.label}
-              </a>
-            ))
-          }
-          <ThemeToggle />
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="author" content={SITE.author} />
+  <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="canonical" href={canonical} />
+  {alternates.map(item => <link rel="alternate" hreflang={item.lang} href={absoluteURL(item.href)} />)}
+  <link rel="alternate" type="application/rss+xml" title="Jay's Blog — all writing" href={absoluteURL('/rss.xml')} />
+  <link rel="alternate" type="application/rss+xml" title="Jay's Blog — 中文" href={absoluteURL('/rss/zh.xml')} />
+  <link rel="alternate" type="application/rss+xml" title="Jay's Blog — English" href={absoluteURL('/rss/en.xml')} />
+  <meta property="og:site_name" content="Jay's Blog · Jia-Hao Ji" />
+  <meta property="og:type" content={article ? 'article' : 'website'} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={absoluteURL(image)} />
+  <meta property="og:locale" content={zh ? 'zh_CN' : 'en_US'} />
+  {article && <meta property="article:published_time" content={article.published.toISOString()} />}
+  {article && <meta property="article:modified_time" content={(article.modified ?? article.published).toISOString()} />}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={absoluteURL(image)} />
+  <script is:inline type="application/ld+json" set:html={jsonLD(graph)} />
+  <script is:inline>
+    try {
+      const preference = localStorage.getItem('color-theme');
+      document.documentElement.classList.toggle('dark', preference === 'dark' || (!preference && matchMedia('(prefers-color-scheme: dark)').matches));
+    } catch { document.documentElement.classList.toggle('dark', matchMedia('(prefers-color-scheme: dark)').matches); }
+  </script>
+  {icons && <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />}
+  {localStyles.map(href => <link rel="stylesheet" href={href} />)}
+  {pinnedExternalScripts.map(src => <script src={src} is:inline></script>)}
+  {math && <script is:inline>
+    window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true }, options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] } };
+  </script>}
+  {math && !externalScripts.some(src => /mathjax/i.test(src)) && <script is:inline defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>}
+  {mermaid && !externalScripts.some(src => /mermaid/i.test(src)) && <script is:inline defer src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>}
+</head>
+<body>
+  <a class="skip-link" href="#main-content">{zh ? '跳至正文' : 'Skip to content'}</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href={home} aria-label={zh ? '纪家灏 · 首页' : 'Jia-Hao Ji · Home'}>JIA-HAO JI<span>Medicine / AI</span></a>
+      <nav class="site-nav" aria-label={zh ? '主导航' : 'Main navigation'}>
+        {links.map(link => <a href={link.href} aria-current={pathname === link.href ? 'page' : undefined}>{link.text}</a>)}
       </nav>
-    </header>
-
-    <main class={`mx-auto min-h-[80vh] px-4 py-8 ${maxWidth}`}>
-      <slot />
-    </main>
-
-    <footer
-      class="mt-12 border-t bg-white transition-colors duration-300 dark:border-gray-700 dark:bg-gray-800"
-    >
-      <div
-        class={`mx-auto px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400 ${maxWidth}`}
-      >
-        &copy; {new Date().getFullYear()} Jia-Hao Ji. Built with Astro.
+      <div class="header-tools">
+        {translation && <a class="language-link" href={translation.href} lang={translation.lang} hreflang={translation.lang}>{translation.lang === 'zh-CN' ? '中文' : 'EN'}</a>}
+        <ThemeToggle lang={lang} />
       </div>
-    </footer>
-
-    {
-      localScripts.map((script) => (
-        <script src={script} is:inline></script>
-      ))
-    }
-  </body>
+    </div>
+  </header>
+  <main id="main-content" class="site-main" style={`--main-width:${widths[maxWidth] ?? '72rem'}`} tabindex="-1"><slot /></main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>© {new Date().getFullYear()} Jia-Hao Ji<span>{zh ? '医学、AI，以及其中的人。' : 'Medicine, AI, and the people in between.'}</span></p>
+      <nav aria-label={zh ? '页脚导航' : 'Footer navigation'}>
+        <a href="/rss.xml">RSS</a><a href="/subscribe/">{zh ? '订阅选项' : 'Subscribe'}</a>
+        <a href={SITE.github} rel="me">GitHub</a><a href={`mailto:${SITE.email}`}>{zh ? '联系' : 'Contact'}</a>
+      </nav>
+    </div>
+  </footer>
+  {mermaid && <script is:inline>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!window.mermaid) return;
+      document.querySelectorAll('pre > code.language-mermaid').forEach(code => {
+        const diagram = document.createElement('div'); diagram.className = 'mermaid'; diagram.textContent = code.textContent; code.parentElement.replaceWith(diagram);
+      });
+      window.mermaid.initialize({ startOnLoad: false, securityLevel: 'strict', theme: document.documentElement.classList.contains('dark') ? 'dark' : 'neutral' });
+      try { await window.mermaid.run({ querySelector: '.mermaid' }); } catch (error) { console.warn('Diagram could not be rendered.', error); }
+    });
+  </script>}
+  {localScripts.map(src => <script src={src} is:inline></script>)}
+</body>
 </html>
