@@ -16,23 +16,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  retire-upload-queue:
-    if: github.ref == 'refs/heads/refactor/rss-discovery-editorial' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-    steps:
-      - name: Cancel only the retired WeChat upload runs
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/runs?per_page=100" --jq '.workflow_runs[] | select(.name == "Sync Markdown to WeChat Drafts") | select(.status == "queued" or .status == "in_progress" or .status == "waiting") | .id' | while read -r id; do
-            echo "Cancelling retired upload run ${id}"
-            gh api --method POST "repos/${GITHUB_REPOSITORY}/actions/runs/${id}/cancel"
-          done
-
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 25
@@ -94,6 +77,9 @@ jobs:
       - name: Check desktop, mobile and no-JavaScript rendering
         if: github.event_name != 'push' || github.ref != 'refs/heads/main'
         run: python scripts/check-ui.py
+      - name: Check legacy equations, diagrams and WebGL
+        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+        run: python scripts/check-legacy.py
       - name: Upload review evidence
         if: always()
         uses: actions/upload-artifact@v4
