@@ -1,9 +1,14 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import { publicPosts, distinctPosts, languageOf, postPath } from "../lib/site.mjs";
+import { publicPosts, languageOf, postPath } from "../lib/site.mjs";
 
-const posts = distinctPosts(publicPosts(await getCollection("blog"))).slice(0, 6);
+// English homepage: show the English version of a post when one exists.
+const allPosts = publicPosts(await getCollection("blog"));
+const slugs = new Set(allPosts.map((p) => p.slug));
+const posts = allPosts
+  .filter((p) => (p.slug.endsWith("-en") ? true : !slugs.has(`${p.slug}-en`)))
+  .slice(0, 6);
 
 // Facts below follow the November 2026 application CV and research statement.
 // SpatialDataAgent and CaseReportAgent are the two featured projects.
