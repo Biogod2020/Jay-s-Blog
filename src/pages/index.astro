@@ -6,68 +6,45 @@ import { publicPosts, distinctPosts, languageOf, postPath } from "../lib/site.mj
 const posts = distinctPosts(publicPosts(await getCollection("blog"))).slice(0, 6);
 
 // Facts below follow the November 2026 application CV and research statement.
+// SpatialDataAgent and CaseReportAgent are the two featured projects.
 const stats = [
-  { value: "12,163", label: "public spatial-omics samples rebuilt into one AI-ready format by agents" },
-  { value: "152,258", label: "published case reports turned into replayable clinical decisions" },
-  { value: "8", label: "external medical AI benchmarks audited; 1–75% of questions per benchmark leak the answer" },
-  { value: "63.8→70.9%", label: "multi-agent accuracy when majority voting is replaced by a judge-informed selection rule" },
+  { value: "12,163", label: "public spatial-omics samples rebuilt into one AI-ready format (SpatialDataAgent)" },
+  { value: "635 M", label: "spatial observations in that atlas, across 12 platforms and 42 species" },
+  { value: "152,258", label: "published case reports rebuilt as replayable clinical decisions (CaseReportAgent)" },
+  { value: "27.9→12.0%", label: "how often a fine-tuned 4B model repeats an error the case report documented" },
 ];
 
-const projects = [
+const sdaSteps = [
+  ["Find", "A fast decision model reads every GEO record and picks out the studies that really are spatial transcriptomics."],
+  ["Convert", "An agent writes conversion code for each sample, whatever format the lab used, into one standard layout."],
+  ["Check", "A fixed scorer compares the result with the original files. Failures go back for repair; anything that still fails is not released."],
+  ["Review", "Every released sample is checked by eye for image–expression alignment, and each file keeps a record of where it came from."],
+];
+
+// Schematic only: shows the structure of a replayable case, not a real patient.
+const caseEvents = [
+  { t: "Admission", kind: "Finding", text: "Presenting symptoms and examination", src: "¶2" },
+  { t: "Day 1", kind: "Order", text: "Imaging and laboratory tests requested", src: "¶3" },
+  { t: "Day 1", kind: "Result", text: "Test results returned", src: "Fig. 1" },
+  { t: "Day 2", kind: "Decision point", text: "What should the team do next?", src: "", hidden: true },
+];
+
+const otherWork = [
   {
-    id: "01",
-    title: "SpatialDataAgent",
-    tag: "Data curation",
-    problem:
-      "Ten years of spatial-omics data sit in public archives, but every lab stored it differently: 12 platforms, inconsistent files, missing metadata. Almost none of it can be fed to a model without manual work.",
-    work:
-      "I proposed and led an agent workflow that finds these datasets, writes the conversion code, checks the output against the original files, and withholds anything that still fails. Every released sample was also checked by eye for image–expression alignment.",
-    result:
-      "12,163 samples across 42 species, including 8,211 with paired tissue images and 635 million spatial observations. With the number of training patches held fixed, image-to-expression models trained on more studies transferred better to new studies.",
-    status: "First author · bioRxiv preprint · ICLR 2027 submission",
-    links: [
-      { label: "bioRxiv", href: "https://www.biorxiv.org/content/10.64898/2026.05.27.727615v2" },
-      { label: "OpenReview", href: "https://openreview.net/forum?id=iB4on39JQE" },
-    ],
-  },
-  {
-    id: "02",
-    title: "CaseReportAgent",
-    tag: "Clinical data & evaluation",
-    problem:
-      "Case reports are written after the outcome is known, so early details often give the diagnosis away. Medical AI benchmarks built from them can reward models for spotting leaks rather than reasoning.",
-    work:
-      "I lead a system that rewrites published case reports as time-ordered clinical logs. Each event cites the sentence or image it came from and may refer only to earlier events, so a case can be replayed decision by decision.",
-    result:
-      "152,258 case reports rebuilt. Fine-tuning Qwen3 on up to 80,000 decision points cut how often a 4B model repeated an error that the case report itself documented, from 27.9% to 12.0%. An audit of 8 external benchmarks found that 1–75% of questions leak their answer.",
-    status: "Research lead · manuscript in preparation",
-    links: [],
-  },
-  {
-    id: "03",
     title: "Choosing answers in multi-agent systems",
-    tag: "Reliable reasoning",
-    problem:
-      "When several AI agents answer the same question, the correct answer is often already among them, but majority voting throws it away when a popular wrong answer outnumbers it.",
-    work:
-      "I designed a selection rule that combines how often an answer appears with an LLM judge's score, so a correct minority answer can survive.",
-    result:
-      "Across 5 benchmarks and 16,278 questions, keeping the candidate answers fixed and changing only the selection rule raised accuracy from 63.82% to 70.82–70.95%.",
     status: "Co-first author · arXiv preprint",
-    links: [{ label: "arXiv", href: "https://arxiv.org/abs/2608.25937" }],
+    href: "https://arxiv.org/abs/2608.25937",
+    text: "When several agents answer one question, majority voting can discard a correct minority answer. A selection rule combining answer frequency with an LLM judge's score raised accuracy from 63.82% to 70.82–70.95% across 5 benchmarks and 16,278 questions, with the candidate answers held fixed.",
   },
   {
-    id: "04",
     title: "Spatial organisation of Alzheimer's disease",
-    tag: "Neuroscience",
-    problem:
-      "Microglia near amyloid plaques change their expression, but it is unclear how these changes differ across brain regions and relate to the cholinergic neurons that degenerate early.",
-    work:
-      "I registered the spatial transcriptomics sections and ran most of the quantitative spatial analysis, including the GOLD index, which tests whether microglial expression states change with distance from amyloid plaques.",
-    result:
-      "The study links reactive microglia in subpallial regions to cholinergic vulnerability in Alzheimer's disease.",
     status: "Co-first author · under review at Science",
-    links: [],
+    text: "Links reactive microglia in subpallial regions to cholinergic vulnerability. I registered the spatial transcriptomics sections and ran most of the quantitative spatial analysis, including the GOLD index, which tests whether microglial states change with distance from plaques.",
+  },
+  {
+    title: "BioMed-Banana: cell segmentation with an image-editing model",
+    status: "Study design and main implementation · in preparation",
+    text: "With 128 training images, an adapted Qwen-Image-Edit reached panoptic quality 0.625 on PanNuke, above Cellpose-SAM (0.602), which was trained on 22,826 images.",
   },
 ];
 
@@ -114,6 +91,7 @@ const publications = [
         I am Jia-Hao (Jay) Ji, a doctoral-stage student in Fudan's eight-year clinical medicine program, trained in neurology.
         Most public biomedical data is stored in formats that AI cannot use without weeks of manual cleanup.
         My work hands that cleanup to agents, with checks that tie every output back to its source.
+        Two systems show the approach: <a class="link-u text-ink dark:text-white" href="#research">SpatialDataAgent</a> for spatial-omics data and <a class="link-u text-ink dark:text-white" href="#research">CaseReportAgent</a> for clinical case reports.
       </p>
       <p class="mt-5 text-sm text-ink-mute dark:text-gray-400">
         Advised by <a class="link-u" href="https://imgg.fudan.edu.cn/kydw/jpzj/yjt.htm">Jin-Tai Yu</a> and
@@ -149,41 +127,106 @@ const publications = [
     ))}
   </section>
 
-  <!-- Research -->
+  <!-- Featured projects -->
   <section id="research" class="scroll-mt-24 pt-20">
-    <div class="mb-10 flex items-end justify-between gap-4">
-      <div>
-        <p class="eyebrow mb-3">Research</p>
-        <h2 class="font-display text-3xl font-medium text-ink dark:text-white md:text-4xl">What I work on</h2>
+    <p class="eyebrow mb-3">Featured work</p>
+    <h2 class="font-display max-w-3xl text-3xl font-medium leading-snug text-ink dark:text-white md:text-4xl">Two systems that turn public records into data a model can learn from</h2>
+
+    <!-- SpatialDataAgent -->
+    <article class="mt-10 overflow-hidden rounded-3xl border border-black/10 bg-white dark:border-white/10 dark:bg-white/[.03]">
+      <div class="border-b border-black/10 dark:border-white/10">
+        <video class="block aspect-video w-full bg-white" controls preload="none" playsinline poster="/media/spatialdataagent-poster.webp" aria-label="SpatialDataAgent explainer film, 4 minutes 53 seconds, narrated">
+          <source src="/media/spatialdataagent-film.mp4" type="video/mp4" />
+        </video>
       </div>
-      <a href="/about/" class="hidden text-sm text-ink-soft hover:text-ink dark:text-gray-400 dark:hover:text-white sm:block">Full profile →</a>
-    </div>
-
-    <div class="divide-y rule border-t rule">
-      {projects.map((p) => (
-        <article class="grid grid-cols-1 gap-5 py-10 md:grid-cols-12 md:gap-10">
-          <div class="md:col-span-4">
-            <p class="tnum font-display text-sm text-accent-600 dark:text-accent-300">{p.id} · {p.tag}</p>
-            <h3 class="font-display mt-2 text-2xl font-medium leading-snug text-ink dark:text-white">{p.title}</h3>
-            <p class="mt-3 text-[13px] text-ink-mute dark:text-gray-400">{p.status}</p>
-            {p.links.length > 0 && (
-              <p class="mt-3 flex gap-4 text-sm">
-                {p.links.map((l) => <a class="link-u text-accent-700 dark:text-accent-300" href={l.href}>{l.label} ↗</a>)}
-              </p>
-            )}
+      <div class="grid grid-cols-1 gap-10 p-7 md:grid-cols-12 md:p-10">
+        <div class="md:col-span-5">
+          <p class="tnum font-display text-sm text-accent-600 dark:text-accent-300">01 · Spatial omics data</p>
+          <h3 class="font-display mt-2 text-3xl font-medium text-ink dark:text-white">SpatialDataAgent</h3>
+          <p class="mt-2 text-[13px] text-ink-mute dark:text-gray-400">First author · bioRxiv preprint · ICLR 2027 submission</p>
+          <p class="mt-5 text-[15px] leading-relaxed text-ink-soft dark:text-gray-300">
+            Spatial transcriptomics measures gene activity at known positions in a tissue section. Ten years of these datasets sit in public archives, but every lab packaged them differently, so almost none can be used together. I proposed and led the agent system that gathers them into one checked atlas.
+          </p>
+          <div class="mt-6 grid grid-cols-2 gap-4 border-t rule pt-5">
+            <div><p class="font-display tnum text-2xl text-ink dark:text-white">12,163</p><p class="text-xs text-ink-mute dark:text-gray-400">samples, 12 platforms, 42 species</p></div>
+            <div><p class="font-display tnum text-2xl text-ink dark:text-white">8,211</p><p class="text-xs text-ink-mute dark:text-gray-400">with paired tissue images</p></div>
+            <div><p class="font-display tnum text-2xl text-ink dark:text-white">635 M</p><p class="text-xs text-ink-mute dark:text-gray-400">spatial observations</p></div>
+            <div><p class="font-display tnum text-2xl text-ink dark:text-white">2,411</p><p class="text-xs text-ink-mute dark:text-gray-400">spatial studies found among 298,179 GEO records</p></div>
           </div>
-          <dl class="grid grid-cols-1 gap-4 text-[15px] leading-relaxed md:col-span-8">
-            <div class="grid grid-cols-1 gap-1 sm:grid-cols-[7.5rem_1fr]"><dt class="text-xs font-semibold uppercase tracking-wider text-ink-mute dark:text-gray-500 sm:pt-1">Problem</dt><dd class="text-ink-soft dark:text-gray-300">{p.problem}</dd></div>
-            <div class="grid grid-cols-1 gap-1 sm:grid-cols-[7.5rem_1fr]"><dt class="text-xs font-semibold uppercase tracking-wider text-ink-mute dark:text-gray-500 sm:pt-1">What I did</dt><dd class="text-ink-soft dark:text-gray-300">{p.work}</dd></div>
-            <div class="grid grid-cols-1 gap-1 sm:grid-cols-[7.5rem_1fr]"><dt class="text-xs font-semibold uppercase tracking-wider text-accent-700 dark:text-accent-300 sm:pt-1">Result</dt><dd class="text-ink dark:text-gray-100">{p.result}</dd></div>
-          </dl>
-        </article>
-      ))}
-    </div>
+          <p class="mt-6 flex flex-wrap gap-4 text-sm">
+            <a class="link-u text-accent-700 dark:text-accent-300" href="https://www.biorxiv.org/content/10.64898/2026.05.27.727615v2">bioRxiv ↗</a>
+            <a class="link-u text-accent-700 dark:text-accent-300" href="https://openreview.net/forum?id=iB4on39JQE">OpenReview ↗</a>
+          </p>
+        </div>
+        <div class="md:col-span-7">
+          <p class="text-xs font-semibold uppercase tracking-wider text-ink-mute dark:text-gray-500">How it works</p>
+          <ol class="mt-3 divide-y rule border-y rule">
+            {sdaSteps.map(([k, v], i) => (
+              <li class="grid grid-cols-[1.5rem_1fr] gap-x-3 gap-y-1 py-4 text-[15px] leading-relaxed sm:grid-cols-[2rem_5rem_1fr]">
+                <span class="tnum font-display text-accent-600 dark:text-accent-300">{i + 1}</span>
+                <span class="font-medium text-ink dark:text-white">{k}</span>
+                <span class="col-start-2 text-ink-soft dark:text-gray-300 sm:col-start-auto">{v}</span>
+              </li>
+            ))}
+          </ol>
+          <p class="mt-5 rounded-xl bg-accent-50 px-5 py-4 text-[15px] leading-relaxed text-ink dark:bg-accent-950/60 dark:text-gray-100">
+            <span class="font-semibold">What the atlas showed.</span> With the number of training patches held fixed, models that predict gene expression from tissue images transferred better to new studies when the patches came from more studies. Breadth across studies mattered, not just volume.
+          </p>
+        </div>
+      </div>
+    </article>
 
-    <p class="mt-2 text-sm text-ink-mute dark:text-gray-400">
-      Also: <span class="text-ink-soft dark:text-gray-300">BioMed-Banana</span>, which adapts an image-editing model for cell segmentation. With 128 training images it reached panoptic quality 0.625 on PanNuke, above Cellpose-SAM (0.602), which was trained on 22,826 images. Manuscript in preparation.
-    </p>
+    <!-- CaseReportAgent -->
+    <article class="mt-8 overflow-hidden rounded-3xl border border-black/10 bg-white dark:border-white/10 dark:bg-white/[.03]">
+      <div class="grid grid-cols-1 gap-10 p-7 md:grid-cols-12 md:p-10">
+        <div class="md:col-span-5">
+          <p class="tnum font-display text-sm text-accent-600 dark:text-accent-300">02 · Clinical decision data</p>
+          <h3 class="font-display mt-2 text-3xl font-medium text-ink dark:text-white">CaseReportAgent</h3>
+          <p class="mt-2 text-[13px] text-ink-mute dark:text-gray-400">Research lead · manuscript in preparation</p>
+          <p class="mt-5 text-[15px] leading-relaxed text-ink-soft dark:text-gray-300">
+            Case reports are written after the outcome is known, so early details often give the diagnosis away. CaseReportAgent rewrites each published report as a time-ordered clinical log. Every event cites the sentence or image it came from and may refer only to earlier events, so a case can be replayed and a model asked to decide at any point without seeing the future.
+          </p>
+          <div class="mt-6 grid grid-cols-2 gap-4 border-t rule pt-5">
+            <div><p class="font-display tnum text-2xl text-ink dark:text-white">152,258</p><p class="text-xs text-ink-mute dark:text-gray-400">case reports rebuilt from PubMed Central</p></div>
+            <div><p class="font-display tnum text-2xl text-ink dark:text-white">80,000</p><p class="text-xs text-ink-mute dark:text-gray-400">decision points (up to) used to fine-tune Qwen3</p></div>
+            <div><p class="font-display tnum text-2xl text-ink dark:text-white">27.9→12.0%</p><p class="text-xs text-ink-mute dark:text-gray-400">4B model repeating an error the report documented</p></div>
+            <div><p class="font-display tnum text-2xl text-ink dark:text-white">1–75%</p><p class="text-xs text-ink-mute dark:text-gray-400">questions leaking the answer in 8 external benchmarks</p></div>
+          </div>
+        </div>
+        <div class="md:col-span-7">
+          <p class="text-xs font-semibold uppercase tracking-wider text-ink-mute dark:text-gray-500">A replayable case (schematic)</p>
+          <ol class="relative mt-4 space-y-3 border-l-2 border-accent-200 pl-6 dark:border-accent-800" aria-label="Schematic of a replayable clinical log">
+            {caseEvents.map((e) => (
+              <li class:list={["relative rounded-xl border px-4 py-3", e.hidden ? "border-dashed border-accent-400 bg-accent-50 dark:border-accent-500 dark:bg-accent-950/60" : "border-black/10 bg-paper dark:border-white/10 dark:bg-white/[.02]"]}>
+                <span class:list={["absolute -left-[33px] top-4 h-3 w-3 rounded-full ring-4 ring-white dark:ring-paper-dark", e.hidden ? "bg-accent-500" : "bg-accent-200 dark:bg-accent-700"]}></span>
+                <p class="flex flex-wrap items-baseline justify-between gap-2 text-xs">
+                  <span class="tnum text-ink-mute dark:text-gray-400">{e.t} · <span class="font-semibold uppercase tracking-wider text-accent-700 dark:text-accent-300">{e.kind}</span></span>
+                  {e.src && <span class="rounded bg-black/5 px-1.5 py-0.5 font-mono text-[11px] text-ink-soft dark:bg-white/10 dark:text-gray-300">source: {e.src}</span>}
+                </p>
+                <p class:list={["mt-1 text-[15px]", e.hidden ? "font-medium text-ink dark:text-white" : "text-ink-soft dark:text-gray-300"]}>{e.text}</p>
+              </li>
+            ))}
+          </ol>
+          <p class="mt-4 text-sm leading-relaxed text-ink-soft dark:text-gray-400">
+            At the decision point the model sees only the events above it. It learns from the decisions the team actually made, and is tested on whether it repeats errors the report itself records. The same replay exposed answer leakage in existing medical AI benchmarks.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Other work -->
+    <div class="mt-16">
+      <p class="eyebrow mb-5">Other work</p>
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+        {otherWork.map((w) => (
+          <article class="border-t rule pt-5">
+            <h3 class="font-display text-xl font-medium leading-snug text-ink dark:text-white">{w.href ? <a class="link-u" href={w.href}>{w.title}</a> : w.title}</h3>
+            <p class="mt-1 text-[13px] text-ink-mute dark:text-gray-400">{w.status}</p>
+            <p class="mt-3 text-sm leading-relaxed text-ink-soft dark:text-gray-300">{w.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
   </section>
 
   <!-- Next -->
