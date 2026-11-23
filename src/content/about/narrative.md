@@ -6,7 +6,7 @@ My research has one aim: **let a small team carry out a large biomedical data pr
 
 ### SpatialDataAgent: making public spatial-omics data usable
 
-**First author · [bioRxiv preprint](https://www.biorxiv.org/content/10.64898/2026.05.27.727615v2) · [ICLR 2027 submission](https://openreview.net/forum?id=iB4on39JQE)**
+**First author · [bioRxiv preprint](https://www.biorxiv.org/content/10.64898/2026.05.27.727615v2) · [ICLR 2027 submission](https://openreview.net/forum?id=iB4on39JQE)** · [5-minute explainer film](/#research)
 
 Spatial transcriptomics measures gene expression at known positions in a tissue section. A decade of these datasets sits in public archives, but each lab stored them differently across 12 platforms. I proposed and led an agent workflow that finds the datasets, writes the conversion code, checks the result against the original files, repairs what fails, and withholds anything that still does not pass. Every released sample was also checked by eye for image–expression alignment.
 

@@ -6,7 +6,7 @@
 
 ### SpatialDataAgent：让公开的空间组学数据可以直接使用
 
-**第一作者 · [bioRxiv 预印本](https://www.biorxiv.org/content/10.64898/2026.05.27.727615v2) · [ICLR 2027 投稿](https://openreview.net/forum?id=iB4on39JQE)**
+**第一作者 · [bioRxiv 预印本](https://www.biorxiv.org/content/10.64898/2026.05.27.727615v2) · [ICLR 2027 投稿](https://openreview.net/forum?id=iB4on39JQE)** · [5 分钟讲解视频（英文）](/#research)
 
 空间转录组可以测量组织切片上每个位置的基因表达。过去十年积累的此类数据分散在公共数据库中，12 种平台的存储方式各不相同。我提出并主导了一套智能体工作流：检索数据集、编写转换代码、对照原始文件校验结果、修复未通过的部分，仍不合格的一律不发布；所有发布样本均经人工逐一目视检查图像与表达是否对齐。
 
