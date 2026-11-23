@@ -1,171 +1,263 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import { publicPosts, distinctPosts } from "../lib/site.mjs";
+import { publicPosts, distinctPosts, languageOf, postPath } from "../lib/site.mjs";
 
-const posts = distinctPosts(publicPosts(await getCollection("blog")));
-const featuredPost = posts[0];
-const otherPosts = posts.slice(1, 7);
-const researchAreas = [
-  "Agentic AI for Science",
-  "Multimodal AI & Spatial Omics",
-  "Reliable Multi-Agent Reasoning",
+const posts = distinctPosts(publicPosts(await getCollection("blog"))).slice(0, 6);
+
+// Facts below follow the November 2026 application CV and research statement.
+const stats = [
+  { value: "12,163", label: "public spatial-omics samples rebuilt into one AI-ready format by agents" },
+  { value: "152,258", label: "published case reports turned into replayable clinical decisions" },
+  { value: "8", label: "external medical AI benchmarks audited; 1–75% of questions per benchmark leak the answer" },
+  { value: "63.8→70.9%", label: "multi-agent accuracy when majority voting is replaced by a judge-informed selection rule" },
+];
+
+const projects = [
+  {
+    id: "01",
+    title: "SpatialDataAgent",
+    tag: "Data curation",
+    problem:
+      "Ten years of spatial-omics data sit in public archives, but every lab stored it differently: 12 platforms, inconsistent files, missing metadata. Almost none of it can be fed to a model without manual work.",
+    work:
+      "I proposed and led an agent workflow that finds these datasets, writes the conversion code, checks the output against the original files, and withholds anything that still fails. Every released sample was also checked by eye for image–expression alignment.",
+    result:
+      "12,163 samples across 42 species, including 8,211 with paired tissue images and 635 million spatial observations. With the number of training patches held fixed, image-to-expression models trained on more studies transferred better to new studies.",
+    status: "First author · bioRxiv preprint · ICLR 2027 submission",
+    links: [
+      { label: "bioRxiv", href: "https://www.biorxiv.org/content/10.64898/2026.05.27.727615v2" },
+      { label: "OpenReview", href: "https://openreview.net/forum?id=iB4on39JQE" },
+    ],
+  },
+  {
+    id: "02",
+    title: "CaseReportAgent",
+    tag: "Clinical data & evaluation",
+    problem:
+      "Case reports are written after the outcome is known, so early details often give the diagnosis away. Medical AI benchmarks built from them can reward models for spotting leaks rather than reasoning.",
+    work:
+      "I lead a system that rewrites published case reports as time-ordered clinical logs. Each event cites the sentence or image it came from and may refer only to earlier events, so a case can be replayed decision by decision.",
+    result:
+      "152,258 case reports rebuilt. Fine-tuning Qwen3 on up to 80,000 decision points cut how often a 4B model repeated an error that the case report itself documented, from 27.9% to 12.0%. An audit of 8 external benchmarks found that 1–75% of questions leak their answer.",
+    status: "Research lead · manuscript in preparation",
+    links: [],
+  },
+  {
+    id: "03",
+    title: "Choosing answers in multi-agent systems",
+    tag: "Reliable reasoning",
+    problem:
+      "When several AI agents answer the same question, the correct answer is often already among them, but majority voting throws it away when a popular wrong answer outnumbers it.",
+    work:
+      "I designed a selection rule that combines how often an answer appears with an LLM judge's score, so a correct minority answer can survive.",
+    result:
+      "Across 5 benchmarks and 16,278 questions, keeping the candidate answers fixed and changing only the selection rule raised accuracy from 63.82% to 70.82–70.95%.",
+    status: "Co-first author · arXiv preprint",
+    links: [{ label: "arXiv", href: "https://arxiv.org/abs/2608.25937" }],
+  },
+  {
+    id: "04",
+    title: "Spatial organisation of Alzheimer's disease",
+    tag: "Neuroscience",
+    problem:
+      "Microglia near amyloid plaques change their expression, but it is unclear how these changes differ across brain regions and relate to the cholinergic neurons that degenerate early.",
+    work:
+      "I registered the spatial transcriptomics sections and ran most of the quantitative spatial analysis, including the GOLD index, which tests whether microglial expression states change with distance from amyloid plaques.",
+    result:
+      "The study links reactive microglia in subpallial regions to cholinergic vulnerability in Alzheimer's disease.",
+    status: "Co-first author · under review at Science",
+    links: [],
+  },
+];
+
+const publications = [
+  {
+    authors: "<b>Ji J-H</b>, Zou Q, Cheng J, et al., Yu J-T, Yuan Z.",
+    title: "An agent-built, verified atlas of public spatial transcriptomics shows that breadth across studies drives transfer and reproducibility.",
+    venue: "bioRxiv, 2026.",
+    href: "https://www.biorxiv.org/content/10.64898/2026.05.27.727615v2",
+  },
+  {
+    authors: "<b>Ji J-H</b>, Zou Q, Cheng J, et al., Yu J-T, Yuan Z.",
+    title: "SpatialDataAgent: Autonomous curation of a decade of public spatial omics at scale.",
+    venue: "Submitted to ICLR 2027.",
+    href: "https://openreview.net/forum?id=iB4on39JQE",
+  },
+  {
+    authors: "Hao Y-N, <b>Ji J-H</b> (co-first), et al.",
+    title: "Spatiotemporally resolved transcriptome links reactive subpallial microglia to cholinergic vulnerability in Alzheimer's disease.",
+    venue: "Under review at Science, 2026.",
+  },
+  {
+    authors: "<b>Ji J-H</b> (co-first), Li S, Cheng J, She Z, Yu J-T, Yuan Z.",
+    title: "Candidate supply and answer selection shape the value of LLM judging in multi-agent systems.",
+    venue: "arXiv:2608.25937, 2026.",
+    href: "https://arxiv.org/abs/2608.25937",
+  },
 ];
 ---
 
 <Layout
-  title="Jia-Hao Ji | MD Candidate & AI Researcher"
-  description="Jia-Hao Ji is an eight-year M.D. candidate at Fudan University Shanghai Medical College building reliable agentic and multimodal AI systems for biomedical discovery."
-  maxWidth="max-w-7xl"
+  title="Jia-Hao Ji | AI-ready biomedical data, built and checked by agents"
+  description="Jia-Hao (Jay) Ji is a Fudan University physician-scientist in training (neurology) who builds agents that turn scattered biomedical evidence into data that AI can use and people can check."
+  maxWidth="max-w-6xl"
 >
-  <section class="relative overflow-hidden py-14 md:py-24">
-    <div class="absolute inset-0 -z-10 bg-gradient-to-br from-indigo-50/70 via-white/40 to-cyan-50/60 dark:from-gray-900/60 dark:via-gray-900/30 dark:to-indigo-950/40"></div>
-    <div class="absolute left-1/2 top-0 -z-10 aspect-square w-full max-w-[900px] -translate-x-1/2 rounded-full bg-indigo-500/10 blur-3xl"></div>
-
-    <div class="mx-auto max-w-5xl px-4 text-center">
-      <div class="mb-7 inline-flex rounded-full border border-indigo-200 bg-white/70 px-4 py-2 text-xs font-semibold tracking-wide text-indigo-700 shadow-sm backdrop-blur dark:border-indigo-800 dark:bg-gray-900/60 dark:text-indigo-300 md:text-sm">
-        MD Candidate · AI Researcher · Fudan University
-      </div>
-      <h1 class="mb-7 text-4xl font-extrabold leading-tight tracking-tight text-gray-950 dark:text-white md:text-6xl lg:text-7xl">
-        AI Systems for
-        <span class="block bg-gradient-to-r from-indigo-600 to-cyan-600 bg-clip-text text-transparent dark:from-indigo-400 dark:to-cyan-400">Biomedical Discovery</span>
+  <!-- Hero -->
+  <section class="grid grid-cols-1 items-center gap-10 pb-14 pt-6 md:grid-cols-12 md:gap-14 md:pb-20 md:pt-12">
+    <div class="md:col-span-8">
+      <p class="eyebrow mb-6">Physician-scientist in training · Fudan University</p>
+      <h1 class="font-display text-[2.35rem] font-medium leading-[1.12] text-ink dark:text-white md:text-[3.4rem]">
+        I build agents that turn scattered public biomedical data into AI&#8209;ready resources that people can verify.
       </h1>
-      <p class="mx-auto max-w-3xl text-lg leading-relaxed text-gray-600 dark:text-gray-300 md:text-xl">
-        I am Jia-Hao (Jay) Ji, an eight-year M.D. candidate and physician-scientist in training. I build reliable agentic and multimodal AI systems, with a focus on spatial omics, neuroscience, and multi-agent reasoning.
+      <p class="mt-7 max-w-2xl text-lg leading-relaxed text-ink-soft dark:text-gray-300">
+        I am Jia-Hao (Jay) Ji, a doctoral-stage student in Fudan's eight-year clinical medicine program, trained in neurology.
+        Most public biomedical data is stored in formats that AI cannot use without weeks of manual cleanup.
+        My work hands that cleanup to agents, with checks that tie every output back to its source.
       </p>
-      <div class="mt-9 flex flex-wrap justify-center gap-3">
-        <a href="#research" class="rounded-lg bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">View Selected Research</a>
-        <a href="/about" class="rounded-lg border border-gray-300 bg-white/80 px-5 py-3 text-sm font-semibold text-gray-800 transition hover:border-indigo-400 hover:text-indigo-600 dark:border-gray-700 dark:bg-gray-900/70 dark:text-gray-100">About Me</a>
-        <a href="https://arxiv.org/abs/2608.25937" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-300 bg-white/80 px-5 py-3 text-sm font-semibold text-gray-800 transition hover:border-indigo-400 hover:text-indigo-600 dark:border-gray-700 dark:bg-gray-900/70 dark:text-gray-100">Latest Paper ↗</a>
-        <a href="/subscribe/" class="rounded-lg border border-indigo-200 bg-white/80 px-5 py-3 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-50 dark:border-indigo-800 dark:bg-gray-900/70 dark:text-indigo-300">RSS · 订阅更新</a>
+      <p class="mt-5 text-sm text-ink-mute dark:text-gray-400">
+        Advised by <a class="link-u" href="https://imgg.fudan.edu.cn/kydw/jpzj/yjt.htm">Jin-Tai Yu</a> and
+        <a class="link-u" href="https://ystlab.github.io/YuanSTLab/">Zhiyuan Yuan</a> · Graduating June 2027 · Open to postdoctoral positions and collaborations
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-3 text-sm font-medium">
+        <a href="/Jia-Hao_Ji_Academic_CV.pdf" class="rounded-full bg-ink px-5 py-2.5 text-white transition hover:bg-accent-800 dark:bg-white dark:text-ink dark:hover:bg-accent-100">Download CV</a>
+        <a href="mailto:jhji19@fudan.edu.cn" class="rounded-full border border-black/15 px-5 py-2.5 text-ink transition hover:border-ink dark:border-white/20 dark:text-white dark:hover:border-white">Email</a>
+        <a href="https://github.com/Biogod2020" class="rounded-full border border-black/15 px-5 py-2.5 text-ink transition hover:border-ink dark:border-white/20 dark:text-white dark:hover:border-white" rel="me">GitHub</a>
+        <a href="/about/" class="px-2 py-2.5 text-ink-soft transition hover:text-ink dark:text-gray-300 dark:hover:text-white">About me →</a>
+        <a href="/about/zh/" lang="zh-CN" class="px-2 py-2.5 text-ink-soft transition hover:text-ink dark:text-gray-300 dark:hover:text-white">中文</a>
       </div>
-      <div class="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-3 sm:grid-cols-3">
-        {researchAreas.map((area) => (
-          <div class="rounded-xl border border-gray-200 bg-white/60 px-4 py-3 text-sm font-medium text-gray-700 backdrop-blur dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-200">{area}</div>
-        ))}
+    </div>
+    <figure class="mx-auto w-56 sm:w-64 md:col-span-4 md:w-full md:max-w-[300px]">
+      <img
+        src="/images/profile/portrait-720.webp"
+        srcset="/images/profile/portrait-420.webp 420w, /images/profile/portrait-720.webp 720w"
+        sizes="(min-width: 768px) 300px, 256px"
+        width="720" height="960"
+        alt="Portrait of Jia-Hao Ji"
+        class="aspect-[3/4] w-full rounded-2xl object-cover shadow-[0_20px_50px_-25px_rgba(10,34,36,.45)]"
+      />
+    </figure>
+  </section>
+
+  <!-- At a glance -->
+  <section aria-label="Work at a glance" class="grid grid-cols-2 border-y rule md:grid-cols-4">
+    {stats.map((s, i) => (
+      <div class:list={["px-1 py-7 md:px-6", i > 0 && "md:border-l rule", i % 2 === 1 && "border-l rule md:border-l", i >= 2 && "border-t rule md:border-t-0"]}>
+        <p class="font-display tnum text-3xl font-medium text-ink dark:text-white md:text-4xl">{s.value}</p>
+        <p class="mt-2 pr-2 text-[13px] leading-snug text-ink-soft dark:text-gray-400">{s.label}</p>
       </div>
+    ))}
+  </section>
+
+  <!-- Research -->
+  <section id="research" class="scroll-mt-24 pt-20">
+    <div class="mb-10 flex items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow mb-3">Research</p>
+        <h2 class="font-display text-3xl font-medium text-ink dark:text-white md:text-4xl">What I work on</h2>
+      </div>
+      <a href="/about/" class="hidden text-sm text-ink-soft hover:text-ink dark:text-gray-400 dark:hover:text-white sm:block">Full profile →</a>
+    </div>
+
+    <div class="divide-y rule border-t rule">
+      {projects.map((p) => (
+        <article class="grid grid-cols-1 gap-5 py-10 md:grid-cols-12 md:gap-10">
+          <div class="md:col-span-4">
+            <p class="tnum font-display text-sm text-accent-600 dark:text-accent-300">{p.id} · {p.tag}</p>
+            <h3 class="font-display mt-2 text-2xl font-medium leading-snug text-ink dark:text-white">{p.title}</h3>
+            <p class="mt-3 text-[13px] text-ink-mute dark:text-gray-400">{p.status}</p>
+            {p.links.length > 0 && (
+              <p class="mt-3 flex gap-4 text-sm">
+                {p.links.map((l) => <a class="link-u text-accent-700 dark:text-accent-300" href={l.href}>{l.label} ↗</a>)}
+              </p>
+            )}
+          </div>
+          <dl class="grid grid-cols-1 gap-4 text-[15px] leading-relaxed md:col-span-8">
+            <div class="grid grid-cols-1 gap-1 sm:grid-cols-[7.5rem_1fr]"><dt class="text-xs font-semibold uppercase tracking-wider text-ink-mute dark:text-gray-500 sm:pt-1">Problem</dt><dd class="text-ink-soft dark:text-gray-300">{p.problem}</dd></div>
+            <div class="grid grid-cols-1 gap-1 sm:grid-cols-[7.5rem_1fr]"><dt class="text-xs font-semibold uppercase tracking-wider text-ink-mute dark:text-gray-500 sm:pt-1">What I did</dt><dd class="text-ink-soft dark:text-gray-300">{p.work}</dd></div>
+            <div class="grid grid-cols-1 gap-1 sm:grid-cols-[7.5rem_1fr]"><dt class="text-xs font-semibold uppercase tracking-wider text-accent-700 dark:text-accent-300 sm:pt-1">Result</dt><dd class="text-ink dark:text-gray-100">{p.result}</dd></div>
+          </dl>
+        </article>
+      ))}
+    </div>
+
+    <p class="mt-2 text-sm text-ink-mute dark:text-gray-400">
+      Also: <span class="text-ink-soft dark:text-gray-300">BioMed-Banana</span>, which adapts an image-editing model for cell segmentation. With 128 training images it reached panoptic quality 0.625 on PanNuke, above Cellpose-SAM (0.602), which was trained on 22,826 images. Manuscript in preparation.
+    </p>
+  </section>
+
+  <!-- Next -->
+  <section class="mt-20 rounded-2xl bg-accent-50 px-6 py-10 dark:bg-accent-950/60 md:px-12 md:py-12">
+    <p class="eyebrow mb-3">Next</p>
+    <h2 class="font-display max-w-3xl text-2xl font-medium leading-snug text-ink dark:text-white md:text-3xl">
+      From one data type to many: an AI-ready brain MRI resource, and the rules for scaling agents that build data.
+    </h2>
+    <div class="mt-6 grid grid-cols-1 gap-6 text-[15px] leading-relaxed text-ink-soft dark:text-gray-300 md:grid-cols-2">
+      <p>The next step applies the SpatialDataAgent approach to brain MRI: multi-source, multi-sequence scans with consistent metadata, quality records and a link back to every original file.</p>
+      <p>Underneath it is a research question: how the yield of reliable data changes as agents are given more compute and more varied sources, and at which points a short human check is worth more than another round of automatic repair.</p>
     </div>
   </section>
 
-  <div class="mx-auto max-w-6xl px-4 py-10 md:py-14">
-    <section id="research" class="scroll-mt-24">
-      <div class="mb-7 flex flex-col gap-3 border-b border-gray-200 pb-4 dark:border-gray-700 sm:flex-row sm:items-end sm:justify-between">
+  <!-- Publications -->
+  <section class="pt-20">
+    <p class="eyebrow mb-3">Papers</p>
+    <h2 class="font-display mb-8 text-3xl font-medium text-ink dark:text-white md:text-4xl">Preprints and submissions</h2>
+    <ol class="divide-y rule border-y rule">
+      {publications.map((pub) => (
+        <li class="py-5 text-[15px] leading-relaxed">
+          <p class="text-ink dark:text-gray-100">{pub.href ? <a class="link-u" href={pub.href}>{pub.title}</a> : pub.title}</p>
+          <p class="mt-1 text-sm text-ink-soft dark:text-gray-400"><Fragment set:html={pub.authors} /> <i>{pub.venue}</i></p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Writing + elsewhere -->
+  <div class="grid grid-cols-1 gap-14 pt-20 lg:grid-cols-12">
+    <section class="lg:col-span-8">
+      <div class="mb-6 flex items-end justify-between">
         <div>
-          <p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-400">Selected Research</p>
-          <h2 class="text-3xl font-bold text-gray-950 dark:text-white">Current work</h2>
+          <p class="eyebrow mb-3">Writing</p>
+          <h2 class="font-display text-3xl font-medium text-ink dark:text-white md:text-4xl">Notes and essays</h2>
         </div>
-        <a href="/about" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 dark:text-indigo-400">Full research profile &rarr;</a>
+        <a href="/blog/" class="text-sm text-ink-soft hover:text-ink dark:text-gray-400 dark:hover:text-white">All articles →</a>
       </div>
-
-      <article class="overflow-hidden rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-50 via-white to-cyan-50 p-7 shadow-sm dark:border-indigo-800 dark:from-indigo-950/40 dark:via-gray-900 dark:to-cyan-950/30 md:p-10">
-        <div class="mb-5 inline-flex rounded-full bg-indigo-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">New preprint · arXiv 2026</div>
-        <h3 class="max-w-4xl text-2xl font-bold leading-snug text-gray-950 dark:text-white md:text-4xl">
-          <a href="https://arxiv.org/abs/2608.25937" target="_blank" rel="noopener noreferrer" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">
-            Candidate supply and answer selection shape the value of LLM judging in multi-agent systems
-          </a>
-        </h3>
-        <p class="mt-4 text-sm font-medium text-gray-600 dark:text-gray-300">Jia-Hao Ji, Sijie Li, Jiabei Cheng, Zixi She, Jin-Tai Yu, and Zhiyuan Yuan</p>
-        <p class="mt-5 max-w-4xl text-base leading-relaxed text-gray-700 dark:text-gray-300 md:text-lg">
-          We isolate candidate generation, answer recognition, and terminal selection in multi-agent reasoning. Correct answers are often generated but lost during consensus; a judge-guided selection rule can rescue correct minority answers without changing the candidate pool.
-        </p>
-        <div class="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div class="rounded-xl border border-white/70 bg-white/70 p-4 dark:border-gray-700 dark:bg-gray-900/60"><p class="text-2xl font-bold text-gray-950 dark:text-white">15,336</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">questions used to map judge reliability</p></div>
-          <div class="rounded-xl border border-white/70 bg-white/70 p-4 dark:border-gray-700 dark:bg-gray-900/60"><p class="text-2xl font-bold text-gray-950 dark:text-white">81,390</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">fixed candidate-pool replays</p></div>
-          <div class="rounded-xl border border-white/70 bg-white/70 p-4 dark:border-gray-700 dark:bg-gray-900/60"><p class="text-2xl font-bold text-gray-950 dark:text-white">63.82% → 70.82–70.95%</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">accuracy after changing only answer selection</p></div>
-        </div>
-        <div class="mt-7 flex flex-wrap gap-3">
-          <a href="https://arxiv.org/abs/2608.25937" target="_blank" rel="noopener noreferrer" class="rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700">Read on arXiv ↗</a>
-          <span class="rounded-lg border border-indigo-200 bg-white/60 px-4 py-2.5 text-sm font-medium text-gray-700 dark:border-indigo-800 dark:bg-gray-900/50 dark:text-gray-200">arXiv:2608.25937 · cs.AI · cs.MA</span>
-        </div>
-      </article>
-
-      <article class="mt-6 rounded-2xl border border-gray-200 bg-white/80 p-7 shadow-sm dark:border-gray-700 dark:bg-gray-800/70 md:p-8">
-        <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-          <div class="max-w-4xl">
-            <p class="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-emerald-600 dark:text-emerald-400">bioRxiv preprint · Agentic AI for science</p>
-            <h3 class="text-2xl font-bold text-gray-950 dark:text-white">
-              <a href="https://www.biorxiv.org/content/10.64898/2026.05.27.727615v1" target="_blank" rel="noopener noreferrer" class="transition hover:text-indigo-600 dark:hover:text-indigo-400">SpatialDataAgent: Autonomous Spatial Omics Data Curation at Decade Scale</a>
-            </h3>
-            <p class="mt-4 leading-relaxed text-gray-600 dark:text-gray-300">An evidence-grounded agentic workflow for recovering and standardizing fragmented multimodal spatial-omics records. The HESRT datalake contains 769 paired H&amp;E–spatial transcriptomics datasets and 29.2 million spots or cells.</p>
-          </div>
-          <a href="https://www.biorxiv.org/content/10.64898/2026.05.27.727615v1" target="_blank" rel="noopener noreferrer" class="shrink-0 text-sm font-semibold text-indigo-600 hover:text-indigo-800 dark:text-indigo-400">View preprint ↗</a>
-        </div>
-      </article>
+      <ul class="divide-y rule border-y rule">
+        {posts.map((post) => (
+          <li>
+            <a href={postPath(post)} class="group grid grid-cols-[5.5rem_1fr] gap-4 py-5">
+              <time class="tnum pt-0.5 text-sm text-ink-mute dark:text-gray-500" datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toISOString().slice(0, 7)}</time>
+              <span>
+                <span class="block font-medium text-ink transition group-hover:text-accent-700 dark:text-gray-100 dark:group-hover:text-accent-300" lang={languageOf(post)}>{post.data.title}</span>
+                <span class="mt-1 line-clamp-2 block text-sm text-ink-soft dark:text-gray-400" lang={languageOf(post)}>{post.data.description}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
 
-    <div class="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-12">
-      <div class="space-y-12 lg:col-span-8">
-        <div class="flex items-center justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
-          <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900 dark:text-white"><i class="fas fa-pen-nib text-indigo-500"></i> Latest Writings</h2>
-          <a href="/blog" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 dark:text-indigo-400">View Archive &rarr;</a>
-        </div>
-
-        {featuredPost && (
-          <article class="group overflow-hidden rounded-2xl border border-gray-100 bg-white/80 shadow-xl backdrop-blur-sm transition hover:shadow-2xl dark:border-gray-700 dark:bg-gray-800/80">
-            <div class="p-6 md:p-10">
-              <div class="mb-4 flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                <span class="rounded-full bg-indigo-50 px-3 py-1 font-medium text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-300">Featured</span>
-                <time datetime={featuredPost.data.pubDate.toISOString()}>{featuredPost.data.pubDate.toLocaleDateString("en-us", { year: "numeric", month: "long", day: "numeric" })}</time>
-              </div>
-              <a href={`/blog/${featuredPost.slug}`}>
-                <h3 class="mb-4 text-2xl font-bold text-gray-900 transition group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400 md:text-3xl">{featuredPost.data.title}</h3>
-                <p class="mb-6 line-clamp-3 text-base text-gray-600 dark:text-gray-300 md:text-lg">{featuredPost.data.description}</p>
-              </a>
-              <a href={`/blog/${featuredPost.slug}`} class="font-medium text-indigo-600 dark:text-indigo-400">Read Article &rarr;</a>
-            </div>
-          </article>
-        )}
-
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-          {otherPosts.map((post) => (
-            <article class="group flex flex-col rounded-xl border border-gray-100 bg-white/80 p-6 shadow-sm backdrop-blur-sm transition hover:shadow-md dark:border-gray-700 dark:bg-gray-800/80">
-              <div class="mb-3 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                <i class="far fa-calendar"></i>
-                <time datetime={post.data.pubDate.toISOString()}>{post.data.pubDate.toLocaleDateString("en-us", { year: "numeric", month: "short", day: "numeric" })}</time>
-              </div>
-              <a href={`/blog/${post.slug}`} class="flex-1">
-                <h3 class="mb-3 line-clamp-2 text-xl font-bold text-gray-900 transition group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400">{post.data.title}</h3>
-                <p class="mb-4 line-clamp-3 text-sm text-gray-600 dark:text-gray-400">{post.data.description}</p>
-              </a>
-              <a href={`/blog/${post.slug}`} class="mt-auto text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400">Read more</a>
-            </article>
-          ))}
-        </div>
-      </div>
-
-      <aside class="space-y-8 lg:col-span-4">
-        <div class="rounded-2xl border border-gray-100 bg-white/80 p-6 shadow-sm backdrop-blur-sm dark:border-gray-700 dark:bg-gray-800/80">
-          <div class="mb-5 flex items-center gap-4">
-            <img src="/images/profile/avatar-192.webp" width="192" height="192" loading="lazy" decoding="async" alt="Portrait of Jia-Hao Ji" class="h-14 w-14 rounded-full object-cover ring-2 ring-indigo-100 dark:ring-indigo-900" />
-            <div><h3 class="font-bold text-gray-900 dark:text-white">Jia-Hao Ji</h3><p class="text-xs text-gray-500 dark:text-gray-400">MD Candidate &amp; AI Researcher</p></div>
-          </div>
-          <p class="mb-5 text-sm leading-relaxed text-gray-600 dark:text-gray-300">Physician-scientist in training at Fudan University, working at the intersection of clinical medicine, computational biology, and artificial intelligence.</p>
-          <div class="flex items-center gap-4">
-            <a href="https://github.com/Biogod2020" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" class="text-gray-400 hover:text-indigo-500"><i class="fab fa-github text-xl"></i></a>
-            <a href="mailto:Jhji19@fudan.edu.cn" aria-label="Email Jia-Hao Ji" class="text-gray-400 hover:text-indigo-500"><i class="fas fa-envelope text-xl"></i></a>
-            <a href="https://arxiv.org/abs/2608.25937" target="_blank" rel="noopener noreferrer" aria-label="Latest arXiv paper" class="text-gray-400 hover:text-indigo-500"><i class="fas fa-file-lines text-xl"></i></a>
-          </div>
-        </div>
-
-        <div class="rounded-2xl border border-indigo-100 bg-indigo-50/60 p-6 shadow-sm dark:border-indigo-800 dark:bg-indigo-900/20">
-          <h3 class="mb-4 font-bold text-gray-900 dark:text-white">Research Focus</h3>
-          <div class="space-y-4">
-            <div><p class="text-sm font-semibold text-gray-800 dark:text-gray-100">Agentic AI for Science</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">Evidence-grounded systems for scientific data and workflows.</p></div>
-            <div><p class="text-sm font-semibold text-gray-800 dark:text-gray-100">Multimodal Biomedical AI</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">Histology, spatial omics, and disease-focused learning.</p></div>
-            <div><p class="text-sm font-semibold text-gray-800 dark:text-gray-100">Reliable Multi-Agent Reasoning</p><p class="mt-1 text-xs text-gray-600 dark:text-gray-400">Candidate generation, judge reliability, and answer selection.</p></div>
-          </div>
-        </div>
-
-        <div class="rounded-2xl border border-gray-100 bg-white/80 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800/80">
-          <h3 class="mb-4 flex items-center gap-2 font-bold text-gray-900 dark:text-white"><i class="fas fa-tags text-indigo-500"></i> Topics</h3>
-          <div class="flex flex-wrap gap-2">
-            {["Agentic AI", "Multi-Agent Systems", "Spatial Omics", "Neuroscience", "Multimodal Learning", "AI for Science"].map((tag) => (
-              <span class="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-700 dark:text-gray-300">#{tag}</span>
-            ))}
-          </div>
-        </div>
-      <section class="site-subscribe"><h3 class="text-lg font-bold">Follow the writing</h3><p class="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-300">Research notes and essays, delivered to your RSS reader. No account required.</p><a href="/rss/zh.xml">中文 RSS</a><a href="/rss/en.xml">English RSS</a><a href="/subscribe/">All subscriptions →</a></section>
-      </aside>
-    </div>
+    <aside class="space-y-10 lg:col-span-4">
+      <section>
+        <p class="eyebrow mb-4">Teaching</p>
+        <ul class="space-y-3 text-sm leading-relaxed text-ink-soft dark:text-gray-300">
+          <li>Medical education videos in Chinese and English on <a class="link-u" href="https://space.bilibili.com/645730045/">Bilibili</a> and <a class="link-u" href="https://www.youtube.com/@JayJi-wm7yp/playlists">YouTube</a>.</li>
+          <li>Volunteer teaching in rural Guizhou and Guangdong: probability and statistics for everyday decisions.</li>
+        </ul>
+      </section>
+      <section>
+        <p class="eyebrow mb-4">Open source</p>
+        <ul class="space-y-3 text-sm leading-relaxed text-ink-soft dark:text-gray-300">
+          <li><a class="link-u text-ink dark:text-white" href="https://github.com/Biogod2020/dsh-article-review">dsh-article-review</a> — AI manuscript edits shown as word-level changes the author accepts or rejects.</li>
+          <li><a class="link-u text-ink dark:text-white" href="https://github.com/Biogod2020/simple-fig-skill">simple-fig-skill</a> — agent skill for editable scientific figures checked at print size.</li>
+          <li><a class="link-u text-ink dark:text-white" href="https://github.com/Biogod2020/sci-video-skill">sci-video-skill</a> — narrated research explainer films rendered from code.</li>
+        </ul>
+      </section>
+      <section class="site-subscribe !my-0">
+        <h3 class="text-base font-semibold">Follow the writing</h3>
+        <p class="mt-2 text-sm leading-relaxed text-ink-soft dark:text-gray-300">New articles in your RSS reader. No account needed.</p>
+        <a href="/rss/zh.xml">中文 RSS</a><a href="/rss/en.xml">English RSS</a>
+      </section>
+    </aside>
   </div>
 </Layout>

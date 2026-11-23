@@ -6,8 +6,8 @@ import * as Narrative from "../../content/about/narrative.zh.md";
 ---
 
 <Layout
-  title="个人详情 | 纪家灏"
-  description="纪家灏，复旦大学上海医学院八年制医学博士候选人，研究方向包括科学智能体、多模态生物医学人工智能、空间组学与可靠多智能体推理。"
+  title="关于我 | 纪家灏"
+  description="纪家灏，复旦大学上海医学院八年制临床医学博士阶段（神经病学），开发智能体把分散的生物医学数据整理为 AI 可用、可追溯核验的数据资源。"
   image="/social-image-zh.svg"
   maxWidth="max-w-6xl"
   lang="zh-CN"
@@ -15,23 +15,19 @@ import * as Narrative from "../../content/about/narrative.zh.md";
   <div class="mt-4">
     <div class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-400">
-          Profile
-        </p>
-        <h1 class="text-4xl font-bold text-gray-900 dark:text-white">个人详情</h1>
+        <p class="eyebrow mb-3">Profile</p>
+        <h1 class="font-display text-4xl font-medium text-ink dark:text-white md:text-5xl">关于我</h1>
       </div>
       <ProfileLanguageSwitch current="zh" />
     </div>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-12">
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-12">
       <div class="md:col-span-4 lg:col-span-3">
         <ProfileSidebarZh />
       </div>
 
-      <div
-        class="rounded-2xl border border-gray-100 bg-white p-7 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:col-span-8 md:p-10 lg:col-span-9"
-      >
-        <article class="prose prose-indigo max-w-none dark:prose-invert">
+      <div class="md:col-span-8 md:pl-6 lg:col-span-9 lg:pl-10">
+        <article class="profile-prose prose prose-lg prose-indigo max-w-3xl dark:prose-invert prose-headings:font-medium prose-a:decoration-accent-300 prose-a:underline-offset-4">
           <Narrative.Content />
         </article>
       </div>

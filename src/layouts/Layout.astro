@@ -10,7 +10,7 @@ interface Props {
   noindex?: boolean; article?: boolean; published?: string; modified?: string;
   alternates?: {lang:string;href:string}[]; structuredData?: Record<string,unknown>;
 }
-const { title, description='Jia-Hao Ji — M.D. candidate and AI researcher building agentic and multimodal systems for biomedical discovery.', image='/social-image.svg', externalScripts=[],localScripts=[],localStyles=[],maxWidth='max-w-4xl',lang='en',math=false,mermaid=false,noindex=false,article=false,published,modified,structuredData } = Astro.props;
+const { title, description='Jia-Hao (Jay) Ji — Fudan neurology MD student building agents that turn scattered biomedical evidence into verifiable, AI-ready data.', image='/social-image.svg', externalScripts=[],localScripts=[],localStyles=[],maxWidth='max-w-4xl',lang='en',math=false,mermaid=false,noindex=false,article=false,published,modified,structuredData } = Astro.props;
 const zh = lang.startsWith('zh');
 const path = Astro.url.pathname;
 const canonicalPath = path.endsWith('/') || /\.[a-z0-9]+$/i.test(path) ? path : `${path}/`;
@@ -18,7 +18,8 @@ const canonicalURL = new URL(canonicalPath, Astro.site || SITE);
 const aboutPair = /^\/about(?:\/zh)?\/?$/.test(path) ? [{lang:'en',href:'/about/'},{lang:'zh-CN',href:'/about/zh/'}] : [];
 const alternates = Astro.props.alternates || aboutPair;
 const graph = structuredData || {'@context':'https://schema.org','@graph':[AUTHOR,{'@type':'WebSite','@id':`${SITE}/#website`,url:`${SITE}/`,name:'Jay’s Blog',inLanguage:['en','zh-CN'],author:{'@id':AUTHOR['@id']}}]};
-const navItems = [{href:'/',label:zh?'首页':'Home'},{href:'/#research',label:zh?'研究':'Research',compact:true},{href:'/blog/',label:zh?'文章':'Blog'},{href:zh?'/about/zh/':'/about/',label:zh?'关于':'About',compact:true},{href:'/subscribe/',label:zh?'订阅':'RSS'}];
+const cvHref = zh ? '/Jia-Hao_Ji_CV_zh.pdf' : '/Jia-Hao_Ji_Academic_CV.pdf';
+const navItems = [{href:'/#research',label:zh?'研究':'Research',compact:true},{href:'/blog/',label:zh?'文章':'Writing'},{href:zh?'/about/zh/':'/about/',label:zh?'关于':'About'},{href:cvHref,label:'CV',compact:true}];
 ---
 <!doctype html>
 <html lang={lang}>
@@ -37,7 +38,7 @@ const navItems = [{href:'/',label:zh?'首页':'Home'},{href:'/#research',label:z
     {alternates.map(a => <link rel="alternate" hreflang={a.lang} href={new URL(a.href,SITE)} />)}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link href="/styles/site-enhancements.css" rel="stylesheet" />
     <meta property="og:type" content={article?'article':'website'} />
@@ -67,24 +68,24 @@ const navItems = [{href:'/',label:zh?'首页':'Home'},{href:'/#research',label:z
       (()=>{let theme;try{theme=localStorage.getItem('color-theme');}catch{}const dark=theme?theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.classList.toggle('dark',dark);})();
     </script>
   </head>
-  <body class="relative bg-gray-50 text-gray-900 antialiased transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100" style={zh?"font-family:'Noto Sans SC',Inter,system-ui,sans-serif;":undefined}>
+  <body class="relative bg-paper text-ink antialiased transition-colors duration-300 dark:bg-paper-dark dark:text-gray-100" style={zh?"font-family:'Noto Sans SC',Inter,system-ui,sans-serif;":undefined}>
     <a class="skip-link" href="#main-content">{zh?'跳到正文':'Skip to content'}</a>
     <AuraBackground />
-    <header class="sticky top-0 z-50 bg-white/80 shadow-sm backdrop-blur-md dark:bg-gray-800/80">
-      <nav aria-label={zh?'主导航':'Main navigation'} class={`mx-auto flex items-center justify-between gap-3 px-4 py-4 ${maxWidth}`}>
-        <a href="/" class="shrink-0 text-lg font-bold text-indigo-600 dark:text-indigo-400 md:text-xl">Jia-Hao Ji</a>
-        <div class="flex items-center gap-3 text-xs sm:text-sm md:gap-4 md:text-base">
-          {navItems.map(item=><a href={item.href} aria-current={canonicalPath===item.href?'page':undefined} class:list={['transition hover:text-indigo-600 dark:hover:text-indigo-400',item.compact&&'hidden sm:inline']}>{item.label}</a>)}
-          <details class="relative sm:hidden site-menu"><summary aria-label={zh?'更多导航':'More navigation'}>☰</summary><div class="absolute right-0 top-10 w-40 rounded-xl border border-gray-200 bg-white p-4 shadow-xl dark:border-gray-700 dark:bg-gray-800"><a href="/#research">{zh?'研究':'Research'}</a><a href={zh?'/about/zh/':'/about/'}>{zh?'关于我':'About me'}</a></div></details>
+    <header class="sticky top-0 z-50 border-b border-black/5 bg-paper/85 backdrop-blur-md dark:border-white/10 dark:bg-paper-dark/85">
+      <nav aria-label={zh?'主导航':'Main navigation'} class={`mx-auto flex items-center justify-between gap-3 px-5 py-3.5 ${maxWidth}`}>
+        <a href={zh?'/about/zh/':'/'} class="font-display shrink-0 text-lg font-semibold tracking-tight text-ink dark:text-white md:text-xl">{zh?'纪家灏':'Jia-Hao Ji'}</a>
+        <div class="flex items-center gap-3 text-[13px] text-ink-soft dark:text-gray-300 sm:text-sm md:gap-6">
+          {navItems.map(item=><a href={item.href} aria-current={canonicalPath===item.href?'page':undefined} class:list={['transition hover:text-ink dark:hover:text-white aria-[current=page]:text-ink aria-[current=page]:font-semibold dark:aria-[current=page]:text-white',item.compact&&'hidden sm:inline']}>{item.label}</a>)}
+          <details class="relative sm:hidden site-menu"><summary aria-label={zh?'更多导航':'More navigation'}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></summary><div class="absolute right-0 top-10 w-40 rounded-xl border border-gray-200 bg-white p-4 shadow-xl dark:border-gray-700 dark:bg-gray-800"><a href="/#research">{zh?'研究':'Research'}</a><a href={zh?'/about/zh/':'/about/'}>{zh?'关于我':'About me'}</a><a href={cvHref}>CV</a></div></details>
           <ThemeToggle />
         </div>
       </nav>
     </header>
     <main id="main-content" class={`mx-auto min-h-[80vh] px-4 py-8 ${maxWidth}`} tabindex="-1"><slot /></main>
-    <footer class="mt-12 border-t border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-700 dark:bg-gray-800/80">
-      <div class={`mx-auto flex flex-wrap items-center justify-between gap-4 px-4 py-8 text-sm text-gray-500 dark:text-gray-400 ${maxWidth}`}>
-        <p>&copy; {new Date().getFullYear()} Jia-Hao Ji. Built with Astro.</p>
-        <div class="flex flex-wrap gap-4"><a href="/subscribe/">{zh?'订阅更新':'Subscribe'}</a><a href="/rss/zh.xml">中文 RSS</a><a href="/rss/en.xml">English RSS</a><a href="https://github.com/Biogod2020" rel="me">GitHub</a></div>
+    <footer class="mt-16 border-t border-black/5 dark:border-white/10">
+      <div class={`mx-auto flex flex-wrap items-center justify-between gap-4 px-5 py-8 text-sm text-ink-mute dark:text-gray-400 ${maxWidth}`}>
+        <p>&copy; {new Date().getFullYear()} {zh?'纪家灏':'Jia-Hao Ji'} · <a class="link-u" href="mailto:jhji19@fudan.edu.cn">jhji19@fudan.edu.cn</a></p>
+        <div class="flex flex-wrap gap-5"><a class="hover:text-ink dark:hover:text-white" href="https://github.com/Biogod2020" rel="me">GitHub</a><a class="hover:text-ink dark:hover:text-white" href={cvHref}>CV</a><a class="hover:text-ink dark:hover:text-white" href="/subscribe/">{zh?'订阅 RSS':'RSS'}</a></div>
       </div>
     </footer>
     {localScripts.map(src=><script src={src} is:inline />)}

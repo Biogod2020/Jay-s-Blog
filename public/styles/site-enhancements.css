@@ -1,11 +1,11 @@
-/* Keep the indigo/cyan glass design; refine navigation and reading. */
+/* 2026-11 redesign: paper background, ink-teal accent, serif display type. */
 body{font-family:Inter,'Noto Sans SC',system-ui,sans-serif}
-.skip-link{position:fixed;left:1rem;top:-6rem;z-index:100;padding:.75rem 1rem;background:#4f46e5;color:white;border-radius:.6rem}.skip-link:focus{top:1rem}
-:focus-visible{outline:2px solid #6366f1;outline-offset:4px}
+.skip-link{position:fixed;left:1rem;top:-6rem;z-index:100;padding:.75rem 1rem;background:#21676b;color:white;border-radius:.6rem}.skip-link:focus{top:1rem}
+:focus-visible{outline:2px solid #2f7f83;outline-offset:4px}
 .site-menu summary{list-style:none;cursor:pointer;padding:.5rem}.site-menu summary::-webkit-details-marker{display:none}.site-menu div a{display:block;padding:.6rem 0}
-.site-subscribe{border:1px solid #c7d2fe;border-radius:1rem;background:linear-gradient(125deg,rgba(238,242,255,.9),rgba(255,255,255,.85),rgba(236,254,255,.7));padding:1.5rem;margin:2rem 0}
-.dark .site-subscribe{border-color:#3730a3;background:linear-gradient(125deg,rgba(49,46,129,.25),rgba(17,24,39,.8),rgba(8,51,68,.25))}
-.site-subscribe a{display:inline-block;color:#4f46e5;font-weight:600;margin:.5rem 1rem 0 0}.dark .site-subscribe a{color:#a5b4fc}
+.site-subscribe{border:1px solid #d6eaea;border-radius:1rem;background:linear-gradient(125deg,rgba(238,246,246,.9),rgba(255,255,255,.9),rgba(238,246,246,.6));padding:1.5rem;margin:2rem 0}
+.dark .site-subscribe{border-color:#1b5357;background:linear-gradient(125deg,rgba(22,57,60,.35),rgba(16,19,20,.9),rgba(22,57,60,.2))}
+.site-subscribe a{display:inline-block;color:#21676b;font-weight:600;margin:.5rem 1rem 0 0}.dark .site-subscribe a{color:#7fb8ba}
 .archive-controls input,.archive-controls select{width:100%;border:1px solid #d1d5db;border-radius:.75rem;padding:.8rem 1rem;background:rgba(255,255,255,.8);color:#111827}.dark .archive-controls input,.dark .archive-controls select{background:#1f2937;color:#f9fafb;border-color:#4b5563}
 .archive-card[hidden]{display:none!important}
 .cm-article .cm-photo{max-width:100%}.cm-article .cm-photo img{display:block;width:auto;max-width:100%;height:auto;max-height:680px;object-fit:contain;margin:0 auto;background:rgba(148,163,184,.06)}
@@ -15,3 +15,25 @@ body{font-family:Inter,'Noto Sans SC',system-ui,sans-serif}
 .article-meta{font-size:.85rem;display:flex;justify-content:center;flex-wrap:wrap;gap:.4rem 1rem}
 @media(max-width:640px){.cm-article .cm-photo img{max-height:560px}.article-title{font-size:1.9rem!important;line-height:1.5!important}.site-subscribe{padding:1.25rem}.prose h2{font-size:1.55rem;line-height:1.55}.prose h3{font-size:1.25rem;line-height:1.5}.prose table{display:block;overflow-x:auto}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* ---- Editorial layer ---- */
+:root{--accent:#21676b;--rule:#e6e3dc}
+.dark{--accent:#7fb8ba;--rule:#2a2f31}
+body{font-feature-settings:"ss01","cv11"}
+.font-display{font-family:Newsreader,'Noto Serif SC',Georgia,serif;font-optical-sizing:auto;letter-spacing:-.01em}
+.article-title,.prose h1,.prose h2{font-family:Newsreader,'Noto Serif SC',Georgia,serif;letter-spacing:-.005em}
+.prose h2{font-weight:600}
+.rule{border-color:var(--rule)}
+.eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.link-u{text-decoration:underline;text-decoration-color:rgba(33,103,107,.35);text-underline-offset:.22em;text-decoration-thickness:1px;transition:text-decoration-color .2s}
+.link-u:hover{text-decoration-color:currentColor}
+.dark .link-u{text-decoration-color:rgba(127,184,186,.4)}
+.tnum{font-variant-numeric:tabular-nums}
+::selection{background:#d6eaea;color:#0a2224}
+.dark ::selection{background:#1b5357;color:#fff}
+/* Profile pages: plain academic prose (no gradient headings, no highlighter). */
+.profile-prose h2{background:none!important;-webkit-text-fill-color:currentColor!important;color:#16181a;font-weight:500;border-bottom:1px solid var(--rule)!important}
+.dark .profile-prose h2{color:#fff}
+.profile-prose h3{font-family:Newsreader,'Noto Serif SC',Georgia,serif;font-weight:500;font-size:1.45rem;display:block}
+.profile-prose h3::before{display:none!important}
+.profile-prose strong{background:none!important;padding:0;font-weight:600}
+.profile-prose a{color:var(--accent)}

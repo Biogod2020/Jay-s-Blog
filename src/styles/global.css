@@ -8,7 +8,7 @@
 
 /* Custom utility class example */
 .text-gradient {
-  background: linear-gradient(to right, #4f46e5, #06b6d4);
+  background: linear-gradient(to right, #1b5357, #2f7f83);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -29,13 +29,13 @@
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #1e293b 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #21676b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .dark .gradient-text {
-  background: linear-gradient(135deg, #e2e8f0 0%, #818cf8 100%);
+  background: linear-gradient(135deg, #e2e8f0 0%, #7fb8ba 100%);
 }
 
 .step-number {
@@ -98,18 +98,18 @@ h2, h3 {
   margin-top: 3rem;
   margin-bottom: 1.5rem;
   /* Gradient Text Effect */
-  background: linear-gradient(135deg, #334155 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #334155 0%, #21676b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid rgba(79, 70, 229, 0.1);
+  border-bottom: 2px solid rgba(33, 103, 107, 0.1);
 }
 
 .dark .prose h2 {
-  background: linear-gradient(135deg, #e2e8f0 0%, #818cf8 100%);
+  background: linear-gradient(135deg, #e2e8f0 0%, #7fb8ba 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  border-bottom-color: rgba(129, 140, 248, 0.2);
+  border-bottom-color: rgba(127, 184, 186, 0.2);
 }
 
 .prose h3 {
@@ -126,7 +126,7 @@ h2, h3 {
   display: inline-block;
   width: 6px;
   height: 24px;
-  background-color: #4f46e5;
+  background-color: #21676b;
   margin-right: 0.75rem;
   border-radius: 2px;
 }
@@ -134,7 +134,7 @@ h2, h3 {
   color: #f1f5f9;
 }
 .dark .prose h3::before {
-  background-color: #818cf8;
+  background-color: #7fb8ba;
 }
 
 /* 2. Blockquotes as "Glass Cards" / Abstracts */
@@ -144,7 +144,7 @@ h2, h3 {
   color: #334155;
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(226, 232, 240, 0.8);
-  border-left: 4px solid #4f46e5; /* Primary accent */
+  border-left: 4px solid #21676b; /* Primary accent */
   border-radius: 0.75rem;
   padding: 1.5rem;
   margin: 2rem 0;
@@ -160,7 +160,7 @@ h2, h3 {
 .dark .prose blockquote {
   background: rgba(30, 41, 59, 0.6);
   border-color: rgba(255, 255, 255, 0.1);
-  border-left-color: #818cf8;
+  border-left-color: #7fb8ba;
   color: #cbd5e1;
 }
 
