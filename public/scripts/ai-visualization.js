@@ -1,3 +1,5 @@
+const IS_EN = document.documentElement.lang.startsWith('en');
+const L = (en, zh) => (IS_EN ? en : zh);
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize visualizations
     renderDashboardDemo();
@@ -15,7 +17,7 @@ function copyToClipboard(id) {
     textarea.select();
     document.execCommand("copy");
     document.body.removeChild(textarea);
-    alert("Prompt 已复制，请粘贴给 AI！");
+    alert(L("Prompt copied. Paste it into your AI assistant!", "Prompt 已复制，请粘贴给 AI！"));
 }
 
 // 简单的交互演示：根据选择高亮 / 变暗不同 response bar
@@ -67,13 +69,21 @@ function renderDashboardDemo(refresh) {
 
 // Reveal.js mock slide logic
 let currentSlide = 0;
-const slides = [
+const slidesZh = [
     `<h1 class="text-3xl font-bold text-white mb-2">期刊俱乐部</h1><p class="text-orange-400 font-mono">单细胞 RNA-seq 分析</p>`, 
     `<h2 class="text-xl text-white mb-4">代码示例</h2><pre class="bg-slate-800 p-4 rounded text-left text-xs text-green-200 font-mono overflow-x-auto"><code>import scanpy as sc
 adata = sc.read_h5ad('data.h5ad')
 sc.pl.umap(adata, color=['leiden'])</code></pre>`, 
     `<h2 class="text-xl text-white mb-4">交互式图表</h2><div class="flex gap-2 justify-center items-end h-24"><div class="w-8 bg-blue-500 hover:bg-blue-400 h-12 rounded transition-all cursor-pointer" title="NK 细胞: 12%"></div><div class="w-8 bg-purple-500 hover:bg-purple-400 h-20 rounded transition-all cursor-pointer" title="T 细胞: 45%"></div><div class="w-8 bg-rose-500 hover:bg-rose-400 h-16 rounded transition-all cursor-pointer" title="B 细胞: 23%"></div></div><p class="text-xs text-slate-400 mt-2">将鼠标悬停查看数值</p>`
 ];
+const slidesEn = [
+    `<h1 class="text-3xl font-bold text-white mb-2">Journal Club</h1><p class="text-orange-400 font-mono">Single-cell RNA-seq analysis</p>`, 
+    `<h2 class="text-xl text-white mb-4">Code example</h2><pre class="bg-slate-800 p-4 rounded text-left text-xs text-green-200 font-mono overflow-x-auto"><code>import scanpy as sc
+adata = sc.read_h5ad('data.h5ad')
+sc.pl.umap(adata, color=['leiden'])</code></pre>`, 
+    `<h2 class="text-xl text-white mb-4">Interactive chart</h2><div class="flex gap-2 justify-center items-end h-24"><div class="w-8 bg-blue-500 hover:bg-blue-400 h-12 rounded transition-all cursor-pointer" title="NK cells: 12%"></div><div class="w-8 bg-purple-500 hover:bg-purple-400 h-20 rounded transition-all cursor-pointer" title="T cells: 45%"></div><div class="w-8 bg-rose-500 hover:bg-rose-400 h-16 rounded transition-all cursor-pointer" title="B cells: 23%"></div></div><p class="text-xs text-slate-400 mt-2">Hover to see the values</p>`
+];
+const slides = IS_EN ? slidesEn : slidesZh;
 
 function renderSlide() {
     const container = document.getElementById('slide-container');
@@ -110,13 +120,13 @@ window.calcGCS = function() {
 
     if (score <= 8) {
         box.className = "mt-6 p-4 rounded-xl bg-red-500 text-white shadow-lg animate-pulse";
-        statusEl.innerText = "重度损伤，考虑气管插管";
+        statusEl.innerText = L("Severe injury: consider intubation", "重度损伤，考虑气管插管");
     } else if (score <= 12) {
         box.className = "mt-6 p-4 rounded-xl bg-orange-100 text-orange-900";
-        statusEl.innerText = "中度损伤";
+        statusEl.innerText = L("Moderate injury", "中度损伤");
     } else {
         box.className = "mt-6 p-4 rounded-xl bg-emerald-100 text-emerald-900";
-        statusEl.innerText = "正常";
+        statusEl.innerText = L("Normal", "正常");
     }
 }
 
@@ -136,11 +146,11 @@ window.toggleAnkiDemo = function() {
     if (showingFront) {
         front.classList.add('hidden');
         back.classList.remove('hidden');
-        label.innerText = '隐藏答案';
+        label.innerText = L('Hide answer', '隐藏答案');
     } else {
         back.classList.add('hidden');
         front.classList.remove('hidden');
-        label.innerText = '显示答案';
+        label.innerText = L('Show answer', '显示答案');
     }
 }
 
@@ -163,7 +173,7 @@ async function callGemini() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 contents: [{
-                    parts: [{ text: `Please act as a medical professor. Explain the following academic text in simple, easy-to-understand Chinese for a medical student. Highlight 3 key technical terms in bold. Text: ${input}` }]
+                    parts: [{ text: `Please act as a medical professor. Explain the following academic text in simple, easy-to-understand ${L('English', 'Chinese')} for a medical student. Highlight 3 key technical terms in bold. Text: ${input}` }]
                 }]
             })
         });
@@ -180,7 +190,7 @@ async function callGemini() {
         console.error(e);
         loadingDiv.classList.add('hidden');
         outputDiv.classList.remove('hidden');
-        outputContent.innerHTML = '<span class="text-red-500">API 调用失败，请检查网络或 API Key。</span>';
+        outputContent.innerHTML = L('<span class="text-red-500">API call failed. Check your network or API key.</span>', '<span class="text-red-500">API 调用失败，请检查网络或 API Key。</span>');
     }
 }
 window.callGemini = callGemini;
