@@ -1,0 +1,38 @@
+---
+// Shared profile card for the English and Chinese About pages.
+interface Props { zh?: boolean }
+const { zh = false } = Astro.props;
+const t = zh
+  ? { role: '神经病学博士阶段 · 医师科学家（在读）', school: '复旦大学上海医学院', edu: '教育', focus: '研究方向', contact: '联系方式', cvMain: '下载中文简历（PDF）', cvAlt: 'English academic CV', cvMainHref: '/Jia-Hao_Ji_CV_zh.pdf', cvAltHref: '/Jia-Hao_Ji_Academic_CV.pdf',
+      eduItems: [['八年制临床医学（博士阶段，神经病学）', '复旦大学，2019–2027'], ['交换学生', '加州大学洛杉矶分校，2021–2022']],
+      focusItems: ['智能体驱动的生物医学数据治理', '可核验的 AI-ready 数据资源', '临床决策数据与医学 AI 评测', '空间组学与神经疾病'] }
+  : { role: 'Doctoral-stage MD, neurology · Physician-scientist in training', school: 'Fudan University Shanghai Medical College', edu: 'Education', focus: 'Research focus', contact: 'Contact', cvMain: 'Download academic CV (PDF)', cvAlt: 'One-page CV', cvMainHref: '/Jia-Hao_Ji_Academic_CV.pdf', cvAltHref: '/Jia-Hao_Ji_CV.pdf',
+      eduItems: [['Eight-year MD program (doctoral stage, neurology)', 'Fudan University, 2019–2027'], ['Exchange student', 'UCLA, 2021–2022']],
+      focusItems: ['Agent-driven biomedical data governance', 'Verifiable, AI-ready data resources', 'Clinical decision data and medical AI evaluation', 'Spatial omics and neurological disease'] };
+---
+<div class="sticky top-24 space-y-7">
+  <img src="/images/profile/portrait-420.webp" srcset="/images/profile/portrait-420.webp 420w, /images/profile/portrait-720.webp 720w" sizes="280px" width="420" height="560" alt={zh ? '纪家灏照片' : 'Portrait of Jia-Hao Ji'} class="mx-auto aspect-[3/4] w-48 rounded-2xl object-cover md:w-full" />
+  <div class="text-center md:text-left">
+    <p class="font-display text-2xl font-medium text-ink dark:text-white">{zh ? '纪家灏' : 'Jia-Hao (Jay) Ji'}</p>
+    <p class="mt-1 text-sm text-ink-soft dark:text-gray-300">{t.role}</p>
+    <p class="text-sm text-ink-mute dark:text-gray-400">{t.school}</p>
+  </div>
+  <div class="border-t rule pt-5">
+    <p class="eyebrow mb-3">{t.edu}</p>
+    {t.eduItems.map(([a, b]) => <p class="mb-2 text-sm text-ink dark:text-gray-100">{a}<span class="block text-xs text-ink-mute dark:text-gray-400">{b}</span></p>)}
+  </div>
+  <div class="border-t rule pt-5">
+    <p class="eyebrow mb-3">{t.focus}</p>
+    <ul class="space-y-1.5 text-sm text-ink dark:text-gray-100">{t.focusItems.map((f) => <li>{f}</li>)}</ul>
+  </div>
+  <div class="border-t rule pt-5 text-sm">
+    <p class="eyebrow mb-3">{t.contact}</p>
+    <a class="link-u block break-all text-ink dark:text-gray-100" href="mailto:jhji19@fudan.edu.cn">jhji19@fudan.edu.cn</a>
+    <a class="link-u mt-1.5 block text-ink dark:text-gray-100" href="https://github.com/Biogod2020" rel="me">GitHub · @Biogod2020</a>
+    <a class="link-u mt-1.5 block text-ink dark:text-gray-100" href="https://space.bilibili.com/645730045">Bilibili</a>
+  </div>
+  <div class="space-y-2">
+    <a href={t.cvMainHref} class="block rounded-full bg-ink px-4 py-2.5 text-center text-sm font-medium text-white transition hover:bg-accent-800 dark:bg-white dark:text-ink">{t.cvMain}</a>
+    <a href={t.cvAltHref} class="link-u block text-center text-xs text-ink-soft dark:text-gray-400">{t.cvAlt}</a>
+  </div>
+</div>

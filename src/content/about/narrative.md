@@ -1,71 +1,67 @@
-I am an eight-year M.D. candidate at **Fudan University Shanghai Medical College** and a physician-scientist in training. My work sits at the intersection of clinical medicine, computational biology, and artificial intelligence.
+I am a doctoral-stage student in the **eight-year clinical medicine program at Fudan University Shanghai Medical College**, trained in neurology. I am advised by Prof. Jin-Tai Yu (neurology, Huashan Hospital) and Prof. Zhiyuan Yuan (Fudan Institute of Science and Technology for Brain-inspired Intelligence), and I graduate in June 2027.
 
-I build **reliable agentic and multimodal AI systems for biomedical discovery**. Rather than treating AI as a generic assistant, I study how it can recover fragmented scientific evidence, connect tissue morphology with molecular states, and preserve correct reasoning in multi-agent systems.
+My research has one aim: **let a small team carry out a large biomedical data project.** Public archives hold years of valuable data, but it is stored in inconsistent formats with missing descriptions, so most of it never reaches an AI model. I build agents that do this cleanup at scale and checks that keep every output traceable to its source, so that people can trust what the agents produce.
 
-## Research Agenda
+## What I have built
 
-My current work is organized around three connected themes:
+### SpatialDataAgent: making public spatial-omics data usable
 
-- **Agentic AI for science:** autonomous, evidence-grounded systems for curating scientific data and executing complex research workflows.
-- **Multimodal biomedical AI and spatial omics:** methods that integrate histology, spatial transcriptomics, and clinical knowledge to study tissue microenvironments and neurological disease.
-- **Reliable multi-agent reasoning:** understanding how candidate generation, judge reliability, communication, and terminal answer selection determine system performance.
+**First author · [bioRxiv preprint](https://www.biorxiv.org/content/10.64898/2026.05.27.727615v2) · [ICLR 2027 submission](https://openreview.net/forum?id=iB4on39JQE)**
 
-The long-term objective is to develop general computational systems that make biomedical research more scalable, reproducible, and scientifically useful.
+Spatial transcriptomics measures gene expression at known positions in a tissue section. A decade of these datasets sits in public archives, but each lab stored them differently across 12 platforms. I proposed and led an agent workflow that finds the datasets, writes the conversion code, checks the result against the original files, repairs what fails, and withholds anything that still does not pass. Every released sample was also checked by eye for image–expression alignment.
 
-## Selected Research
+The resulting resource holds **12,163 samples across 42 species, including 8,211 with paired tissue images and 635 million spatial observations**. Using it, we found that when the number of training patches is held fixed, models that predict gene expression from tissue images transfer better to new studies if the patches come from more studies.
 
-### [Candidate supply and answer selection shape the value of LLM judging in multi-agent systems](https://arxiv.org/abs/2608.25937)
+### CaseReportAgent: learning clinical decisions in the order they were made
 
-**First author · arXiv:2608.25937 · 2026**
+**Research lead · manuscript in preparation**
 
-We separate multi-agent reasoning into candidate generation, answer recognition, and terminal selection. Across five benchmarks, the study shows that a correct answer is often already present but can be lost during consensus. Combining answer frequency with an LLM judge changes only the final selection rule and improves accuracy from **63.82% to 70.82–70.95%**, primarily by rescuing correct answers outnumbered by popular errors.
+Case reports are written after the outcome is known, so the early facts often give the answer away. CaseReportAgent rewrites published case reports as time-ordered clinical logs: each event cites the sentence or image it came from and may refer only to earlier events, so a case can be replayed at any decision point.
 
-### [SpatialDataAgent: Autonomous Spatial Omics Data Curation at Decade Scale](https://www.biorxiv.org/content/10.64898/2026.05.27.727615v1)
+So far **152,258 case reports** have been rebuilt. Fine-tuning Qwen3 models on up to 80,000 decision points reduced how often a 4B model repeated an error that the case report itself documented, from 27.9% to 12.0%. The same method exposed a problem in medical AI evaluation: across 8 external benchmarks, **1–75% of questions leak their answer**.
 
-**First author and lead developer · bioRxiv preprint · 2026**
+### Choosing the right answer in multi-agent systems
 
-SpatialDataAgent is an evidence-grounded agentic workflow for recovering and standardizing fragmented multimodal spatial-omics records. Applied to a decade of GEO records, it identified **769 paired H&E–spatial transcriptomics datasets** and assembled HESRT, a datalake containing **29.2 million spots or cells**.
+**Co-first author · [arXiv:2608.25937](https://arxiv.org/abs/2608.25937)**
 
-### Spatiotemporally resolved transcriptome unveils reactive subpallial microglia underlying cholinergic vulnerability in Alzheimer's disease
+When several AI agents answer a question, the correct answer is often already among them, yet majority voting discards it when a popular wrong answer outnumbers it. I designed a selection rule that combines answer frequency with an LLM judge's score. Across 5 benchmarks and 16,278 questions, keeping the candidate answers fixed and changing only this rule raised accuracy from **63.82% to 70.82–70.95%**.
 
-**Co-first author · Under review at Cell**
+### Spatial organisation of Alzheimer's disease
 
-This work combines spatial transcriptomics, single-nucleus sequencing, and in situ pathology to study the spatiotemporal organization of Alzheimer's disease and the relationship between reactive microglia and cholinergic vulnerability.
+**Co-first author · under review at *Science***
 
-## Research and Clinical Experience
+This study links reactive microglia in subpallial brain regions to the vulnerability of cholinergic neurons in Alzheimer's disease. I registered the spatial transcriptomics sections and ran most of the quantitative spatial analysis, including the GOLD index, which tests whether microglial expression states change with distance from amyloid plaques.
 
-### Fudan Data-Driven Future Lab & Institute of Medical Genetics
+### BioMed-Banana: cell segmentation from an image-editing model
 
-**Research project leader · 2023–present**
+**Study design and main implementation · manuscript in preparation**
 
-Under the supervision of Prof. Jin-Tai Yu and Prof. Zhiyuan Yuan, I work on spatial multi-omics, Alzheimer's disease, and agentic systems for biomedical data. My contributions include multimodal tissue registration, large-scale spatial-data curation, and computational analysis of disease-associated tissue microenvironments.
+Adapting a segmentation model to a new tissue or stain usually needs many annotated images. I adapted the open image-editing model Qwen-Image-Edit to draw coloured cell masks. With 128 training images it reached panoptic quality 0.625 on 2,722 PanNuke test images, above Cellpose-SAM (0.602), which was trained on 22,826 images.
 
-### Fudan University, Prof. Bin Song's Lab
+## What comes next
 
-**Undergraduate researcher · 2021–2023**
+The next resource applies the same approach to **brain MRI**: scans from many sources and sequences, with consistent metadata, quality records and a link back to every original file, built for AI pretraining and neuroscience analysis.
 
-I developed single-cell RNA-sequencing analysis pipelines for research on iPSC-derived dopaminergic progenitor transplantation in Parkinson's disease.
+Behind it is a question I want to answer properly: how the yield of reliable data changes as agents get more compute and more varied sources, and at which points a short human check is worth more than another round of automatic repair.
 
-### Institutes of Biomedical Sciences, Fudan University
+## Earlier training
 
-**Undergraduate researcher · 2019–2021**
+- **Prof. Bin Song's lab, Fudan University (2021–2023):** single-cell RNA-seq pipelines for iPSC-derived dopaminergic progenitor transplantation in Parkinson's disease.
+- **Prof. Fei Lan's lab, Institutes of Biomedical Sciences (2019–2021):** wet-lab training in molecular assays, DNA methylation and epigenetics.
+- **Clinical:** core rotations at Fudan-affiliated hospitals; internal medicine elective at Queen Mary Hospital, The University of Hong Kong (2025); exchange student at UCLA (2021–2022).
 
-I received early wet-lab training in molecular biology, DNA methylation, and epigenetics in Prof. Fei Lan's laboratory.
+## Teaching
 
-My clinical training has included an elective at **HKU Queen Mary Hospital** and medical rotations at Fudan-affiliated hospitals. These experiences keep my computational work anchored to clinically meaningful questions.
+I make medical education videos in Chinese and English on [Bilibili](https://space.bilibili.com/645730045/) and [YouTube](https://www.youtube.com/@JayJi-wm7yp/playlists), and have taught probability and statistics as a volunteer at middle schools in Guizhou and Guangdong. I also share the agent tools I build, such as [dsh-article-review](https://github.com/Biogod2020/dsh-article-review) and [simple-fig-skill](https://github.com/Biogod2020/simple-fig-skill), so other researchers can use them.
 
 ## Background
 
-I grew up in Guangzhou in a Teochew family. Early training in biology, including a provincial top-ten result in the National Biology Olympiad, led me toward scientific research. I later completed an exchange program at UCLA and gradually moved from wet-lab and single-cell analysis toward multimodal AI and autonomous research systems.
-
-I also teach and share practical AI workflows for medical students and researchers, with an emphasis on turning new tools into reproducible scientific practice rather than one-off demonstrations.
-
-## Beyond Research
+I grew up in Guangzhou in a Teochew family. A provincial top-ten result in the National Biology Olympiad first drew me to research. I speak Mandarin, Cantonese, Teochew and English.
 
 ![At UC Berkeley](/life_photo.jpg)
 
-*At UC Berkeley during my UCLA exchange program, 2021–2022.*
+*At UC Berkeley during my UCLA exchange, 2021–2022.*
 
 ![At HKUST](/hkust_photo.jpg)
 
-*Visiting the Hong Kong University of Science and Technology during my HKU clinical elective, 2025.*
+*Visiting HKUST during my HKU clinical elective, 2025.*

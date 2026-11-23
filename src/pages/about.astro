@@ -7,29 +7,25 @@ import * as Narrative from "../content/about/narrative.md";
 
 <Layout
   title="About | Jia-Hao Ji"
-  description="Research profile of Jia-Hao Ji, an M.D. candidate and AI researcher working on agentic AI, multimodal biomedical learning, spatial omics, and multi-agent reasoning."
+  description="Research profile of Jia-Hao (Jay) Ji, a Fudan neurology MD student who builds agents that turn scattered biomedical evidence into verifiable, AI-ready data."
   maxWidth="max-w-6xl"
 >
   <div class="mt-4">
     <div class="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p class="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-400">
-          Profile
-        </p>
-        <h1 class="text-4xl font-bold text-gray-900 dark:text-white">About</h1>
+        <p class="eyebrow mb-3">Profile</p>
+        <h1 class="font-display text-4xl font-medium text-ink dark:text-white md:text-5xl">About</h1>
       </div>
       <ProfileLanguageSwitch current="en" />
     </div>
 
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-12">
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-12">
       <div class="md:col-span-4 lg:col-span-3">
         <ProfileSidebar />
       </div>
 
-      <div
-        class="rounded-2xl border border-gray-100 bg-white p-7 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:col-span-8 md:p-10 lg:col-span-9"
-      >
-        <article class="prose prose-indigo max-w-none dark:prose-invert">
+      <div class="md:col-span-8 md:pl-6 lg:col-span-9 lg:pl-10">
+        <article class="profile-prose prose prose-lg prose-indigo max-w-3xl dark:prose-invert prose-headings:font-medium prose-a:decoration-accent-300 prose-a:underline-offset-4">
           <Narrative.Content />
         </article>
       </div>
