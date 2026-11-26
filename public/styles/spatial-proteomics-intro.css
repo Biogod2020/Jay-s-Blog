@@ -51,4 +51,16 @@
 .sp-article a { color:#1f5fbf; }
 .sp-article .duo { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 .sp-article .post section > .part, .sp-article section > .part { margin-left:0; }
+/* the site's reset and dark theme would otherwise strip list markers and turn bold text and headings white */
+.sp-article ul { list-style:disc !important; } .sp-article ol { list-style:decimal !important; }
+.sp-article ul, .sp-article ol { padding-left:1.4em !important; }
+.sp-article, .sp-article p, .sp-article li, .sp-article td, .sp-article .txt, .sp-article .fa { color:#1f2633 !important; }
+.sp-article strong, .sp-article b, .sp-article h2, .sp-article h3, .sp-article .fq, .sp-article .take b { color:#111827 !important; }
+.sp-article figcaption, .sp-article .sp-sub, .sp-article .take em, .sp-article .term .gloss { color:#5b6474 !important; }
+.sp-article figcaption strong { color:#374151 !important; }
+.sp-article .part, .sp-article .keys .klab, .sp-article ol li::marker, .sp-article ul li::marker { color:#6d4bc4 !important; }
+.sp-article table.pit td:first-child, .sp-article table.pit td:first-child strong { color:#b45309 !important; }
+.sp-article .callout .clab, .sp-article .take span { color:#fff !important; }
+.sp-article mark { color:inherit !important; }
+.sp-article code { color:#1f2633 !important; background:#f1f2f6 !important; }
 @media (max-width: 760px) { .sp-article { padding:18px 12px 30px; } .sp-article .duo { grid-template-columns:1fr; } }
